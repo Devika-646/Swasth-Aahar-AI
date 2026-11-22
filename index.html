@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='22' cy='27' r='9.5' fill='%23e53935'/%3E%3Cpath d='M32 35C30 22 38 13 53 13C54 27 46 35 32 35Z' fill='%2343a047'/%3E%3Cpath d='M9 35H55A23 23 0 0 1 9 35Z' fill='%23f59e0b'/%3E%3C/svg%3E">
+<title>Swasth Aahar AI - स्वस्थ आहार</title>
+<style>
+:root{--bg:#f4f8f5;--card:#fff;--tx:#1d2a22;--mu:#5d6b63;--pr:#1f7a4d;--bd:#dce5de;--ok:#e1f4e8;--wa:#fff1cf;--no:#fde2e2}
+@media(prefers-color-scheme:dark){:root{--bg:#111915;--card:#1a251f;--tx:#e8f0ea;--mu:#9fb0a5;--pr:#4cc38a;--bd:#2b3a31;--ok:#163a27;--wa:#3b3216;--no:#431e1e}}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.45}
+header{background:var(--pr);color:#fff;padding:14px 16px}header h1{margin:0;font-size:1.25rem}header small{opacity:.9}
+main{max-width:900px;margin:auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
+input,select,button{font:inherit;padding:10px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);width:100%;margin:4px 0}
+button{background:var(--pr);color:#fff;border:0;cursor:pointer;font-weight:600}button.alt{background:transparent;color:var(--pr);border:1px solid var(--pr)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{width:auto;flex:1;background:var(--card);color:var(--pr);border:1px solid var(--pr)}.tabs button.on{background:var(--pr);color:#fff}
+.res{border-radius:10px;padding:10px;margin:6px 0;border-left:6px solid}.res.s0{background:var(--ok);border-color:#2e9e62}.res.s1{background:var(--wa);border-color:#d9a21b}.res.s2{background:var(--no);border-color:#d64545}
+.pipe{display:flex;flex-wrap:wrap;gap:4px;font-size:.8rem;align-items:center;color:var(--mu)}.pipe b{background:var(--bd);color:var(--tx);padding:3px 8px;border-radius:6px}
+.cond label{display:block;padding:3px 0}.cond input{width:auto;margin-right:6px}
+.muted{color:var(--mu);font-size:.85rem}.hide{display:none}h3{margin:.2em 0}ol{padding-left:20px;margin:4px 0}
+#am{font-weight:600;color:#c62828}@media(prefers-color-scheme:dark){#am{color:#ff8a80}}
+.tag{display:inline-block;font-size:.75rem;background:var(--ok);padding:2px 8px;border-radius:10px;margin:2px 4px 2px 0}
+.tick{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px;padding:8px 0}
+.tick label{display:flex;align-items:center;gap:6px;padding:8px;border:1px solid var(--bd);border-radius:8px;cursor:pointer}
+.tick input{width:auto;margin:0}.tick .t1{border-color:#d9a21b;background:var(--wa)}.tick .t2{border-color:#d64545;background:var(--no)}
+details{border:1px solid var(--bd);border-radius:10px;padding:8px 10px;margin:6px 0;background:var(--card)}summary{cursor:pointer}
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:6px;margin-top:6px}
+.sp-box{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px;font-size:.84rem}
+</style>
+</head>
+<body>
+<header>
+  <h1 style="display:flex;align-items:center;gap:10px">
+    <svg width="40" height="40" viewBox="0 0 64 64" aria-label="Swasth Aahar logo" role="img">
+      <circle cx="32" cy="32" r="31" fill="#fff"/>
+      <g transform="translate(0 1)">
+        <circle cx="22" cy="27" r="9.5" fill="#e53935"/>
+        <path d="M15 19C17 13 24 12 28 15C26 20 19 22 15 19Z" fill="#2e7d32"/>
+        <path d="M32 35C30 22 38 13 53 13C54 27 46 35 32 35Z" fill="#43a047"/>
+        <path d="M36 31C40 25 45 20 50 17" stroke="#c8e6c9" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M9 35H55A23 23 0 0 1 9 35Z" fill="#f59e0b"/>
+        <rect x="7" y="33" width="50" height="4" rx="2" fill="#d97706"/>
+        <path d="M32 53C25 48 25 43 29.5 43C31 43 32 44 32 45C32 44 33 43 34.5 43C39 43 39 48 32 53Z" fill="#fff"/>
+      </g>
+    </svg>
+    <span>Swasth Aahar AI <span style="font-weight:400">· स्वस्थ आहार</span></span>
+  </h1>
+  <small>सही आहार, स्वस्थ जीवन — Smart food choices for every health condition &amp; 250+ sports</small>
+</header>
+
+<main>
+<!-- AUTH -->
+<section id="auth" class="card">
+  <h3>Secure Login / Registration</h3>
+  <div id="cl" class="res s1"></div>
+  <input id="nm" placeholder="Full name (for registration)">
+  <input id="em" type="email" placeholder="Email">
+  <input id="pw" type="password" placeholder="Password (min 6 chars)">
+  <div class="row">
+    <button onclick="login()">Login</button>
+    <button class="alt" onclick="reg()">Register</button>
+  </div>
+  <button class="alt" onclick="forgot()">Forgot password?</button>
+  <p id="am" class="muted"></p>
+</section>
+
+<!-- APP -->
+<section id="app" class="hide">
+  <div class="tabs">
+    <button id="t1" onclick="tab(1)">🍳 Check &amp; Cook</button>
+    <button id="t2" onclick="tab(2)">📅 Daily Aahar</button>
+    <button id="t3" onclick="tab(3)">👤 Profile</button>
+    <button onclick="logout()" style="flex:.4">Logout</button>
+  </div>
+
+  <div id="p1">
+    <div class="card" id="sum"></div>
+    <div class="card">
+      <h3>Select your ingredients</h3>
+      <p class="muted">Tick the ingredients you have. ⛔ = contraindicated, ⚠️ = restricted, 🏅 = key fuel for your sport. Can't find one? Type it and add it.</p>
+      <input id="q" placeholder="Search or type any ingredient (aloo, palak, paneer...)" oninput="chips()">
+      <div class="row">
+        <select id="cc">
+          <option value="veg">Type: Vegetable</option>
+          <option value="fruit">Fruit</option>
+          <option value="grain">Grain / flour</option>
+          <option value="pulse">Pulse / legume</option>
+          <option value="dairy">Dairy</option>
+          <option value="meat">Meat</option>
+          <option value="fish">Fish / seafood</option>
+          <option value="egg">Egg</option>
+          <option value="nut">Nut / seed</option>
+          <option value="other">Other</option>
+        </select>
+        <button class="alt" onclick="addC()">➕ Add typed ingredient</button>
+      </div>
+      <div id="chips"></div>
+      <p class="muted" id="cnt"></p>
+      <div id="live"></div>
+      <div class="row">
+        <button onclick="analyze()">Analyze &amp; Generate Dishes</button>
+        <button class="alt" onclick="sel.clear();chips();$('#out').innerHTML=''">Clear all</button>
+      </div>
+    </div>
+    <div id="out"></div>
+  </div>
+
+  <div id="p2" class="hide">
+    <div class="card">
+      <h3>Dincharya Aahar: one-day menu for your profile</h3>
+      <p class="muted">Built only from ingredients that are safe for you.</p>
+      <button onclick="menu()">Generate / Shuffle Menu</button>
+    </div>
+    <div id="mout"></div>
+  </div>
+
+  <div id="p3" class="hide">
+    <div class="card">
+      <h3>Your Profile</h3>
+      <input id="pn" placeholder="Name">
+      <div class="row">
+        <input id="pa" type="number" placeholder="Age">
+        <select id="ps"><option value="m">Male</option><option value="f">Female</option></select>
+        <input id="pw2" type="number" placeholder="Weight kg">
+        <input id="ph" type="number" placeholder="Height cm">
+      </div>
+      <label>Diet type</label>
+      <select id="pd">
+        <option value="veg">Vegetarian</option>
+        <option value="vegan">Vegan</option>
+        <option value="jain">Jain (no root veg/onion/garlic)</option>
+        <option value="egg">Eggetarian</option>
+        <option value="nonveg">Non-vegetarian</option>
+        <option value="halal">Halal non-veg</option>
+      </select>
+      <label>Clinical conditions / surgical history (select all that apply)</label>
+      <div class="cond" id="pc"></div>
+      <label>Athlete? Search &amp; choose from <span id="sp-total">250+</span> sports</label>
+      <input id="sp-search" placeholder="Search sport (e.g. Powerlifting, Kabaddi, Swimming, Chess...)" oninput="filterSports()">
+      <select id="psp" onchange="previewSport()"></select>
+      <div id="sp-preview"></div>
+      <button onclick="saveP()">Save profile</button>
+      <p id="pm" class="muted"></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+/* ============ KNOWLEDGE BASE ============ */
+const ING=`Potato|veg|V|K,C,R
+Tomato|veg|V|K,O
+Onion|veg|V|R
+Garlic|veg|V|R
+Carrot|veg|V|R
+Spinach|veg|V|K,O,Fe
+Cauliflower|veg|V|
+Cabbage|veg|V|
+Brinjal|veg|V|
+Okra (Bhindi)|veg|V|Fi
+Bottle gourd|veg|V|
+Cucumber|veg|V|
+Capsicum|veg|V|
+Green peas|veg|V|P,C
+Beetroot|veg|V|K,O,R,Fe
+Pumpkin|veg|V|K
+Mushroom|veg|V|K,P,R
+Sweet potato|veg|V|K,C,R
+Radish|veg|V|R
+Banana|fruit|V|K,S
+Apple|fruit|V|Fi
+Orange|fruit|V|K,S
+Mango|fruit|V|S
+Grapes|fruit|V|S
+Pomegranate|fruit|V|Fe
+Lemon|fruit|V|
+Papaya|fruit|V|
+Dates|fruit|V|K,S,Fe
+White rice|grain|V|C
+Brown rice|grain|V|P,C,Fi
+Wheat roti/atta|grain|V|G,C,P
+Oats|grain|V|P,Fi,C
+Quinoa|grain|V|P,Pr,Fe
+Millet (ragi/jowar)|grain|V|Fi,Fe
+Bread|grain|V|G,Na,C
+Pasta|grain|V|G,C
+Moong dal|pulse|V|K,P,Pr,Fi
+Toor dal|pulse|V|K,P,Pr
+Masoor dal|pulse|V|K,P,Pr,Fe
+Chickpeas|pulse|V|K,P,Pr,Fi
+Rajma|pulse|V|K,P,Pr,Pu,Fe
+Soybean|pulse|V|K,P,Pr,Pu,O
+Tofu|pulse|V|Pr
+Paneer|dairy|D|P,F,Pr,L
+Milk|dairy|D|K,P,L
+Curd/Yogurt|dairy|D|K,P,L
+Cheese|dairy|D|Na,F,P,L
+Ghee|dairy|D|F
+Butter|dairy|D|F,L
+Egg|egg|E|Pr,P
+Chicken|meat|N|Pr,P,Pu
+Mutton|meat|N|F,Pr,P,Pu
+Beef|meat|N|F,Pr,P,Pu,Fe
+Turkey|meat|N|Pr,P,Pu
+Duck|meat|N|F,Pr,P,Pu
+Pork|meat|P|F,Pr,P,Pu
+Liver|meat|N|Pu,Fe,P,Pr
+Rohu fish|fish|N|Pr,P
+Salmon|fish|N|Pr,P,F
+Sardine|fish|N|Pu,Pr,P,Na
+Prawns|fish|N|Pu,Pr,Na
+Almonds|nut|V|N,P,K,F
+Peanuts|nut|V|N,P,K,F
+Cashew|nut|V|N,P,K,F
+Walnut|nut|V|N,F
+Coconut|nut|V|K,F
+Soy sauce|other|V|Na,G
+Pickle|other|V|Na
+Sugar/Jaggery|other|V|S,C
+Honey|other|V|S
+Methi (fenugreek leaves)|veg|V|VK,Fe
+Drumstick (moringa)|veg|V|Fi
+Bitter gourd (karela)|veg|V|
+Ridge gourd (turai)|veg|V|
+Ash gourd|veg|V|
+Cluster beans (gavar)|veg|V|Fi
+French beans|veg|V|
+Broccoli|veg|V|VK,Go
+Lettuce|veg|V|VK
+Spring onion|veg|V|VK
+Sweet corn|veg|V|C
+Raw banana|veg|V|K,C
+Yam (suran)|veg|V|K,C,R
+Colocasia (arbi)|veg|V|K,O,R,C
+Turnip|veg|V|R
+Green chilli|veg|V|Ac
+Ginger|veg|V|R
+Tinda|veg|V|
+Pointed gourd (parwal)|veg|V|
+Zucchini|veg|V|
+Kale|veg|V|VK,O,Go
+Watermelon|fruit|V|S
+Pineapple|fruit|V|S,Ac
+Guava|fruit|V|Fi
+Pear|fruit|V|Fi
+Strawberry|fruit|V|O
+Kiwi|fruit|V|K,Ac
+Blueberries|fruit|V|
+Sapota (chikoo)|fruit|V|S,K
+Jackfruit|fruit|V|K,S
+Litchi|fruit|V|S
+Muskmelon|fruit|V|K
+Fig (anjeer)|fruit|V|K,S,O
+Raisins|fruit|V|K,S
+Bajra (pearl millet)|grain|V|P,Fi,Fe,C
+Poha (flattened rice)|grain|V|C
+Semolina (suji)|grain|V|G,C
+Besan (gram flour)|grain|V|K,P,Pr,C
+Maize flour|grain|V|C,P
+Barley (jau)|grain|V|G,Fi,C
+Vermicelli|grain|V|G,C
+Buckwheat (kuttu)|grain|V|Fi,P,C
+Amaranth (rajgira)|grain|V|Fe,Fi,P
+Basmati rice|grain|V|C
+Sabudana|grain|V|C
+Maida (refined flour)|grain|V|G,C
+Urad dal|pulse|V|K,P,Pr,Fe
+Black chana|pulse|V|K,P,Pr,Fi,Fe
+Lobia (black-eyed peas)|pulse|V|K,P,Pr,Fe
+Sprouts (mixed)|pulse|V|K,P,Pr
+Soya chunks|pulse|V|K,P,Pr,Pu,Sy
+Matki (moth beans)|pulse|V|K,P,Pr
+Green moong (whole)|pulse|V|K,P,Pr,Fi
+Buttermilk (chaas)|dairy|D|K,L
+Cream|dairy|D|Sf,F,L
+Soy milk|dairy|V|Sy,K,P
+Almond milk|dairy|V|N
+Coconut milk|dairy|V|Sf,K,F
+Lamb|meat|N|Sf,F,Pr,P,Pu
+Chicken breast|meat|N|Pr,P,Pu
+Ham|meat|P|Na,Sf,Pr,P
+Pomfret|fish|N|Pr,P
+Hilsa (ilish)|fish|N|Pr,P,F
+Mackerel (bangda)|fish|N|Pr,P,Pu,F
+Tuna|fish|N|Pr,P,Pu
+Crab|fish|N|Pr,Sh,Pu,Na
+Squid|fish|N|Pr,Sh,Pu
+Kingfish (surmai)|fish|N|Pr,P
+Egg white|egg|E|Eg,Pr
+Pistachio|nut|V|N,K,P,F
+Chia seeds|nut|V|Fi,P,F
+Flax seeds|nut|V|Fi,P,F
+Sunflower seeds|nut|V|P,K,F
+Pumpkin seeds|nut|V|P,K,F,Fe
+Sesame (til)|nut|V|O,P,F
+Makhana (fox nut)|nut|V|
+Peanut butter|nut|V|N,K,P,F,Na
+Olive oil|other|V|F
+Mustard oil|other|V|F
+Coconut oil|other|V|Sf,F
+Tamarind|other|V|Ac
+Papad|other|V|Na
+Mayonnaise|other|E|Sf,F,Na,Eg`.split('\n').map(l=>{const[n,c,d,f]=l.split('|');return{n,c,d,f:f?f.split(','):[]}});
+
+const ADD={Sf:'Ghee,Butter,Cheese,Paneer,Mutton,Beef,Pork,Duck,Liver,Coconut',Sh:'Prawns',Eg:'Egg',Sy:'Soybean,Tofu,Soy sauce',VK:'Spinach,Cabbage',Go:'Cabbage,Cauliflower,Soybean,Radish',Ac:'Tomato,Orange,Lemon,Pickle'};
+for(const f in ADD)ADD[f].split(',').forEach(n=>ING.find(i=>i.n==n).f.push(f));
+ING.push({n:'Grapefruit / Pomelo',c:'fruit',d:'V',f:['GF','Ac']});
+const FL={K:'high potassium (K+) content',P:'high phosphorus load',Na:'high sodium content',S:'high free-sugar / glycaemic load',F:'high total fat',Sf:'high saturated fat',Pu:'high purine content',O:'high oxalate content',G:'gluten (gliadin) content',L:'lactose content',N:'tree-nut / peanut allergen',Sh:'shellfish allergen',Eg:'egg allergen',Sy:'soy allergen',C:'high carbohydrate load',Pr:'high protein load',VK:'high vitamin K (alters warfarin INR)',GF:'CYP3A4 inhibition (interacts with immunosuppressants)',Go:'goitrogenic compounds',Ac:'acidic (reflux trigger)'};
+const RENAL=['ckd','hd'];
+const COND={
+  ckd:{g:'Renal',n:'Chronic Kidney Disease (CKD 3-5, non-dialysis)',a:['K','P','Na'],c:['Pr'],w:'reduced GFR impairs K+ and phosphate excretion (hyperkalaemia, hyperphosphataemia) and promotes sodium retention.'},
+  hd:{g:'Renal',n:'End-Stage Renal Disease on Dialysis (HD / PD)',a:['K','P','Na'],c:[],w:'risk of interdialytic hyperkalaemia, hyperphosphataemia and fluid overload; protein needs rise to 1.0-1.2 g/kg.'},
+  tx:{g:'Renal',n:'Kidney Transplant Recipient',a:['GF'],c:['Na','S'],w:'immunosuppressant (calcineurin inhibitor) interaction; steroids raise glucose and BP.'},
+  stones:{g:'Renal',n:'Nephrolithiasis (calcium-oxalate stones)',a:['O'],c:['Na'],w:'dietary oxalate and sodium increase urinary oxalate/calcium and stone formation.'},
+  t1d:{g:'Endocrine & Metabolic',n:'Diabetes Mellitus Type 1',a:['S'],c:['C'],w:'rapid glycaemic excursions; carbohydrate counting must match insulin dosing.'},
+  t2d:{g:'Endocrine & Metabolic',n:'Diabetes Mellitus Type 2',a:['S'],c:['C','Sf'],w:'insulin resistance causes postprandial hyperglycaemia; saturated fat worsens insulin sensitivity.'},
+  pre:{g:'Endocrine & Metabolic',n:'Prediabetes / Insulin resistance / PCOS',a:[],c:['S','C'],w:'high glycaemic load drives hyperinsulinaemia.'},
+  gdm:{g:'Endocrine & Metabolic',n:'Gestational Diabetes Mellitus',a:['S'],c:['C'],w:'pregnancy-related insulin resistance; strict postprandial glucose control needed.'},
+  thy:{g:'Endocrine & Metabolic',n:'Hypothyroidism',a:[],c:['Go'],w:'goitrogens can impair iodine uptake when eaten raw or in excess.'},
+  obes:{g:'Endocrine & Metabolic',n:'Obesity (BMI >= 30) / Weight management',a:[],c:['F','C','S'],w:'energy-dense foods hinder a caloric deficit.'},
+  gout:{g:'Endocrine & Metabolic',n:'Hyperuricaemia / Gout',a:['Pu'],c:[],w:'purine catabolism raises serum uric acid and precipitates flares.'},
+  dys:{g:'Cardiovascular',n:'Dyslipidaemia / Hypercholesterolaemia',a:['Sf'],c:['F'],w:'saturated fat raises LDL-C and atherogenic risk.'},
+  tg:{g:'Cardiovascular',n:'Hypertriglyceridaemia',a:['S'],c:['C','Sf'],w:'refined carbohydrate and fructose increase hepatic VLDL / triglyceride synthesis.'},
+  htn:{g:'Cardiovascular',n:'Hypertension',a:['Na'],c:['Sf'],w:'sodium load raises blood pressure (DASH principles apply).'},
+  cad:{g:'Cardiovascular',n:'Coronary Artery Disease / Post-MI',a:['Sf','Na'],c:[],w:'saturated fat and sodium accelerate atherosclerosis and BP.'},
+  hf:{g:'Cardiovascular',n:'Heart Failure (HFrEF / HFpEF)',a:['Na'],c:['Sf'],w:'sodium retention causes volume overload; follow prescribed fluid restriction.'},
+  af:{g:'Cardiovascular',n:'Atrial Fibrillation / Anticoagulant (warfarin) therapy',a:[],c:['VK'],w:'vitamin K intake must remain consistent to keep INR stable.'},
+  cabg:{g:'Surgical',n:'Post-CABG / PCI (stent) / Cardiac surgery',a:['Sf','Na'],c:[],w:'secondary prevention: limit saturated fat and sodium.'},
+  pm:{g:'Surgical',n:'Pacemaker / ICD implant',a:[],c:['Na','Sf'],w:'the device itself has no dietary restriction; the underlying cardiac disease guides diet.'},
+  bari:{g:'Surgical',n:'Post-Bariatric Surgery',a:['S'],c:['F'],w:'risk of dumping syndrome; small, protein-first meals advised.'},
+  masld:{g:'Hepatic & GI',n:'Fatty Liver (NAFLD / MASLD)',a:['S'],c:['Sf','C'],w:'fructose and saturated fat promote hepatic de novo lipogenesis.'},
+  cirr:{g:'Hepatic & GI',n:'Chronic Liver Disease / Cirrhosis',a:['Na'],c:[],w:'sodium worsens ascites and oedema.'},
+  panc:{g:'Hepatic & GI',n:'Pancreatitis / Post-cholecystectomy',a:['F'],c:[],w:'high fat load stimulates pancreatic/biliary secretion and triggers symptoms.'},
+  gerd:{g:'Hepatic & GI',n:'GERD / Acid reflux',a:[],c:['Ac','F'],w:'acidic and fatty foods lower LES tone and trigger reflux.'},
+  celiac:{g:'Allergy & Intolerance',n:'Coeliac disease',a:['G'],c:[],w:'gluten triggers autoimmune villous atrophy.'},
+  lac:{g:'Allergy & Intolerance',n:'Lactose intolerance',a:['L'],c:[],w:'lactase deficiency causes osmotic diarrhoea and bloating.'},
+  nut:{g:'Allergy & Intolerance',n:'Tree-nut / Peanut allergy',a:['N'],c:[],w:'IgE-mediated reaction; anaphylaxis risk.'},
+  shell:{g:'Allergy & Intolerance',n:'Shellfish allergy',a:['Sh'],c:[],w:'IgE-mediated reaction; anaphylaxis risk.'},
+  eggal:{g:'Allergy & Intolerance',n:'Egg allergy',a:['Eg'],c:[],w:'IgE-mediated hypersensitivity.'},
+  soy:{g:'Allergy & Intolerance',n:'Soy allergy',a:['Sy'],c:[],w:'IgE-mediated hypersensitivity.'},
+  anem:{g:'Other',n:'Iron-deficiency anaemia',a:[],c:[],w:'prefer iron-rich foods (marked with a star) and pair with vitamin C.'},
+  elderly:{g:'Other',n:'Geriatric (>= 60 years)',a:[],c:['Na','S'],w:'age-related BP and glycaemic sensitivity.',auto:1}
+};
+
+// 250+ Sports across 10 categories with pre/post training protocols
+const SP={
+  endurance:{l:'Endurance & Aerobic',m:1.9,p:1.4,b:['C','Fe'],t:'Carb-focused: 6-10 g carbs/kg/day, carb-load 24-48h before events, 30-60 g carbs/hour in long events, replace electrolytes & iron.',pre:'Complex + easily digested carbs 2-3h prior (oats, banana, rice, poha); avoid heavy fibre/fat before start.',post:'3:1 carb-to-protein meal within 45 min (dal-rice, fruit smoothie, paneer/chicken wrap) + fluids.',s:'Running (5K),Running (10K),Half Marathon,Marathon,Ultramarathon,Trail Running,Fell Running,Skyrunning,Mountain Running,Cross-Country Running,Road Cycling,Track Cycling (Endurance),Mountain Biking (XC),Gravel Cycling,Cyclo-cross,BMX Racing,Triathlon (Sprint),Triathlon (Olympic),Triathlon (Ironman 70.3),Triathlon (Full Ironman),Duathlon,Aquathlon,Aquabike,Winter Triathlon,Cross-Country Skiing,Nordic Combined,Race Walking (20km),Race Walking (50km),Orienteering,Ski Orienteering,MTB Orienteering,Long-Distance Swimming (1500m),Open Water Swimming (10km),Adventure Racing,Multi-Day Stage Racing,Stair Climbing / Towerrunning,Snowshoe Running'},
+  strength:{l:'Strength, Power & Throws',m:1.8,p:1.9,b:['Pr','C'],t:'Protein 1.6-2.2 g/kg spread over 4-5 meals, carbs around training, creatine-supporting foods (meat/fish/dairy/soy).',pre:'Moderate carbs + lean protein 90-120 min prior (roti + paneer/chicken/egg whites, oats + milk/soy milk).',post:'25-40 g protein within 1 h (soy/tofu, paneer, eggs, chicken, fish, dal + grain) + carbs.',s:'Powerlifting (Squat/Bench/Deadlift),Olympic Weightlifting,Bodybuilding (Men/Women),Classic Physique,Men’s Physique,CrossFit,Functional Fitness,Strongman,Strongwoman,Shot Put,Discus Throw,Hammer Throw,Javelin Throw,Weight Throw,Kettlebell Sport (Girevoy),Arm Wrestling,Tug of War,Highland Games,Calisthenics / Street Workout,Indoor Rowing (2000m Erg),Log Lifting,Stone Lifting,Grip Sport,Mas-Wrestling'},
+  speed:{l:'Speed, Jumps & Gymnastics',m:1.8,p:1.6,b:['Pr','C'],t:'Fast carbs 2 h before, protein within 1 h after, iron + vitamin D + calcium for bone & tendon health.',pre:'Light, fast-absorbing carbs + small protein 60-90 min before (banana, poha, upma, toast + egg white).',post:'Lean protein + antioxidant-rich fruits/veg (pomegranate, berries, spinach, paneer/fish/tofu).',s:'Sprinting (60m),Sprinting (100m),Sprinting (200m),Sprinting (400m),Middle Distance (800m),Middle Distance (1500m),110m / 100m Hurdles,400m Hurdles,3000m Steeplechase,4x100m Relay,4x400m Relay,Long Jump,Triple Jump,High Jump,Pole Vault,Decathlon,Heptathlon,Pentathlon,Artistic Gymnastics,Rhythmic Gymnastics,Trampoline Gymnastics,Acrobatic Gymnastics,Aerobic Gymnastics,Tumbling,Parkour / Freerunning,Springboard Diving,Platform Diving,High Diving,Track Cycling (Sprint/Keirin),BMX Freestyle,Tricking'},
+  team:{l:'Team & Field Sports',m:1.8,p:1.5,b:['C','Pr'],t:'Balanced plate (50% carbs, 25% protein, 25% healthy fats), hydrate through the match, quick carbs at half-time.',pre:'Balanced meal 3h before (rice/roti, dal/chicken/paneer, veg) + fruit 45 min pre-match.',post:'Glycogen + protein replenishment within 60 min + electrolyte replacement.',s:'Football (Soccer),Futsal,Beach Soccer,Cricket (Test),Cricket (ODI),Cricket (T20),Basketball,3x3 Basketball,Wheelchair Basketball,Volleyball,Beach Volleyball,Sitting Volleyball,Field Hockey,Ice Hockey,Inline Hockey,Floorball,Kabaddi,Kho-Kho,Rugby Union,Rugby League,Rugby Sevens,Touch Rugby,American Football,Flag Football,Australian Rules Football,Gaelic Football,Hurling,Camogie,Handball,Beach Handball,Baseball,Softball,Netball,Lacrosse,Box Lacrosse,Water Polo,Canoe Polo,Polo,Sepak Takraw,Ultimate Frisbee,Dodgeball,Throwball,Korfball,Bandy,Fistball,Roll Ball,Tchoukball,Handball (Regional)'},
+  racquet:{l:'Racquet & Bat-Ball',m:1.7,p:1.5,b:['C'],t:'Light easily-digested carbs before play, sodium + fluids on hot days, banana/dates snacks between sets.',pre:'Easily digestible carbs + moderate protein 2h prior (vegetable pulao, curd rice, idli/poha, chapati + dal).',post:'Rehydrate with fluids/electrolytes (unless renal-restricted) + lean protein & vegetables.',s:'Tennis,Wheelchair Tennis,Beach Tennis,Badminton,Para-Badminton,Table Tennis,Squash,Padel,Pickleball,Racquetball,Soft Tennis,Real Tennis,Pelota Vasca (Jai Alai),Speedminton (Crossminton),Racketlon'},
+  combat:{l:'Combat & Weight-Class',m:1.8,p:1.9,b:['Pr'],t:'High protein (1.8-2.2 g/kg), controlled calories, never crash-dehydrate; safe weight cutting under supervision.',pre:'Controlled-portion carbs + lean protein 2-3h before sparring/bouts (oats, sweet potato, egg whites, chicken, tofu).',post:'Immediate rehydration + 30g protein + anti-inflammatory foods (turmeric, ginger, berries, fish/walnuts).',s:'Boxing,Olympic Freestyle Wrestling,Greco-Roman Wrestling,Indian Kushti (Pehlwani),Judo,Karate (Kata/Kumite),Taekwondo,Mixed Martial Arts (MMA),Kickboxing,Muay Thai,Brazilian Jiu-Jitsu (BJJ),Traditional Jujutsu,Sumo,Fencing (Foil/Epee/Sabre),Kendo,Iaido,Aikido,Kalaripayattu,Sambo,Wushu / Kung Fu,Sanda,Capoeira,Krav Maga,Silambam,Gatka,Mallakhamb,Pencak Silat,Savate,Hapkido,Wing Chun,Jeet Kune Do,Lethwei'},
+  water:{l:'Water & Paddle Sports',m:1.9,p:1.5,b:['C','Fe'],t:'High-energy meals (swimmers burn high calories), iron-rich foods, hydrate even though you do not feel sweaty.',pre:'Carb-dense, low-fat meal 2h before water entry to prevent reflux (banana, rice, oats, toast, khichdi).',post:'Warm protein + carb recovery meal within 45 min + electrolyte fluids.',s:'Freestyle Swimming,Backstroke Swimming,Breaststroke Swimming,Butterfly Swimming,Individual Medley,Artistic (Synchronised) Swimming,Finswimming,Surfing,Bodyboarding,Stand-Up Paddleboarding (SUP),Sailing (Dinghy/Keelboat),Windsurfing,Kitesurfing,Wing Foiling,Flatwater Kayaking,Whitewater Slalom Kayaking,Canoeing (Sprint/Slalom),Rowing (Single/Eight),Coastal Rowing,Dragon Boat Racing,Outrigger Canoeing,Water Skiing,Wakeboarding,Wakesurfing,Freediving,Scuba Diving (Sport),Underwater Hockey,Underwater Rugby'},
+  winter:{l:'Winter, Altitude & Climbing',m:2.0,p:1.5,b:['C','F','Fe'],t:'Calorie-dense foods, warm fluids, extra carbs and iron at altitude/cold.',pre:'Calorie-dense slow-release carbs + healthy fats (nuts, seeds, oats, millets, paneer/eggs) before cold exposure.',post:'Warm, high-protein + high-carb meal (dal khichdi, stew, soup + grains) + warm hydration.',s:'Alpine Skiing,Freestyle Skiing,Ski Jumping,Biathlon,Snowboarding,Short Track Speed Skating,Long Track Speed Skating,Figure Skating,Synchronized Skating,Ice Dancing,Bobsleigh,Luge,Skeleton,Curling,Ice Climbing,Mountaineering,High-Altitude Trekking,Sport Climbing (Lead),Bouldering,Speed Climbing,Traditional Rock Climbing,Canyoning,Ski Mountaineering (Skimo)'},
+  precision:{l:'Precision, Cue & Mind Sports',m:1.4,p:1.2,b:[],t:'Steady blood sugar: low-GI carbs, nuts, omega-3 fats, no sugar crashes; limit excess caffeine for steady hands.',pre:'Low-GI steady-energy meal 90 min prior (millet roti, dal, nuts, curd/tofu, vegetables) for calm focus.',post:'Light, balanced meal with antioxidant vegetables and lean protein; hydrate well.',s:'Archery (Recurve),Archery (Compound),Field Archery,10m Air Rifle Shooting,10m Air Pistol Shooting,50m Rifle 3 Positions,Trap & Skeet Shooting,Golf,Disc Golf,Mini Golf,Snooker,English Billiards,Pool (8-Ball/9-Ball),Carom Billiards,Darts,Ten-Pin Bowling,Lawn Bowls,Petanque,Bocce,Croquet,Carrom,Chess,Rapid & Blitz Chess,Go (Weiqi),Contract Bridge,Esports (FPS/MOBA/RTS),Sim Racing,Drone Racing (FPV)'},
+  other:{l:'Motor, Equestrian, Dance & Fitness',m:1.6,p:1.3,b:['C','Pr'],t:'Hydration and cooling for motorsport, light meals before riding, protein for mobility/dance/yoga recovery.',pre:'Light, non-greasy meal 90-120 min prior (fruits, poha, upma, idli, whole-grain toast) so core stays comfortable.',post:'Protein + complex carbs for muscle repair + lost sweat electrolytes.',s:'Formula 1 / Single-Seater Racing,MotoGP / Motorcycle Racing,Rally Racing,Endurance Car Racing,Karting,Motocross / Supercross,Speedway,Equestrian Dressage,Equestrian Show Jumping,Equestrian Eventing,Endurance Riding,Vaulting,Horse Racing (Jockey),Skateboarding (Street/Park),Roller Skating (Artistic/Speed),Inline Speed Skating,Yoga (Ashtanga/Power),Yogasana Sport,Classical & Contemporary Dance,Dancesport (Ballroom/Latin),Breakdancing (Breaking),Zumba / Dance Fitness,Aerobics,Pilates,Cheerleading,Gym Fitness / Resistance Training,HIIT / Circuit Training,Spinning / Indoor Cycling,Recreational Cycling,Brisk Walking / Power Walking,Jump Rope (Skipping)'}
+};
+const SM={};let TOTAL_SPORTS=0;
+for(const k in SP)SP[k].s.split(',').forEach(n=>{const t=n.trim();if(t){SM[t]=k;TOTAL_SPORTS++}});
+
+/* ============ CLOUD (Supabase) with offline fallback ============ */
+// >>> PASTE YOUR SUPABASE URL AND ANON KEY HERE <<<
+const SB={url:"https://blbqiicakvkhojchafuj.supabase.co",key:"sb_publishable_TFl_bvnijAy8BrKYSw8qvQ_Wy64h0IQ"};
+const $=s=>document.querySelector(s);let CL=null,PR=null,U=null,busy=0,CE='';const sel=new Set();
+async function loadCloud(){if(!SB.url||!SB.key){CE='the url or key inside const SB is empty';return null}
+if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(SB.url.trim())){CE='the Project URL is wrong. It must look like https://abcdxyz.supabase.co with no / at the end';return null}
+try{const{createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm');const c=createClient(SB.url.trim(),SB.key.trim()),A=c.auth,ck=r=>{if(r.error)throw r.error;return r.data};
+return{up:async(e,p)=>{const d=ck(await A.signUp({email:e,password:p}));if(!d.session)throw{code:'confirm'};return d.user.id},
+in:async(e,p)=>ck(await A.signInWithPassword({email:e,password:p})).user.id,
+out:()=>A.signOut(),reset:async e=>ck(await A.resetPasswordForEmail(e)),
+watch:cb=>A.getSession().then(r=>cb(r.data.session?r.data.session.user.id:null)),
+get:async id=>{const d=ck(await c.from('profiles').select('pr').eq('id',id).maybeSingle());return d?d.pr:null},
+set:async(id,pr)=>ck(await c.from('profiles').upsert({id,pr}))}}catch(e){CE='could not load the Supabase library ('+(e.message||e)+'). Check internet, ad-blocker or VPN';return null}}
+
+const lg=()=>{try{return JSON.parse(localStorage.getItem('ns_users')||'{}')}catch(e){return{}}},ls=d=>{try{localStorage.setItem('ns_users',JSON.stringify(d))}catch(e){}};
+const LC={up:async(e,p)=>{const d=lg();if(d[e])throw{code:'auth/email-already-in-use'};d[e]={pw:btoa(p)};ls(d);try{localStorage.setItem('ns_cur',e)}catch(x){}return e},
+in:async(e,p)=>{const d=lg();if(!d[e]||d[e].pw!==btoa(p))throw{code:'auth/invalid-credential'};try{localStorage.setItem('ns_cur',e)}catch(x){}return e},
+out:async()=>{try{localStorage.removeItem('ns_cur')}catch(e){}},reset:async()=>{throw{code:'local'}},
+watch:cb=>{try{cb(localStorage.getItem('ns_cur'))}catch(e){}},get:async id=>(lg()[id]||{}).pr||null,set:async(id,pr)=>{const d=lg();if(!d[id])d[id]={};d[id].pr=pr;ls(d)}};
+
+const ER={'auth/email-already-in-use':'Account already exists. Please login.','auth/invalid-credential':'Wrong email or password.','auth/invalid-email':'Invalid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/network-request-failed':'Network error. Check your connection.','local':'Password reset needs cloud mode (Supabase).','confirm':'Email confirmation is ON in Supabase. Turn it off (Authentication > Sign In / Providers > Email) and register again.'};
+const msg=t=>$('#am').textContent=t,err=x=>msg(ER[x.code]||x.message||String(x.code));
+const DEF=n=>({name:n,age:20,sex:'m',w:60,h:170,diet:'veg',conds:[],sport:''});
+async function reg(){msg('Please wait...');const e=$('#em').value.trim().toLowerCase(),p=$('#pw').value,n=$('#nm').value.trim();
+if(!n||!e||p.length<6)return msg('Enter name, email and a password of 6+ characters.');
+busy=1;try{const id=await CL.up(e,p);await CL.set(id,DEF(n));await enter(id,true)}catch(x){err(x)}busy=0}
+async function login(){msg('Please wait...');busy=1;try{await enter(await CL.in($('#em').value.trim().toLowerCase(),$('#pw').value))}catch(x){err(x)}busy=0}
+async function forgot(){try{await CL.reset($('#em').value.trim());msg('Password reset link sent to your email.')}catch(x){err(x)}}
+async function enter(id,first){U=id;PR=(await CL.get(id))||DEF('User');$('#auth').classList.add('hide');$('#app').classList.remove('hide');fillP();chips();tab(first?3:1)}
+async function logout(){await CL.out();location.reload()}
+const P=()=>Object.assign({},PR);
+
+/* ============ PROFILE ============ */
+function buildSportSelect(q='',keep=''){
+  const s=q.toLowerCase().trim();let h=`<option value="">Not an athlete (${TOTAL_SPORTS} sports available)</option>`,cnt=0;
+  for(const k in SP){
+    const L=SP[k].s.split(',').map(x=>x.trim()).filter(n=>!s||n.toLowerCase().includes(s)||SP[k].l.toLowerCase().includes(s)).sort();
+    if(L.length){cnt+=L.length;h+=`<optgroup label="${SP[k].l} (${L.length})">`+L.map(n=>`<option value="${n}">${n}</option>`).join('')+'</optgroup>'}
+  }
+  if(!cnt&&s)h=`<option value="">No sport matched "${q}"</option>`;
+  $('#psp').innerHTML=h;
+  if(keep&&SM[keep])$('#psp').value=keep;
+  else if(s&&cnt==1){const o=$('#psp').querySelector('optgroup option');if(o)$('#psp').value=o.value}
+  previewSport();
+}
+function filterSports(){buildSportSelect($('#sp-search').value,$('#psp').value||(PR&&PR.sport)||'')}
+function previewSport(){
+  const ch=$('#psp').value,sp=SP[SM[ch]];
+  if(!ch||!sp){$('#sp-preview').innerHTML='';return}
+  $('#sp-preview').innerHTML=`<div class="res s0" style="margin-top:6px"><b>🏅 ${ch}</b> <span class="muted">(${sp.l} · Activity ${sp.m}x · Protein ${sp.p} g/kg)</span><div>${sp.t}</div><div class="sp-grid"><div class="sp-box"><b>⏱ Pre-Session:</b> ${sp.pre}</div><div class="sp-box"><b>🔄 Post-Session:</b> ${sp.post}</div></div></div>`;
+}
+function initProfileUI(){
+  $('#sp-total').textContent=TOTAL_SPORTS;
+  const G=[...new Set(Object.values(COND).map(c=>c.g))];
+  $('#pc').innerHTML=G.map(g=>`<b>${g}</b>`+Object.keys(COND).filter(k=>COND[k].g==g&&!COND[k].auto).map(k=>`<label><input type="checkbox" value="${k}">${COND[k].n}</label>`).join('')).join('');
+  buildSportSelect();
+}
+function fillP(){
+  const p=P();$('#pn').value=p.name;$('#pa').value=p.age;$('#ps').value=p.sex;$('#pw2').value=p.w;$('#ph').value=p.h;$('#pd').value=p.diet;
+  $('#sp-search').value='';buildSportSelect('',p.sport||'');
+  document.querySelectorAll('#pc input').forEach(c=>c.checked=p.conds.includes(c.value));summary();
+}
+async function saveP(){
+  PR={name:$('#pn').value||'User',age:+$('#pa').value||20,sex:$('#ps').value,w:+$('#pw2').value||60,h:+$('#ph').value||170,diet:$('#pd').value,sport:$('#psp').value,conds:[...document.querySelectorAll('#pc input:checked')].map(c=>c.value)};
+  try{await CL.set(U,PR);$('#pm').textContent='Saved ✔';summary();setTimeout(()=>tab(1),500)}catch(x){$('#pm').textContent='Save failed: '+(x.message||x.code)}
+}
+const conds=p=>[...p.conds,...(p.age>=60?['elderly']:[])];
+function stats(p){
+  const bmr=10*p.w+6.25*p.h-5*p.age+(p.sex=='m'?5:-161),s=SP[SM[p.sport]],h=x=>p.conds.includes(x);
+  let k=bmr*(s?s.m:1.3),pr=s?s.p:0.8,note='';if(h('obes'))k-=400;
+  if(h('ckd')){pr=0.7;note=' (CKD protein cap overrides high-protein sport target)'}
+  else if(h('hd')){pr=Math.min(pr,1.2);note=' (dialysis-adjusted target)'}
+  else if(p.age>=60&&!s)pr=1.0;
+  return{k:Math.round(k),pr:Math.round(pr*p.w),bmi:(p.w/((p.h/100)**2)).toFixed(1),renal:h('ckd')||h('hd'),note};
+}
+function summary(){
+  const p=P(),s=stats(p),sp=SP[SM[p.sport]];
+  $('#sum').innerHTML=`<h3>Profile: ${p.name}</h3><div class="muted">Diet: <b>${p.diet}</b> · Clinical profile: <b>${conds(p).map(c=>COND[c].n).join('; ')||'none reported'}</b>${p.sport?` · Sport: <b>${p.sport}</b> (${sp.l})`:''}</div>
+  <p>BMI <b>${s.bmi}</b> · Estimated energy ≈ <b>${s.k} kcal/day</b> · Protein ≈ <b>${s.pr} g/day</b>${s.note?`<span class="muted">${s.note}</span>`:''}</p>
+  ${sp?`<div class="res s0"><b>🏅 ${p.sport} — ${sp.l} Nutrition:</b> ${sp.t}<div class="sp-grid"><div class="sp-box"><b>⏱ Pre-Session:</b> ${sp.pre}</div><div class="sp-box"><b>🔄 Post-Session:</b> ${sp.post}</div></div></div>`:''}`;
+}
+
+/* ============ SAFETY ENGINE ============ */
+const okDiet=(i,d)=>d=='nonveg'?true:d=='halal'?i.d!='P':d=='egg'?'VDE'.includes(i.d):d=='jain'?('VD'.includes(i.d)&&!i.f.includes('R')):d=='vegan'?i.d=='V':'VD'.includes(i.d);
+function ev(i,p){
+  const r={lvl:0,m:[],good:false,sportGood:false},fl=a=>a.map(f=>FL[f]).join(', ');
+  if(i.custom){r.lvl=1;r.m.push(`<b>Not in database:</b> nutrient data for ${i.n} is unavailable. Verify suitability before eating.`)}
+  if(!okDiet(i,p.diet)){r.lvl=2;r.m.push(`Excluded by your ${p.diet} dietary pattern.`)}
+  conds(p).forEach(c=>{const C=COND[c],a=i.f.filter(f=>C.a.includes(f)),w=i.f.filter(f=>C.c.includes(f)),y=C.w?' <i>Rationale:</i> '+C.w:'';
+  if(a.length){r.lvl=2;r.m.push(`<b>Contraindicated in ${C.n}:</b> ${i.n} has ${fl(a)}.${y}`);
+  if(RENAL.includes(c)&&i.c=='veg'&&a.includes('K'))r.m.push('Tip: leaching (peel, slice thin, soak 4+ h, double-boil) reduces potassium content.')}
+  else if(w.length){r.lvl=Math.max(r.lvl,1);r.m.push(`<b>Restricted in ${C.n}:</b> ${i.n} has ${fl(w)}; limit portion size.${y}`)}});
+  const s=SP[SM[p.sport]];if(s&&i.f.some(f=>s.b.includes(f))){r.good=true;r.sportGood=true}
+  if(p.conds.includes('anem')&&i.f.includes('Fe'))r.good=true;return r;
+}
+
+/* ============ DISH GENERATOR ============ */
+const ALIAS={aloo:'Potato',tamatar:'Tomato',pyaz:'Onion',pyaaz:'Onion',lehsun:'Garlic',gajar:'Carrot',palak:'Spinach',gobi:'Cauliflower','phool gobi':'Cauliflower','patta gobi':'Cabbage',baingan:'Brinjal',bhindi:'Okra (Bhindi)',lauki:'Bottle gourd',kheera:'Cucumber','shimla mirch':'Capsicum',matar:'Green peas',chukandar:'Beetroot',kaddu:'Pumpkin',shakarkandi:'Sweet potato',mooli:'Radish',kela:'Banana',seb:'Apple',santra:'Orange',aam:'Mango',angoor:'Grapes',anar:'Pomegranate',nimbu:'Lemon',papita:'Papaya',khajoor:'Dates',chawal:'White rice',atta:'Wheat roti/atta',roti:'Wheat roti/atta',chana:'Chickpeas',dahi:'Curd/Yogurt',curd:'Curd/Yogurt',yogurt:'Curd/Yogurt',doodh:'Milk',makhan:'Butter',anda:'Egg',murgh:'Chicken',gosht:'Mutton',machhi:'Rohu fish',machli:'Rohu fish',jhinga:'Prawns',badam:'Almonds',moongfali:'Peanuts',kaju:'Cashew',akhrot:'Walnut',nariyal:'Coconut',karela:'Bitter gourd (karela)',turai:'Ridge gourd (turai)',arbi:'Colocasia (arbi)',suran:'Yam (suran)',jowar:'Millet (ragi/jowar)',ragi:'Millet (ragi/jowar)',chaas:'Buttermilk (chaas)',sooji:'Semolina (suji)',suji:'Semolina (suji)',besan:'Besan (gram flour)',poha:'Poha (flattened rice)',makhane:'Makhana (fox nut)',methi:'Methi (fenugreek leaves)',adrak:'Ginger',hari:'Green chilli',tofu:'Tofu',sprouts:'Sprouts (mixed)'};
+const SALAD=['Cucumber','Tomato','Onion','Carrot','Cabbage','Radish','Beetroot','Capsicum','Lettuce','Spring onion'];
+const gt=n=>/Sabudana/.test(n)?'Sabudana Khichdi':/Poha/.test(n)?'Vegetable Poha':/Semolina/.test(n)?'Vegetable Upma':/Oats/.test(n)?'Savoury Vegetable Oats':/Pasta|Vermicelli/.test(n)?'Vegetable '+n.split(' ')[0]:/Besan/.test(n)?'Besan Chilla with Vegetables':/roti|Maize|Maida/.test(n)?'Vegetable Stuffed Roti':/Bread/.test(n)?'Vegetable Sandwich':/rice|Quinoa/.test(n)?'Vegetable Pulao':n.split(' (')[0]+' Vegetable Khichdi';
+
+function build(items,p){
+  const g=c=>items.filter(i=>i.c==c),n=a=>a.map(x=>x.n).join(', '),hc=a=>a.some(c=>p.conds.includes(c));
+  const light=hc(['t1d','t2d','pre','gdm','htn','dys','tg','masld','cad','hf','cabg','pm','obes','panc','gerd']),lowS=hc(['ckd','hd','htn','hf','cad','cabg','pm','tx','cirr','stones']),soft=p.age>=60||hc(['bari','gerd']);
+  const oil=light?'1 tsp oil':'1 tbsp oil or ghee',dn=soft?'until very soft':'until tender',salt=lowS?'a tiny pinch of salt (flavour with lemon, herbs and pepper)':'salt to taste';
+  const sc=SM[p.sport],st=(sc=='strength'||sc=='combat')?'Post-training muscle repair':(sc=='endurance'||sc=='water'||sc=='winter')?'Endurance glycogen fuel':(sc=='speed'||sc=='team'||sc=='racquet')?'Match energy & recovery':sc=='precision'?'Steady focus fuel':'';
+  const tags=[light?'Low-oil cooking':'',lowS?'Low-salt':'',soft?'Soft texture':'',p.sport?'🏅 '+p.sport:'',st].filter(Boolean);
+  const veg=g('veg'),V3=veg.slice(0,3),vn=n(V3),out=[],add=(t,u,s)=>out.push({t,u,s,tags}),used=new Set(),G=g('grain');
+  [...g('meat'),...g('fish')].slice(0,2).forEach(m=>{const slow=['Mutton','Beef','Lamb'].includes(m.n),fish=m.c=='fish';
+  add(slow?m.n+' Nihari-style Slow Stew':fish?m.n+(light?' Steamed / Grilled':' Curry'):m.n+(light?' Grilled with Vegetables':' Masala Curry'),[m,...V3],
+  ['Marinate '+m.n+' with turmeric, pepper and '+salt+'.',slow?'Sear in '+oil+', add water and slow-cook on low flame 60-90 min.':light?'Grill, bake or steam '+(fish?'8-10':'15-20')+' min.':'Saute spices in '+oil+', add '+m.n+' and cook '+(fish?'8-10':'20-25')+' min.',V3.length?'Add '+vn+' and cook '+dn+'.':'Cook until fully done.','Serve hot'+(G[0]?' with '+G[0].n:'')+'.'])});
+  g('pulse').slice(0,3).forEach(pl=>{const gr=G.find(x=>!used.has(x.n)),dal=/dal|moong/i.test(pl.n);
+  if(/Tofu|Soya/.test(pl.n))add(pl.n+' Stir-fry',[pl,...V3],['Cube '+pl.n+' (soak soya chunks in hot water 10 min).','Saute in '+oil+' 5 min until golden.',V3.length?'Add '+vn+' and cook '+dn+'.':'Season well.','Finish with '+salt+', pepper and lemon.']);
+  else if(/Sprouts/.test(pl.n))add('Sprouts Usal',[pl,...V3.slice(0,2)],['Steam sprouts 5-8 min.','Saute cumin and '+(V3.length?n(V3.slice(0,2)):'spices')+' in '+oil+'.','Mix with sprouts, add '+salt+' and lemon.']);
+  else{if(dal&&gr)used.add(gr.n);add(dal?pl.n+(gr?' & '+gr.n.split(' (')[0]+' Khichdi':' Dal'):pl.n+' Masala',[pl,...(dal&&gr?[gr]:[]),...V3.slice(0,2)],
+  ['Rinse and soak '+pl.n+' 30 min'+(dal?'':' (overnight for beans)')+'.','Pressure-cook with '+(dal&&gr?gr.n+', ':'')+(V3.length?n(V3.slice(0,2))+' and ':'')+'water 3-4 whistles.','Temper cumin and turmeric in '+oil+'; mix in; add '+salt+'.'])}});
+  G.filter(x=>!used.has(x.n)).slice(0,2).forEach(gr=>add(gt(gr.n),[gr,...V3],['Rinse '+gr.n+'.','Saute '+(V3.length?vn:'cumin and curry leaves')+' in '+oil+'.','Add '+gr.n+' and water, cover and cook '+dn+'.','Season with '+salt+' and lemon.']));
+  g('egg').slice(0,1).forEach(e=>add(e.n=='Egg white'?'Egg-white Omelette':'Egg Bhurji',[e,...V3.slice(0,2)],['Saute '+(V3.length?n(V3.slice(0,2)):'green herbs')+' in '+oil+'.','Add beaten '+e.n.toLowerCase()+' and scramble on low heat.','Season with '+salt+' and pepper.']));
+  g('dairy').forEach(d=>{if(d.n=='Paneer')add('Paneer Bhurji',[d,...V3.slice(0,2)],['Crumble paneer.','Saute '+(V3.length?n(V3.slice(0,2)):'spices')+' in '+oil+'.','Add paneer, cook 3 min, season with '+salt+'.']);
+  else if(/Curd|Buttermilk/.test(d.n))add(/Butter/.test(d.n)?'Spiced Chaas':'Raita',[d,...veg.filter(v=>SALAD.includes(v.n)).slice(0,2)],['Whisk '+d.n+' until smooth.','Mix grated vegetables, roasted cumin and '+salt+'.','Chill and serve.']);
+  else if(g('fruit').length&&/milk/i.test(d.n))add('Fruit Smoothie',[d,...g('fruit').slice(0,2)],['Blend '+d.n+' with '+n(g('fruit').slice(0,2))+'.','Serve chilled.'])});
+  const sl=veg.filter(v=>SALAD.includes(v.n));if(sl.length>=2)add('Kachumber Salad',sl.slice(0,4),['Chop '+n(sl.slice(0,4))+' finely.','Toss with lemon juice, black pepper and '+salt+'.']);
+  if(veg.length>=3)add('Mixed Vegetable Soup',V3,['Chop '+vn+'.','Saute 2 min in '+oil+', add water, simmer '+dn+'.','Blend if desired; season with '+salt+'.']);
+  if(veg.length)add(veg.length>=3?'Mixed Vegetable Sabzi':n(veg)+' Sabzi',veg.slice(0,4),['Chop '+n(veg.slice(0,4))+'.','Saute cumin in '+oil+', add vegetables and turmeric.','Cover and cook '+dn+'; season with '+salt+'.']);
+  if(g('fruit').length)add('Fresh Fruit Chaat',g('fruit').slice(0,3),['Wash and chop '+n(g('fruit').slice(0,3))+'.','Add lemon or chaat masala, serve fresh.']);
+  if(g('nut').length)add(/Makhana/.test(n(g('nut')))?'Roasted Makhana':'Roasted Nut & Seed Mix',g('nut').slice(0,3),['Dry-roast '+n(g('nut').slice(0,3))+' 3-4 min on low heat.','Season lightly and cool before eating.']);
+  return out.map(d=>{d.w=[...new Set(d.u)].filter(i=>ev(i,p).lvl==1).map(i=>i.n);return d});
+}
+const dishHTML=d=>`<div class="card"><h3>🍽️ ${d.t}</h3>${d.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<div class="muted">Uses: ${[...new Set(d.u.map(x=>x.n))].join(', ')}</div><ol>${d.s.map(x=>`<li>${x}</li>`).join('')}</ol>${d.w.length?`<div class="res s1">⚠ Portion control / verify: ${d.w.join(', ')}</div>`:''}</div>`;
+
+/* ============ UI ============ */
+const CATS={all:'All',veg:'Vegetables',fruit:'Fruits',grain:'Grains',pulse:'Pulses',dairy:'Dairy',meat:'Meat',fish:'Seafood',egg:'Eggs',nut:'Nuts & Seeds',other:'Other'};
+function chips(){
+  const q=($('#q').value||'').toLowerCase().trim(),p=P();
+  const L=ING.filter(i=>!q||i.n.toLowerCase().includes(q)||Object.keys(ALIAS).some(a=>a.includes(q)&&ALIAS[a]==i.n));
+  $('#chips').innerHTML=Object.keys(CATS).filter(k=>k!='all').map(k=>{
+    const M=L.filter(i=>i.c==k);if(!M.length)return'';
+    return `<details ${q||k=='veg'||M.some(i=>sel.has(i.n))?'open':''}><summary><b>${CATS[k]}</b> <span class="muted">(${M.length})</span></summary><div class="tick">${M.map(i=>{const r=ev(i,p),b=r.lvl==2?'⛔ ':r.lvl==1?'⚠️ ':r.sportGood?'🏅 ':'';return `<label class="t${r.lvl}"><input type="checkbox" data-n="${i.n}" ${sel.has(i.n)?'checked':''} onchange="tg(this.dataset.n,this.checked)"> <span>${b}${i.n}</span></label>`}).join('')}</div></details>`;
+  }).join('')||'<span class="muted">No match. Choose a type and press "Add typed ingredient".</span>';
+  $('#cnt').textContent=sel.size+' selected';live();
+}
+function tg(n,on){on?sel.add(n):sel.delete(n);$('#cnt').textContent=sel.size+' selected';live()}
+function live(){
+  const p=P(),R=ING.filter(i=>sel.has(i.n)).map(i=>({i,r:ev(i,p)})).filter(x=>x.r.lvl>0).sort((a,b)=>b.r.lvl-a.r.lvl);
+  $('#live').innerHTML=R.map(({i,r})=>`<div class="res s${r.lvl}"><b>${r.lvl==2?'⛔ Warning':'⚠️ Caution'}: ${i.n}</b>${r.m.map(m=>`<div>${m}</div>`).join('')}</div>`).join('');
+}
+function addC(){
+  const raw=$('#q').value.trim();if(!raw)return;const k=raw.toLowerCase();
+  let m=ING.find(i=>i.n.toLowerCase()==k)||ING.find(i=>i.n==ALIAS[k])||ING.find(i=>i.n.toLowerCase().includes(k));
+  if(!m){const c=$('#cc').value;m={n:raw,c,d:c=='meat'||c=='fish'?'N':c=='egg'?'E':c=='dairy'?'D':'V',f:[],custom:true};ING.push(m)}
+  sel.add(m.n);$('#q').value='';chips();
+}
+function analyze(){
+  const p=P(),items=ING.filter(i=>sel.has(i.n));
+  if(!items.length){$('#out').innerHTML='<div class="card">Select at least one ingredient.</div>';return}
+  const R=items.map(i=>({i,r:ev(i,p)})),ok=R.filter(x=>x.r.lvl<2).map(x=>x.i),bad=R.filter(x=>x.r.lvl==2).map(x=>x.i.n),cls=['✅ Pathya (Permitted)','⚠️ Restricted (portion control)','⛔ Apathya (Contraindicated)'];
+  let h='<div class="card"><div class="pipe"><b>Inputs: Clinical + Sport profile + Ingredients</b>→<b>Condition &amp; Diet Checks</b>→<b>Safety Engine</b>→<b>Decision</b>→<b>Permitted / Restricted / Contraindicated</b></div></div><div class="card"><h3>Dietary suitability assessment</h3>';
+  R.sort((a,b)=>b.r.lvl-a.r.lvl).forEach(({i,r})=>{
+    const bn=r.sportGood?` 🏅 <i>key fuel/recovery food for ${p.sport}</i>`:r.good?' ⭐ <i>beneficial for your goals</i>':'';
+    h+=`<div class="res s${r.lvl}"><b>${cls[r.lvl]}: ${i.n}</b>${bn}${r.m.map(m=>`<div>${m}</div>`).join('')||'<div>No contraindication found for your clinical profile.</div>'}</div>`;
+  });
+  h+=`</div><div class="card muted">Recipes below use <b>only your selected, permitted ingredients</b>${ok.length?': '+ok.map(x=>x.n).join(', '):''}.${bad.length?' <b>Excluded as contraindicated:</b> '+bad.join(', ')+'.':''} Pantry staples assumed: oil, salt, turmeric, cumin, lemon.</div>`;
+  const ds=build(ok,p);h+=ds.length?'<h3 style="margin:14px 4px 0">Therapeutic &amp; Sports recipe suggestions</h3>'+ds.map(dishHTML).join(''):'<div class="card">No safe recipe is possible from these ingredients. Please select other ingredients.</div>';
+  $('#out').innerHTML=h;
+}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function menu(){
+  const p=P(),pool=ING.filter(i=>(!sel.size||sel.has(i.n))&&ev(i,p).lvl<2),g=c=>pool.filter(i=>i.c==c),s=stats(p);
+  const meal=(label,parts)=>{const items=parts.filter(Boolean);if(!items.length)return'';const d=build(items,p)[0];
+  return`<div class="card"><h3>${label}</h3>${d?dishHTML(d).replace('<div class="card">','<div>'):'<div>'+items.map(x=>x.n).join(' + ')+'</div>'}</div>`};
+  const pr=[...g('pulse'),...g('meat'),...g('fish'),...g('egg')],prot=()=>pr.length?pick(pr):null,v=()=>g('veg').length?pick(g('veg')):null,gr=()=>g('grain').length?pick(g('grain')):null,f=()=>g('fruit').length?pick(g('fruit')):null;
+  $('#mout').innerHTML=`<div class="card muted">Target ≈ ${s.k} kcal · ${s.pr} g protein${p.sport?` (${p.sport})`:''}. ${sel.size?'Built only from your selected ingredients.':'Built from all permitted foods. Select ingredients in Check &amp; Cook to build from your own.'}${['ckd','hd'].some(c=>p.conds.includes(c))?' Adhere to your prescribed fluid restriction.':''}</div>`+
+  meal('🌅 Breakfast',[gr(),g('egg').length?pick(g('egg')):g('dairy').length?pick(g('dairy')):null,f()])+meal('☀️ Lunch',[prot(),v(),v(),gr()])+meal('🍎 Snack',[f(),g('nut').length?pick(g('nut')):null])+meal('🌙 Dinner',[prot(),v(),v(),gr()]);
+}
+function tab(n){[1,2,3].forEach(i=>{$('#p'+i).classList.toggle('hide',i!=n);$('#t'+i).classList.toggle('on',i==n)});if(n==1)chips();if(n==2)menu()}
+(async()=>{initProfileUI();CL=await loadCloud();const on=!!CL;if(!on)CL=LC;
+$('#cl').innerHTML=on?'☁️ Cloud sync ON: your profile follows you to any phone or laptop.':'⚠️ Cloud sync OFF. Reason: '+CE+'. Data is stored on this device only.';
+$('#cl').className='res '+(on?'s0':'s1');CL.watch(id=>{if(id&&!U&&!busy)enter(id)})})();
+</script>
+</body>
+</html>

@@ -3,828 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Swasth Aahar AI — Clinical & Sports Nutrition</title>
+  <title>Swasth Aahar AI — Right Diet, Healthy Life</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --emerald-950: #04241e;
-      --emerald-900: #08382f;
-      --emerald-800: #115e43;
-      --emerald-700: #15803d;
-      --emerald-600: #166534;
-      --saffron: #f97316;
-      --cream: #f8fafc;
-      --ink: #0f172a;
-      --muted: #64748b;
-      --border: #d1d5db;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background: var(--cream); color: var(--ink); overflow-x: hidden; }
-
-    /* ================= 1. FIRST PAGE (EXACT MATCH TO SCREENSHOT 1) ================= */
-    .landing-shell {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(20, 184, 166, 0.22), transparent 45%),
-        radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.18), transparent 45%),
-        linear-gradient(135deg, #062c26 0%, #093a32 55%, #072924 100%);
-      color: white;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .top-navbar {
-      max-width: 1380px; width: 100%; margin: 0 auto; padding: 1.4rem 2rem;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .brand-lockup { display: flex; align-items: center; gap: 12px; }
-    .brand-emblem {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: linear-gradient(135deg, #10b981, #f59e0b);
-      display: grid; place-items: center; font-size: 22px;
-      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
-    }
-
-    .lang-pill-box {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      padding: 8px 16px; border-radius: 999px;
-    }
-    .lang-pill-box select {
-      background: transparent; border: none; color: white; font-weight: 700;
-      font-size: 0.9rem; cursor: pointer; outline: none;
-    }
-    .lang-pill-box select option { color: #0f172a; background: white; }
-
-    .hero-stage {
-      max-width: 1380px; width: 100%; margin: auto; padding: 1rem 2rem 3.5rem;
-      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 3rem; align-items: center;
-    }
-    @media (max-width: 1024px) { .hero-stage { grid-template-columns: 1fr; padding: 1rem 1.25rem 2.5rem; } }
-
-    .eyebrow-pill {
-      display: inline-block;
-      background: rgba(245, 158, 11, 0.16);
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      color: #fcd34d;
-      font-size: 0.78rem; font-weight: 800;
-      padding: 6px 14px; border-radius: 999px;
-      margin-bottom: 1.1rem;
-    }
-
-    .display-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 4.4vw, 3.85rem);
-      font-weight: 700; line-height: 1.08; margin-bottom: 1rem;
-      color: #ffffff;
-    }
-    .display-heading em {
-      font-style: italic;
-      color: #5eead4;
-    }
-    .hero-subtext {
-      color: #cbd5e1;
-      font-size: 1rem;
-      line-height: 1.65;
-      max-width: 580px;
-      margin-bottom: 1.6rem;
-    }
-
-    .photo-mosaic {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.35rem;
-    }
-    @media (max-width: 640px) { .photo-mosaic { grid-template-columns: repeat(2, 1fr); } }
-    .photo-tile {
-      position: relative; height: 135px; border-radius: 16px; overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.22);
-    }
-    .photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-caption {
-      position: absolute; inset: auto 0 0 0; padding: 20px 10px 8px;
-      background: linear-gradient(to top, rgba(3,23,21,0.92), transparent);
-      font-size: 0.74rem; font-weight: 700; color: #f8fafc;
-    }
-
-    .feature-cards-2x2 {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
-    }
-    @media (max-width: 640px) { .feature-cards-2x2 { grid-template-columns: 1fr; } }
-    .f-card {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 14px;
-      padding: 0.95rem 1.1rem;
-      font-size: 0.85rem;
-      line-height: 1.45;
-      color: #e2e8f0;
-    }
-    .f-card strong { color: #ffffff; }
-
-    /* LOGIN / REGISTRATION CARD */
-    .auth-panel {
-      width: 100%;
-      background: #ffffff;
-      color: var(--ink);
-      border-radius: 26px;
-      overflow: hidden;
-      box-shadow: 0 30px 65px -15px rgba(0, 0, 0, 0.55);
-    }
-    .auth-banner-img { width: 100%; height: 155px; object-fit: cover; display: block; }
-    .auth-body { padding: 1.85rem 2.1rem 2.1rem; }
-    .auth-body h2 { font-size: 1.55rem; font-weight: 900; margin-bottom: 4px; }
-    .auth-body .form-group { margin-bottom: 0.95rem; }
-    .auth-body label { display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 5px; }
-    .auth-body input {
-      width: 100%; padding: 12px 14px; border: 1.5px solid #cbd5e1;
-      border-radius: 11px; font-size: 0.94rem;
-    }
-    .btn {
-      padding: 12px 18px; border-radius: 11px; border: none; font-weight: 700; font-size: 0.9rem;
-      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s;
-    }
-    .btn-emerald { background: #156054; color: white; }
-    .btn-emerald:hover { background: #0f4c42; }
-    .btn-saffron { background: #f97316; color: white; }
-    .btn-saffron:hover { background: #ea580c; }
-
-    /* ================= 2. INNER WORKSPACE (EXACT MATCH TO SCREENSHOT 2) ================= */
-    .workspace { display: none; min-height: 100vh; background: #f3f4f6; }
-
-    .green-top-strip {
-      background: #166534;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .green-strip-left { display: flex; align-items: center; gap: 10px; }
-    .green-strip-logo {
-      width: 30px; height: 30px; border-radius: 8px; background: #fef08a;
-      display: grid; place-items: center; font-size: 16px;
-    }
-
-    .centered-nav-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 12px 8px;
-      flex-wrap: wrap;
-    }
-    .top-tab-btn {
-      background: white;
-      border: 1.5px solid #cbd5e1;
-      color: #1e293b;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 0.84rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .top-tab-btn:hover { border-color: #166534; }
-    .top-tab-btn.active {
-      background: #166534;
-      border-color: #166534;
-      color: white;
-    }
-
-    /* SINGLE CENTERED CONTAINER LIKE SCREENSHOT 2 */
-    .centered-sheet {
-      max-width: 780px;
-      margin: 8px auto 60px;
-      background: white;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 1.35rem 1.5rem 1.75rem;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-    }
-    .centered-sheet.wide { max-width: 1120px; }
-
-    .sheet-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: #111827;
-      margin-bottom: 12px;
-    }
-
-    .biometrics-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    @media (max-width: 600px) { .biometrics-row { grid-template-columns: 1fr 1fr; } }
-
-    .compact-input, .compact-select {
-      width: 100%;
-      padding: 9px 11px;
-      border: 1px solid #cbd5e1;
-      border-radius: 7px;
-      font-size: 0.86rem;
-      color: #111827;
-      background: #fff;
-    }
-    .compact-input:focus, .compact-select:focus {
-      outline: none;
-      border-color: #166534;
-    }
-
-    .field-lbl {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #374151;
-      margin: 10px 0 5px;
-    }
-
-    /* CLINICAL CONDITIONS / SURGICAL HISTORY GROUPED CHECKBOX LIST */
-    .cond-group-title {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: #111827;
-      margin: 11px 0 5px;
-    }
-    .cond-check-list {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .cond-check-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      color: #1f2937;
-      cursor: pointer;
-    }
-    .cond-check-row input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
-      accent-color: #166534;
-      cursor: pointer;
-    }
-
-    /* ATHLETE SPORT INFO CALLOUT BOX (LIKE SCREENSHOT 2) */
-    .sport-info-callout {
-      margin-top: 10px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 8px;
-      padding: 11px 13px;
-      font-size: 0.8rem;
-      color: #14532d;
-      line-height: 1.5;
-    }
-    .session-two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed #86efac;
-    }
-    @media (max-width: 600px) { .session-two-col { grid-template-columns: 1fr; } }
-
-    .save-full-btn {
-      width: 100%;
-      margin-top: 14px;
-      background: #166534;
-      color: white;
-      border: none;
-      padding: 11px;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 0.88rem;
-      cursor: pointer;
-    }
-    .save-full-btn:hover { background: #14532d; }
-
-    /* ================= 3. CHECK & COOK SECTIONED FOOD CATEGORIES ================= */
-    .traffic-legend {
-      display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px;
-    }
-    .legend-pill {
-      padding: 5px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800;
-    }
-    .lp-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-    .lp-yellow { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-    .lp-red { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-
-    .food-category-block {
-      margin-top: 1.25rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 1rem;
-      background: #fafafa;
-    }
-    .food-cat-header {
-      font-size: 0.96rem;
-      font-weight: 800;
-      color: #166534;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 6px;
-    }
-    .ing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-      gap: 9px;
-    }
-    .ing-tile {
-      display: flex; align-items: flex-start; gap: 9px; padding: 10px 11px; border-radius: 10px;
-      border: 1.5px solid #e2e8f0; background: white; cursor: pointer;
-    }
-    .ing-tile input[type="checkbox"] { width: 17px; height: 17px; accent-color: #166534; margin-top: 2px; flex-shrink: 0; }
-    .ing-tile.allowed { border-left: 4px solid #22c55e; }
-    .ing-tile.limited { border-left: 4px solid #f59e0b; background: #fffbeb; }
-    .ing-tile.contraindicated { border-left: 4px solid #ef4444; background: #fef2f2; }
-    .ing-tile.ticked { box-shadow: 0 0 0 2px #166534; }
-
-    .badge { font-size: 0.7rem; font-weight: 800; padding: 2px 7px; border-radius: 5px; display: inline-block; }
-    .b-allowed { background: #dcfce7; color: #166534; }
-    .b-limited { background: #fef3c7; color: #92400e; }
-    .b-contra { background: #fee2e2; color: #991b1b; }
-    .portion-tag { display: block; font-size: 0.72rem; font-weight: 700; color: #b45309; margin-top: 3px; }
-
-    .view-panel { display: none; }
-    .view-panel.active { display: block; }
-
-    /* FLOATING AI CHATBOT */
-    .ai-fab {
-      position: fixed; bottom: 22px; right: 22px; z-index: 90;
-      background: linear-gradient(135deg, #166534, #f97316);
-      color: white; border: none; border-radius: 999px; padding: 13px 20px;
-      font-weight: 800; font-size: 0.9rem; cursor: pointer;
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .ai-window {
-      position: fixed; bottom: 82px; right: 22px; width: 370px; max-width: calc(100vw - 32px);
-      height: 480px; background: white; border-radius: 20px;
-      box-shadow: 0 24px 50px rgba(0,0,0,0.35); border: 1px solid #cbd5e1;
-      display: none; flex-direction: column; overflow: hidden; z-index: 95;
-    }
-    .ai-head {
-      background: #166534; color: white; padding: 14px 16px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .ai-feed { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; background: #f8fafc; }
-    .bubble { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 0.85rem; line-height: 1.45; }
-    .bubble.bot { background: white; border: 1px solid #e2e8f0; align-self: flex-start; }
-    .bubble.user { background: #166534; color: white; align-self: flex-end; }
-    .ai-bar { padding: 10px; border-top: 1px solid #e2e8f0; display: flex; gap: 8px; background: white; }
-  </style>
-</head>
-<body>
-
-  <!-- ==================== 1. FIRST PAGE (SCREENSHOT 1 LAYOUT) ==================== -->
-  <div id="landingScreen" class="landing-shell">
-    <header class="top-navbar">
-      <div class="brand-lockup">
-        <div class="brand-emblem">🥗</div>
-        <div>
-          <div style="font-weight:900;font-size:1.25rem;" data-t="brandName">Swasth Aahar AI</div>
-          <div style="font-size:0.74rem;color:#99f6e4;" data-t="brandTag">Right Diet, Healthy Life • Clinical & Sports Nutrition</div>
-        </div>
-      </div>
-
-      <div class="lang-pill-box">
-        <span>🌐</span>
-        <select id="langTop" onchange="setAppLanguage(this.value)">
-          <option value="en">English (Default)</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-          <option value="mr">मराठी (Marathi)</option>
-          <option value="kn">ಕನ್ನಡ (Kannada)</option>
-          <option value="ta">தமிழ் (Tamil)</option>
-          <option value="te">తెలుగు (Telugu)</option>
-          <option value="bn">বাংলা (Bengali)</option>
-          <option value="gu">ગુજરાતી (Gujarati)</option>
-          <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-          <option value="ml">മലയാളം (Malayalam)</option>
-          <option value="or">ଓଡ଼ିଆ (Odia)</option>
-          <option value="as">অসমীয়া (Assamese)</option>
-          <option value="ur">اردو (Urdu)</option>
-          <option value="sa">संस्कृतम् (Sanskrit)</option>
-          <option value="kok">कोंकणी (Konkani)</option>
-          <option value="mai">मैथिली (Maithili)</option>
-          <option value="ne">नेपाली (Nepali)</option>
-          <option value="sd">سنڌي (Sindhi)</option>
-          <option value="doi">डोगरी (Dogri)</option>
-          <option value="ks">कॉशुर (Kashmiri)</option>
-          <option value="mni">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
-          <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
-          <option value="brx">बड़ो (Bodo)</option>
-        </select>
-      </div>
-    </header>
-
-    <section class="hero-stage">
-      <div>
-        <div class="eyebrow-pill" data-t="eyebrow">✨ 22 Indian Languages • Clinical Food Safety • Sports Nutrition</div>
-        <h1 class="display-heading" data-t="heroHeading">
-          Nourish Your Body with <em>Clinical Precision</em> & Sports Science
-        </h1>
-        <p class="hero-subtext" data-t="heroSub">
-          Personalized clinical and sports nutrition engine with condition-based screening and safe kitchen ingredient meal planning.
-        </p>
-
-        <div class="photo-mosaic">
-          <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80" alt="Sports Strength" />
-            <div class="photo-caption" data-t="picSports">🏅 Peak Sports Strength</div>
-          </div>
-          <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Healthy Food" />
-            <div class="photo-caption" data-t="picFood">🥗 Wholesome Healthy Food</div>
-          </div>
-          <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Clinical Safety" />
-            <div class="photo-caption" data-t="picHealth">🩺 Clinical Food Safety</div>
-          </div>
-          <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" alt="Active Life" />
-            <div class="photo-caption" data-t="picLife">🌿 Mindful Active Life</div>
-          </div>
-        </div>
-
-        <div class="feature-cards-2x2">
-          <div class="f-card" data-t="fc1">
-            ⛔ <strong>Instant Allowed / Limited / Contraindicated verdicts</strong> with the medical reason for every food
-          </div>
-          <div class="f-card" data-t="fc2">
-            🏅 <strong>255+ sports</strong> with pre- and post-session nutrition
-          </div>
-          <div class="f-card" data-t="fc3">
-            🍲 <strong>Recipes only from safe ingredients</strong>, adapted to your condition
-          </div>
-          <div class="f-card" data-t="fc4">
-            ☁️ <strong>Cloud profile</strong> that follows you to any phone or laptop
-          </div>
-        </div>
-      </div>
-
-      <div class="auth-panel">
-        <img class="auth-banner-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=80" alt="Healthy Meal" />
-        <div class="auth-body">
-          <h2 data-t="authTitle">Secure Login / Registration</h2>
-          <p style="font-size:0.86rem;color:var(--muted);margin-bottom:12px;" data-t="authSub">Sign in or create your encrypted health & diet vault</p>
-
-          <div id="syncPill" style="padding:9px 12px;border-radius:10px;font-size:0.8rem;font-weight:700;margin-bottom:14px;background:#dcfce7;color:#166534;">
-            ☁️ Cloud sync ON: your profile follows you to any phone or laptop.
-          </div>
-
-          <div class="form-group">
-            <label data-t="lblFullName">Full Name (Required for Registration)</label>
-            <input type="text" id="authName" placeholder="e.g., Devika Ashwin Desai" />
-          </div>
-          <div class="form-group">
-            <label data-t="lblEmail">Email Address</label>
-            <input type="email" id="authEmail" placeholder="athlete@example.com" />
-          </div>
-          <div class="form-group">
-            <label data-t="lblPass">Password (Minimum 6 characters)</label>
-            <input type="password" id="authPass" placeholder="••••••••" />
-          </div>
-
-          <div style="display:flex;gap:12px;margin-top:1.1rem;">
-            <button class="btn btn-emerald" style="flex:1;" onclick="loginUser()" data-t="btnLogin">Sign In</button>
-            <button class="btn btn-saffron" style="flex:1;" onclick="registerUser()" data-t="btnRegister">Create Account</button>
-          </div>
-          <p id="authFeedback" style="margin-top:10px;font-size:0.85rem;font-weight:700;"></p>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ==================== 2. POST-LOGIN WORKSPACE (EXACT SCREENSHOT 2 LAYOUT) ==================== -->
-  <div id="appDashboard" class="workspace">
-    <!-- TOP GREEN BAR -->
-    <div class="green-top-strip">
-      <div class="green-strip-left">
-        <div class="green-strip-logo">🥗</div>
-        <div>
-          <div style="font-weight:800;font-size:0.95rem;">Swasth Aahar AI — स्वस्थ आहार</div>
-          <div style="font-size:0.72rem;color:#bbf7d0;">सही आहार, स्वस्थ जीवन • Smart food choices for every health condition & 255+ sports</div>
-        </div>
-      </div>
-
-      <div class="lang-pill-box" style="padding:5px 12px;">
-        <span>🌐</span>
-        <select id="langDash" onchange="setAppLanguage(this.value)" style="font-size:0.82rem;">
-          <option value="en">English (Default)</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-          <option value="mr">मराठी (Marathi)</option>
-          <option value="kn">ಕನ್ನಡ (Kannada)</option>
-          <option value="ta">தமிழ் (Tamil)</option>
-          <option value="te">తెలుగు (Telugu)</option>
-          <option value="bn">বাংলা (Bengali)</option>
-          <option value="gu">ગુજરાતી (Gujarati)</option>
-          <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-          <option value="ml">മലയാളം (Malayalam)</option>
-          <option value="or">ଓଡ଼ିଆ (Odia)</option>
-          <option value="as">অসমীয়া (Assamese)</option>
-          <option value="ur">اردو (Urdu)</option>
-          <option value="sa">संस्कृतम् (Sanskrit)</option>
-          <option value="kok">कोंकणी (Konkani)</option>
-          <option value="mai">मैथिली (Maithili)</option>
-          <option value="ne">नेपाली (Nepali)</option>
-          <option value="sd">سنڌي (Sindhi)</option>
-          <option value="doi">डोगरी (Dogri)</option>
-          <option value="ks">कॉशुर (Kashmiri)</option>
-          <option value="mni">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
-          <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
-          <option value="brx">बड़ो (Bodo)</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- CENTERED NAVIGATION PILLS (EXACTLY LIKE SCREENSHOT 2) -->
-    <div class="centered-nav-bar">
-      <button class="top-tab-btn" id="tabCook" onclick="switchTab('panelCook', this)">🔍 Check & Cook</button>
-      <button class="top-tab-btn" id="tabDaily" onclick="switchTab('panelDaily', this)">📅 Daily Aahar</button>
-      <button class="top-tab-btn active" id="tabProfile" onclick="switchTab('panelProfile', this)">Profile</button>
-      <button class="top-tab-btn" onclick="logoutUser()">Logout</button>
-    </div>
-
-    <!-- ==================== PANEL 1: YOUR PROFILE (EXACT SCREENSHOT 2 LAYOUT) ==================== -->
-    <div id="panelProfile" class="view-panel active">
-      <div class="centered-sheet">
-        <div class="sheet-title">Your Profile</div>
-
-        <!-- NAME -->
-        <div style="margin-bottom:8px;">
-          <input type="text" id="profName" class="compact-input" placeholder="Full Name (e.g., Devika)" />
-        </div>
-
-        <!-- AGE, SEX, WEIGHT KG, HEIGHT CM -->
-        <div class="biometrics-row">
-          <input type="number" id="profAge" class="compact-input" value="20" min="5" max="110" placeholder="Age" oninput="updateSportCallout()" />
-          <select id="profSex" class="compact-select" onchange="updateSportCallout()">
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-            <option value="Other">Other</option>
-          </select>
-          <input type="number" id="profWeight" class="compact-input" value="68" min="20" max="250" placeholder="Weight kg" oninput="updateSportCallout()" />
-          <input type="number" id="profHeight" class="compact-input" value="168" min="90" max="230" placeholder="Height cm" oninput="updateSportCallout()" />
-        </div>
-
-        <!-- DIET TYPE -->
-        <label class="field-lbl">Diet type</label>
-        <select id="profDiet" class="compact-select" onchange="renderCategorizedKitchen()">
-          <option value="veg">Vegetarian</option>
-          <option value="nonveg">Non-Vegetarian</option>
-          <option value="eggetarian">Eggetarian</option>
-          <option value="vegan">Vegan</option>
-          <option value="jain">Jain</option>
-          <option value="halal">Halal</option>
-          <option value="pescatarian">Pescatarian</option>
-          <option value="satvik">Satvik</option>
-          <option value="all">All Categories</option>
-        </select>
-
-        <!-- CLINICAL CONDITIONS / SURGICAL HISTORY (GROUPED EXACTLY LIKE SCREENSHOT 2) -->
-        <label class="field-lbl" style="margin-top:14px;">Clinical conditions / surgical history (select all that apply)</label>
-        <div id="groupedConditionsContainer"></div>
-
-        <!-- ATHLETE? SEARCH & CHOOSE FROM 255+ SPORTS -->
-        <label class="field-lbl" style="margin-top:14px;">Athlete? Search & choose from <span id="sportCountBadge">255</span>+ sports</label>
-        <input type="text" id="sportSearchInput" class="compact-input" style="margin-bottom:7px;" placeholder="Search sport (e.g. Powerlifting, Kabaddi, Swimming, Chess, Equestrian...)" oninput="filterSportsSelect()" />
-        <select id="profSport" class="compact-select" onchange="updateSportCallout()"></select>
-
-        <!-- SPORT MACRO & PRE/POST SESSION BOX (LIKE SCREENSHOT 2) -->
-        <div class="sport-info-callout" id="sportCalloutBox"></div>
-
-        <!-- SAVE PROFILE BUTTON -->
-        <button class="save-full-btn" onclick="saveProfile()">Save profile</button>
-        <div id="saveFeedback" style="margin-top:8px;font-size:0.82rem;font-weight:700;color:#166534;text-align:center;"></div>
-      </div>
-    </div>
-
-    <!-- ==================== PANEL 2: CHECK & COOK (SECTIONED CATEGORIES) ==================== -->
-    <div id="panelCook" class="view-panel">
-      <div class="centered-sheet wide">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-          <div>
-            <div class="sheet-title" style="margin-bottom:2px;">☑️ Check & Cook — Select Available Kitchen Ingredients</div>
-            <p style="font-size:0.82rem;color:var(--muted);">Organized by food category with instant 3-tier clinical & dietary screening</p>
-          </div>
-          <div style="display:flex;gap:8px;">
-            <button class="top-tab-btn" onclick="clearTicks()">Clear Selection</button>
-            <button class="btn btn-emerald" onclick="cookSafeDishes()">🍳 Generate Safe Recipes</button>
-          </div>
-        </div>
-
-        <div class="traffic-legend">
-          <span class="legend-pill lp-green">🟢 Allowed (Unrestricted Safe)</span>
-          <span class="legend-pill lp-yellow">🟡 Limited Portion Allowed (Portion Control)</span>
-          <span class="legend-pill lp-red">🔴 Contraindicated / Blocked</span>
-        </div>
-
-        <div id="liveWarnBanner" style="display:none;margin-bottom:12px;padding:11px 14px;border-radius:9px;font-weight:700;font-size:0.84rem;"></div>
-
-        <div style="display:grid;grid-template-columns:1.3fr 1fr auto;gap:8px;margin-bottom:10px;">
-          <input type="text" id="ingSearch" class="compact-input" placeholder="🔍 Search across Vegetables, Fruits, Pulses, Seeds, Eggs, Meats..." oninput="renderCategorizedKitchen()" />
-          <input type="text" id="customIng" class="compact-input" placeholder="➕ Add custom item..." />
-          <button class="top-tab-btn" onclick="addCustomIng()">Add</button>
-        </div>
-
-        <!-- SECTIONED FOOD CATEGORIES RENDERED HERE -->
-        <div id="categorizedKitchenContainer"></div>
-
-        <!-- GENERATED RECIPES OUTPUT -->
-        <div id="recipeCard" style="display:none;margin-top:1.5rem;border-top:2px solid #e5e7eb;padding-top:1.25rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <div class="sheet-title" style="margin:0;">🍲 Clinically Safe & Portion-Controlled Recipes</div>
-            <button class="top-tab-btn" onclick="window.print()">🖨️ Print</button>
-          </div>
-          <div id="recipeAlert" style="margin-bottom:12px;"></div>
-          <div id="recipeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== PANEL 3: DAILY AAHAR DIET CHART ==================== -->
-    <div id="panelDaily" class="view-panel">
-      <div class="centered-sheet wide">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
-          <div>
-            <div class="sheet-title" style="margin-bottom:2px;">📅 Daily Aahar — Full-Day Personalized Diet Chart</div>
-            <p style="font-size:0.82rem;color:var(--muted);">Adapted to your clinical conditions, diet type, and 255+ sport selection</p>
-          </div>
-          <button class="top-tab-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
-        </div>
-        <div id="dailyAaharGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FLOATING NUTRITION AI CHATBOT -->
-  <button class="ai-fab" onclick="toggleAiChat()">
-    <span>🤖</span>
-    <span>Ask Nutrition AI</span>
-  </button>
-
-  <div class="ai-window" id="aiWindow">
-    <div class="ai-head">
-      <strong style="font-size:0.92rem;">🥗 Swasth Aahar AI Assistant</strong>
-      <button onclick="toggleAiChat(false)" style="background:transparent;border:none;color:white;font-size:1.1rem;cursor:pointer;">✕</button>
-    </div>
-    <div class="ai-feed" id="aiFeed">
-      <div class="bubble bot">
-        Hello! Ask me about allowed foods, portion-controlled items, contraindicated ingredients, or nutrition for any of the 255+ sports.
-      </div>
-    </div>
-    <div class="ai-bar">
-      <input type="text" id="aiInput" class="compact-input" placeholder="Ask about a food or sport..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
-      <button class="btn btn-emerald" style="padding:8px 14px;" onclick="askNutritionAi()">➤</button>
-    </div>
-  </div>
-
-  <script>
-    // =========================================================================
-    // 1. SUPABASE CONFIGURATION
-    // =========================================================================
-    const SB = {
-      url: "https://blbqiicakvkhojchafuj.supabase.co",
-      key: "sb_publishable_TFl_bvnijAy8BrKYSw8qvQ_Wy64h0IQ"
-    };
-    let sbClient = null;
-    let currentUser = null;
-    let activeLang = "en";
-    let activeConditions = new Set();
-    let tickedIngredients = new Set();
-
-    // =========================================================================
-    // 2. GROUPED CLINICAL CONDITIONS (EXACT MATCH TO SCREENSHOT 2)
-    // =========================================================================
-    const CONDITION_GROUPS = {
-      "Renal": [
-        "Chronic Kidney Disease (CKD 3–5, non-dialysis)",
-        "End Stage Renal Disease on Dialysis (HD / PD)",
-        "Kidney Transplant Recipient",
-        "Nephrolithiasis (calcium oxalate stones)"
-      ],
-      "Endocrine & Metabolic": [
-        "Diabetes Mellitus Type 1",
-        "Diabetes Mellitus Type 2",
-        "Prediabetes / Insulin resistance / PCOS",
-        "Gestational Diabetes Mellitus",
-        "Hypothyroidism",
-        "Obesity (BMI >= 30) / Weight management",
-        "Hyperuricaemia / Gout"
-      ],
-      "Cardiovascular": [
-        "Dyslipidaemia / Hypercholesterolaemia",
-        "Hypertriglyceridaemia",
-        "Hypertension",
-        "Coronary Artery Disease / Post-MI",
-        "Heart Failure (HFrEF / HFpEF)",
-        "Atrial Fibrillation / Anticoagulant (warfarin) therapy"
-      ],
-      "Surgical": [
-        "Post-CABG / PCI (stent) / Cardiac surgery",
-        "Pacemaker / ICD implant",
-        "Post-Bariatric Surgery"
-      ],
-      "Hepatic & GI": [
-        "Fatty Liver (NAFLD / MASLD)",
-        "Chronic Liver Disease / Cirrhosis",
-        "Pancreatitis / Post-cholecystectomy",
-        "GERD / Acid reflux"
-      ],
-      "Allergy & Intolerance": [
-        "Coeliac disease",
-        "Lactose intolerance",
-        "Tree nut / Peanut allergy",
-        "Shellfish allergy",
-        "Egg allergy",
-        "Soy allergy"
-      ],
-      "Other": [
-        "Iron-deficiency anaemia"
-      ]
-    };
-
-    // =========================================================================
-    // 3. 255+ SPORTS ACROSS ALL REQUESTED CATEGORIES
-    // =========================================================================
-    const SPORTS_CATALOG = {
-      "Strength & Power Sports (24)": [
-        "Powerlifting (Squat/Bench/Deadlift)", "Olympic Weightlifting (Snatch / Clean & Jerk)",
-        "Strongman / Strongwoman", "Bodybuilding — Classic Physique", "Arm Wrestling",
-        "Kettlebell Sport (Girevoy)", "CrossFit / Functional Fitness", "Calisthenics & Street Workout",
-        "Tug of War", "Highland Games (Caber Toss / Stone Put)", "Grip Strength Sport",
-        "Indoor Rowing (Ergometer)", "MAS Wrestling", "Log Lift & Axle Deadlift",
-        "Stone Lifting", "Static Monsters", "Para Powerlifting", "Hyrox Functional Racing",
-        "Obstacle Course Racing (Spartan)", "Pole Sport & Aerial Silks", "Tricking & Parkour",
-        "Bench Press Specialist", "Deadlift Specialist", "Heavy Athletics"
-      ],
-      "Summer Olympics (53)": [
-        "Athletics — 100m / 200m Sprints", "Athletics — 400m / 800m", "Athletics — 1500m / 5000m / 10000m",
-        "Athletics — Marathon", "Athletics — Race Walking", "Athletics — Hurdles & Steeplechase",
-        "Athletics — High Jump & Pole Vault", "Athletics — Long Jump & Triple Jump",
-        "Athletics — Shot Put & Discus Throw", "Athletics — Hammer Throw & Javelin Throw",
-        "Athletics — Decathlon & Heptathlon", "Aquatics — Freestyle Swimming",
-        "Aquatics — Backstroke / Breaststroke / Butterfly", "Aquatics — Individual Medley & Marathon Swimming",
-        "Aquatics — Diving", "Aquatics — Artistic Swimming", "Aquatics — Water Polo",
-        "Archery — Recurve", "Badminton", "Basketball (5x5)", "Basketball (3x3)",
-        "Boxing", "Breaking (Breakdancing)", "Canoe Slalom", "Canoe Sprint",
-        "Cycling — Road", "Cycling — Track", "Cycling — Mountain Bike", "Cycling — BMX Racing & Freestyle",
-        "Fencing — Foil / Épée / Sabre", "Field Hockey", "Football (Soccer)",
-        "Golf", "Gymnastics — Artistic", "Gymnastics — Rhythmic", "Gymnastics — Trampoline",
-        "Handball", "Judo", "Modern Pentathlon", "Rowing", "Rugby Sevens",
-        "Sailing", "Shooting — Rifle / Pistol / Shotgun", "Skateboarding — Park & Street",
-        "Sport Climbing — Boulder / Lead / Speed", "Surfing", "Table Tennis",
-        "Taekwondo", "Tennis", "Triathlon", "Volleyball (Indoor)", "Beach Volleyball", "Wrestling — Freestyle & Greco-Roman"
-      ],
-      "Winter Olympics (22)": [
-        "Alpine Skiing — Downhill & Super-G", "Alpine Skiing — Slalom & Giant Slalom",
-        "Biathlon", "Bobsleigh", "Cross-Country Skiing", "Curling",
-        "Figure Skating — Singles & Pairs", "Figure Skating — Ice Dance",
-        "Freestyle Skiing — Aerials & Moguls", "Freestyle Skiing — Ski Cross & Halfpipe",
-        "Ice Hockey", "Luge", "Nordic Combined", "Short Track Speed Skating",
-        "Skeleton", "Ski Jumping", "Ski Mountaineering", "Snowboard — Halfpipe & Slopestyle",
-        "Snowboard — Alpine Parallel Giant Slalom", "Snowboard — Snowboard Cross",
-        "Speed Skating — Long Track", "Speed Skating — Mass Start"
-      ],
-      "Youth Olympics (18)": [
-        "Youth Olympic — Futsal", "Youth Olympic — Beach Handball", "Youth Olympic — Karate Kumite",
-        "Youth Olympic — Roller Speed Skating", "Youth Olympic — Acrobatic Gymnastics",
-        "Youth Olympic — Baseball5", "Youth Olympic — Wushu Taolu", "Youth Olympic — Monobob",
-        "Youth Olympic — Ice Cross", "Youth Olympic — Mixed-NOC Relay Triathlon",
-        "Youth Olympic — Junior Track Cycling", "Youth Olympic — Youth Rowing",
-        "Youth Olympic — Youth Taekwondo", "Youth Olympic — Youth Fencing",
-        "Youth Olympic — Youth Archery", "Youth Olympic — Youth Sailing",
-        "Youth Olympic — Youth Diving", "Youth Olympic — Youth Sport Climbing"
-      ],
-      "Indigenous & Traditional Sports (34)": [
-        "Kabaddi — Standard Style", "Kabaddi — Circle Style", "Kho-Kho",
-        "Mallakhamb — Pole", "Mallakhamb — Rope", "Mallakhamb — Hanging",
-        "Kushti / Pehlwani (Mud Wrestling)", "Gatka (Sikh Martial Art)",
-        "Kalaripayattu", "Silambam", "Thang-Ta", "Sqay Martial Art",
-        "Lagori (Pithu)", "Gilli-Danda", "Vallam Kali (Snake Boat Race)",
-        "Kambala (Buffalo Track Sprint)", "Jallikattu", "Dahi Handi Pyramid",
-        "Yubi Lakpi (Manipuri Coconut Rugby)", "Inbuan Wrestling", "Here is the complete, ready-to-deploy `index.html` combining the exact landing page from your first screenshot[cite: 2] (with all OCR/prescription references removed) and the exact centered profile card, categorized clinical conditions checklist, 250+ sports selector with live Pre-Session / Post-Session nutrition box from your second screenshot[cite: 3], plus categorized kitchen ingredient sections (**Vegetables**, **Fruits**, **Pulses & Lentils**, **Grains & Millets**, **Nuts & Seeds**, **Dairy**, **Eggs**, **Meats & Seafood**) with 3-tier traffic-light verdicts (**🟢 Allowed**, **🟡 Limited Portion Allowed**, **🔴 Contraindicated**):
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Swasth Aahar AI — Right Diet, Healthy Life</title>
-  <script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)"></script>
-  <link href="[https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap)" rel="stylesheet">
   <style>
     :root {
       --emerald-950: #041f1c;
@@ -845,7 +26,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: var(--cream); color: var(--ink); overflow-x: hidden; }
 
-    /* ================= 1. LANDING PAGE (EXACT IMAGE 1 LAYOUT, NO OCR) ================= */
+    /* ================= 1. LANDING PAGE ================= */
     .landing-shell {
       min-height: 100vh;
       background:
@@ -990,7 +171,7 @@
     .auth-body input { padding: 13px 15px; font-size: 0.96rem; border-radius: 12px; width: 100%; border: 1.5px solid var(--border); }
     .auth-body .btn { padding: 13px 20px; font-size: 0.98rem; border-radius: 12px; }
 
-    /* ================= 2. INNER WORKSPACE (EXACT IMAGE 2 STRUCTURE) ================= */
+    /* ================= 2. INNER WORKSPACE ================= */
     .workspace { display: none; min-height: 100vh; background: #f8fafc; }
 
     .app-top-strip {
@@ -1040,7 +221,7 @@
     .panel-view.active { display: block; }
     @keyframes fadeRise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* CENTERED PROFILE CARD (EXACTLY LIKE IMAGE 2) */
+    /* CENTERED PROFILE CARD */
     .profile-center-card {
       max-width: 780px;
       margin: 0 auto 3rem;
@@ -1274,14 +455,14 @@
 </head>
 <body>
 
-  <!-- ==================== 1. LANDING & AUTH (IMAGE 1 LAYOUT, NO OCR) ==================== -->
+  <!-- ==================== 1. LANDING & AUTH ==================== -->
   <div id="landingScreen" class="landing-shell">
     <header class="top-navbar">
       <div class="brand-header-row">
         <div class="brand-emblem-lg">🥗</div>
         <div>
           <div class="brand-title-lg" data-t="brandName">Swasth Aahar AI</div>
-          <div class="brand-tagline-sm" data-t="brandTagline">Right Diet, Healthy Life • Clinical & Sports Nutrition</div>
+          <div class="brand-tagline-sm" data-t="brandTagline">Right Diet, Healthy Life • Clinical &amp; Sports Nutrition</div>
         </div>
       </div>
 
@@ -1317,7 +498,7 @@
 
     <section class="hero-stage">
       <div>
-        <div class="hero-pill-tag" data-t="topPill">✨ 22 Indian Languages • 255+ Sports • Clinical & Sports Nutrition</div>
+        <div class="hero-pill-tag" data-t="topPill">✨ 22 Indian Languages • 255+ Sports • Clinical &amp; Sports Nutrition</div>
         <h1 class="display-heading" data-t="heroHeading">
           Nourish Your Body with <em>Clinical Precision</em> &amp; Sports Science
         </h1>
@@ -1327,19 +508,19 @@
 
         <div class="photo-mosaic">
           <div class="photo-tile">
-            <img src="[https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80)" alt="Peak Sports Strength" />
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80" alt="Peak Sports Strength" />
             <div class="photo-caption" data-t="picSports">🏅 Peak Sports Strength</div>
           </div>
           <div class="photo-tile">
-            <img src="[https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80)" alt="Wholesome Healthy Food" />
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Wholesome Healthy Food" />
             <div class="photo-caption" data-t="picFood">🥗 Wholesome Healthy Food</div>
           </div>
           <div class="photo-tile">
-            <img src="[https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80)" alt="Clinical Food Safety" />
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Clinical Food Safety" />
             <div class="photo-caption" data-t="picHealth">🩺 Clinical Food Safety</div>
           </div>
           <div class="photo-tile">
-            <img src="[https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80)" alt="Mindful Active Life" />
+            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" alt="Mindful Active Life" />
             <div class="photo-caption" data-t="picLife">🌿 Mindful Active Life</div>
           </div>
         </div>
@@ -1361,7 +542,7 @@
       </div>
 
       <div class="auth-panel">
-        <img class="auth-banner-img" src="[https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=80](https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=80)" alt="Healthy Nutrition Bowl" />
+        <img class="auth-banner-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=80" alt="Healthy Nutrition Bowl" />
         <div class="auth-body">
           <h2 data-t="authTitle">Secure Login / Registration</h2>
           <p style="font-size:0.9rem;color:var(--muted);margin-bottom:14px;" data-t="authSub">Sign in or create your encrypted health &amp; diet vault</p>
@@ -1380,12 +561,12 @@
           </div>
           <div class="form-group">
             <label data-t="lblPass">Password (Minimum 6 characters)</label>
-            <input type="password" id="authPass" placeholder="••••••••" />
+            <input type="password" id="authPass" placeholder="••••••••" onkeypress="if(event.key==='Enter') loginUser()" />
           </div>
 
           <div style="display:flex;gap:12px;margin-top:1.35rem;">
-            <button class="btn btn-emerald" style="flex:1;" onclick="loginUser()" data-t="btnLogin">Sign In</button>
-            <button class="btn btn-saffron" style="flex:1;" onclick="registerUser()" data-t="btnRegister">Create Account</button>
+            <button type="button" class="btn btn-emerald" style="flex:1;" onclick="loginUser()" data-t="btnLogin">Sign In</button>
+            <button type="button" class="btn btn-saffron" style="flex:1;" onclick="registerUser()" data-t="btnRegister">Create Account</button>
           </div>
           <p id="authFeedback" style="margin-top:12px;font-size:0.88rem;font-weight:700;"></p>
         </div>
@@ -1393,7 +574,7 @@
     </section>
   </div>
 
-  <!-- ==================== 2. INNER WORKSPACE (EXACT IMAGE 2 STRUCTURE) ==================== -->
+  <!-- ==================== 2. INNER WORKSPACE ==================== -->
   <div id="appDashboard" class="workspace">
     <!-- TOP GREEN BANNER -->
     <header class="app-top-strip no-print">
@@ -1435,25 +616,23 @@
       </div>
     </header>
 
-    <!-- CENTERED 4-BUTTON TAB BAR (EXACTLY LIKE IMAGE 2) -->
+    <!-- CENTERED 4-BUTTON TAB BAR -->
     <nav class="centered-nav-tabs no-print">
-      <button class="top-tab-btn" id="tabCheck" onclick="switchView('viewKitchen', this)">🔍 Check &amp; Cook</button>
-      <button class="top-tab-btn" id="tabDaily" onclick="switchView('viewPlan', this)">📅 Daily Aahar</button>
-      <button class="top-tab-btn active" id="tabProfile" onclick="switchView('viewProfile', this)">👤 Profile</button>
-      <button class="top-tab-btn" onclick="logoutUser()">Logout</button>
+      <button type="button" class="top-tab-btn" id="tabCheck" onclick="switchView('viewKitchen', this)">🔍 Check &amp; Cook</button>
+      <button type="button" class="top-tab-btn" id="tabDaily" onclick="switchView('viewPlan', this)">📅 Daily Aahar</button>
+      <button type="button" class="top-tab-btn active" id="tabProfile" onclick="switchView('viewProfile', this)">👤 Profile</button>
+      <button type="button" class="top-tab-btn" onclick="logoutUser()">Logout</button>
     </nav>
 
-    <!-- VIEW A: CENTERED PROFILE CARD (EXACT IMAGE 2 LAYOUT) -->
+    <!-- VIEW A: CENTERED PROFILE CARD -->
     <section id="viewProfile" class="panel-view active">
       <div class="profile-center-card">
         <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:12px;">Your Profile</h3>
 
-        <!-- Name Input -->
         <div style="margin-bottom:10px;">
           <input type="text" id="profName" class="p-input" placeholder="Your Full Name" />
         </div>
 
-        <!-- Age | Gender | Weight kg | Height cm -->
         <div class="prof-row-4">
           <input type="number" id="profAge" class="p-input" value="20" min="5" max="110" placeholder="Age" oninput="updateSportGuideline()" />
           <select id="profGender" class="p-select">
@@ -1465,7 +644,6 @@
           <input type="number" id="profHeight" class="p-input" value="168" min="90" max="230" placeholder="Height cm" />
         </div>
 
-        <!-- Diet Type -->
         <label class="p-label">Diet type</label>
         <select id="profDiet" class="p-select" onchange="renderIngredients()">
           <option value="veg">Vegetarian</option>
@@ -1479,20 +657,16 @@
           <option value="all">All Food Categories</option>
         </select>
 
-        <!-- Categorized Clinical Conditions / Surgical History (Exact Image 2 Categories) -->
         <label class="p-label">Clinical conditions / surgical history (select all that apply)</label>
         <div id="categorizedConditionsMount"></div>
 
-        <!-- Athlete? Search & choose from 255+ sports -->
         <label class="p-label" style="margin-top:16px;">Athlete? Search &amp; choose from <span id="sportTotalCount">255</span>+ sports</label>
         <input type="text" id="sportSearchBox" class="p-input" style="margin-bottom:8px;" placeholder="Search sport (e.g. Powerlifting, Kabaddi, Swimming, Chess, Equestrian...)" oninput="filterSportsSelect()" />
         <select id="profSport" class="p-select" onchange="updateSportGuideline()"></select>
 
-        <!-- Live Sport Macro & Pre/Post Session Card (Exact Image 2 Green Box) -->
         <div class="sport-guideline-banner" id="sportGuidelineBox"></div>
 
-        <!-- Full-Width Green Save Profile Button -->
-        <button class="btn-save-full" onclick="saveProfile()">Save profile</button>
+        <button type="button" class="btn-save-full" onclick="saveProfile()">Save profile</button>
         <p id="saveToast" style="text-align:center;margin-top:8px;font-size:0.86rem;font-weight:700;color:#15803d;"></p>
       </div>
     </section>
@@ -1506,12 +680,11 @@
             <p style="font-size:0.84rem;color:var(--muted);">Tick what you have across Vegetables, Fruits, Pulses, Seeds, Grains, Dairy, Eggs &amp; Meats</p>
           </div>
           <div style="display:flex;gap:8px;">
-            <button class="btn btn-ghost" onclick="clearTicks()">Clear Ticks</button>
-            <button class="btn btn-emerald" onclick="cookSafeDishes()">🍳 Cook Safe Recipes</button>
+            <button type="button" class="btn btn-ghost" onclick="clearTicks()">Clear Ticks</button>
+            <button type="button" class="btn btn-emerald" onclick="cookSafeDishes()">🍳 Cook Safe Recipes</button>
           </div>
         </div>
 
-        <!-- 3-Tier Traffic Light Legend -->
         <div class="traffic-legend">
           <span class="legend-pill lp-green">🟢 Allowed (Unrestricted Safe)</span>
           <span class="legend-pill lp-yellow">🟡 Limited Portion Allowed (Portion Control)</span>
@@ -1520,25 +693,20 @@
 
         <div id="liveWarnBanner" style="display:none;margin-bottom:12px;padding:11px 15px;border-radius:10px;font-weight:700;font-size:0.86rem;"></div>
 
-        <!-- Search & Custom Add -->
         <div style="display:grid;grid-template-columns:1.2fr 1fr auto;gap:10px;margin-bottom:1rem;">
           <input type="text" id="ingSearch" class="p-input" placeholder="🔍 Search any food (Potato, Apple, Moong Dal, Chia Seeds, Egg, Chicken, Paneer)..." oninput="renderIngredients()" />
           <input type="text" id="customIng" class="p-input" placeholder="➕ Add custom item you have..." />
-          <button class="btn btn-ghost" onclick="addCustomIng()">Add</button>
+          <button type="button" class="btn btn-ghost" onclick="addCustomIng()">Add</button>
         </div>
 
-        <!-- Food Section Filter Pills -->
         <div class="cat-tabs-bar" id="foodCatTabs"></div>
-
-        <!-- Categorized Sections Mount (Vegetables, Fruits, Pulses, Seeds, Grains, Dairy, Eggs, Meats) -->
         <div id="categorizedIngredientsMount"></div>
       </div>
 
-      <!-- Generated Recipes Card -->
       <div id="recipeCard" class="wide-workspace-card" style="display:none;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <h3 style="font-weight:800;">🍲 Clinically Safe &amp; Portion-Calibrated Recipes</h3>
-          <button class="btn btn-ghost no-print" onclick="window.print()">🖨️ Print</button>
+          <button type="button" class="btn btn-ghost no-print" onclick="window.print()">🖨️ Print</button>
         </div>
         <div id="recipeAlert" style="margin:1rem 0;"></div>
         <div id="recipeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;"></div>
@@ -1554,8 +722,8 @@
             <p style="font-size:0.84rem;color:var(--muted);">Tailored to your selected clinical conditions, diet type, and sport.</p>
           </div>
           <div style="display:flex;gap:8px;">
-            <button class="btn btn-emerald" onclick="generateDietChart()">🔄 Refresh Plan</button>
-            <button class="btn btn-ghost no-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+            <button type="button" class="btn btn-emerald" onclick="generateDietChart()">🔄 Refresh Plan</button>
+            <button type="button" class="btn btn-ghost no-print" onclick="window.print()">🖨️ Print / Save PDF</button>
           </div>
         </div>
         <div id="dietChartGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.15rem;"></div>
@@ -1564,7 +732,7 @@
   </div>
 
   <!-- NUTRITION AI CHATBOT -->
-  <button class="ai-fab no-print" onclick="toggleAiChat()">
+  <button type="button" class="ai-fab no-print" onclick="toggleAiChat()">
     <span>🤖</span>
     <span>Ask Nutrition AI</span>
   </button>
@@ -1578,7 +746,7 @@
           <span style="font-size:0.73rem;color:#bbf7d0;">Clinical &amp; Sports Nutrition Assistant</span>
         </div>
       </div>
-      <button onclick="toggleAiChat(false)" style="background:transparent;border:none;color:white;font-size:1.2rem;cursor:pointer;">✕</button>
+      <button type="button" onclick="toggleAiChat(false)" style="background:transparent;border:none;color:white;font-size:1.2rem;cursor:pointer;">✕</button>
     </div>
 
     <div class="ai-feed" id="aiFeed">
@@ -1589,7 +757,7 @@
 
     <div class="ai-bar">
       <input type="text" id="aiInput" placeholder="Ask about any food or sport..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
-      <button class="btn btn-emerald" style="padding:10px 14px;" onclick="askNutritionAi()">➤</button>
+      <button type="button" class="btn btn-emerald" style="padding:10px 14px;" onclick="askNutritionAi()">➤</button>
     </div>
   </div>
 
@@ -1598,7 +766,7 @@
     // 1. SUPABASE CONFIGURATION
     // =========================================================================
     const SB = {
-      url: "[https://blbqiicakvkhojchafuj.supabase.co](https://blbqiicakvkhojchafuj.supabase.co)",
+      url: "https://blbqiicakvkhojchafuj.supabase.co",
       key: "sb_publishable_TFl_bvnijAy8BrKYSw8qvQ_Wy64h0IQ"
     };
 
@@ -1610,7 +778,7 @@
     let activeFoodCategory = "ALL";
 
     // =========================================================================
-    // 2. CATEGORIZED CLINICAL CONDITIONS (EXACT IMAGE 2 STRUCTURE)
+    // 2. CATEGORIZED CLINICAL CONDITIONS
     // =========================================================================
     const CONDITION_GROUPS = {
       "Renal": [
@@ -1675,7 +843,7 @@
         "Athletics — Hammer Throw", "Athletics — Javelin Throw", "Log Lift & Axle Deadlift",
         "Stone Lifting", "Parkour & Tricking"
       ],
-      "Summer Olympics (50)": [
+      "Summer Olympics (51)": [
         "Athletics — 100m / 200m Sprints", "Athletics — 400m / 800m", "Athletics — 1500m / 5000m / 10000m",
         "Athletics — Marathon", "Athletics — Race Walking", "Athletics — Hurdles & Steeplechase",
         "Athletics — High Jump & Pole Vault", "Athletics — Long Jump & Triple Jump",
@@ -1769,7 +937,7 @@
     };
 
     // =========================================================================
-    // 4. UNIVERSAL CATEGORIZED FOOD DATABASE (VEGETABLES, FRUITS, PULSES, SEEDS, GRAINS, DAIRY, EGGS, MEATS)
+    // 4. UNIVERSAL CATEGORIZED FOOD DATABASE (FIXED & SYNTAX-CLEAN)
     // =========================================================================
     const FOOD_CATEGORIES = [
       "Vegetables",
@@ -1783,328 +951,55 @@
     ];
 
     const INGREDIENTS = [
-      // VEGETABLES
-      {
-        id: "lauki", cat: "Vegetables", name: "Bottle Gourd (Lauki)", prot: 0.6,
-        flags: {}, note: "Low potassium, hydrating & safe for all clinical profiles."
-      },
-      {
-        id: "bhindi", cat: "Vegetables", name: "Okra (Bhindi)", prot: 1.9,
-        flags: {}, note: "Rich in soluble fiber; supports blood sugar & gut health."
-      },
-      {
-        id: "cucumber", cat: "Vegetables", name: "Cucumber (Kheera)", prot: 0.7,
-        flags: {}, note: "Low potassium & refreshing."
-      },
-      {
-        id: "carrot", cat: "Vegetables", name: "Carrot (Gajar)", prot: 0.9,
-        flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" },
-        portion: "Max 1/2 medium raw or lightly cooked",
-        note: "Moderate natural sugars; keep portion moderate in diabetes."
-      },
-      {
-        id: "cauliflower", cat: "Vegetables", name: "Cauliflower (Gobhi)", prot: 1.9,
-        flags: { "Hypothyroidism": "limited" },
-        portion: "Max 1/2 cup well-cooked (goitrogenic raw)",
-        note: "Always cook thoroughly in hypothyroidism."
-      },
-      {
-        id: "cabbage", cat: "Vegetables", name: "Cabbage (Patta Gobhi)", prot: 1.3,
-        flags: { "Hypothyroidism": "limited", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "limited" },
-        portion: "Max 1/2 cup cooked consistently",
-        note: "Keep Vitamin-K intake consistent on Warfarin."
-      },
-      {
-        id: "potato", cat: "Vegetables", name: "Potato (Aloo)", prot: 2.0,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated",
-          "Diabetes Mellitus Type 2": "limited",
-          "Diabetes Mellitus Type 1": "limited"
-        },
-        portion: "Max 50g boiled & cooled (Diabetes only)",
-        note: "High potassium (421mg/100g) — contraindicated in CKD/Dialysis."
-      },
-      {
-        id: "spinach", cat: "Vegetables", name: "Spinach (Palak)", prot: 2.9,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated",
-          "Nephrolithiasis (calcium oxalate stones)": "contraindicated",
-          "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated",
-          "Hyperuricaemia / Gout": "limited"
-        },
-        portion: "Max 1/2 cup cooked once a week (Gout)",
-        note: "Very high potassium, oxalates & Vitamin K."
-      },
-      {
-        id: "tomato", cat: "Vegetables", name: "Tomato (Tamatar)", prot: 0.9,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated",
-          "GERD / Acid reflux": "limited"
-        },
-        portion: "Max 1/2 small deseeded tomato (GERD)",
-        note: "High potassium load in renal disease; acidic in GERD."
-      },
-      {
-        id: "onion", cat: "Vegetables", name: "Onion (Pyaz)", prot: 1.1,
-        flags: { "GERD / Acid reflux": "limited" },
-        portion: "Max 1 tbsp well-cooked",
-        note: "Can trigger reflux if eaten raw."
-      },
+      { id: "lauki", cat: "Vegetables", name: "Bottle Gourd (Lauki)", prot: 0.6, flags: {}, note: "Low potassium, hydrating & safe for all clinical profiles." },
+      { id: "bhindi", cat: "Vegetables", name: "Okra (Bhindi)", prot: 1.9, flags: {}, note: "Rich in soluble fiber; supports blood sugar & gut health." },
+      { id: "cucumber", cat: "Vegetables", name: "Cucumber (Kheera)", prot: 0.7, flags: {}, note: "Low potassium & refreshing." },
+      { id: "carrot", cat: "Vegetables", name: "Carrot (Gajar)", prot: 0.9, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 medium raw or lightly cooked", note: "Moderate natural sugars; keep portion moderate in diabetes." },
+      { id: "cauliflower", cat: "Vegetables", name: "Cauliflower (Gobhi)", prot: 1.9, flags: { "Hypothyroidism": "limited" }, portion: "Max 1/2 cup well-cooked", note: "Always cook thoroughly in hypothyroidism." },
+      { id: "cabbage", cat: "Vegetables", name: "Cabbage (Patta Gobhi)", prot: 1.3, flags: { "Hypothyroidism": "limited", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "limited" }, portion: "Max 1/2 cup cooked consistently", note: "Keep Vitamin-K intake consistent on Warfarin." },
+      { id: "potato", cat: "Vegetables", name: "Potato (Aloo)", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 50g boiled & cooled (Diabetes only)", note: "High potassium (421mg/100g) — contraindicated in CKD/Dialysis." },
+      { id: "spinach", cat: "Vegetables", name: "Spinach (Palak)", prot: 2.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup cooked once a week (Gout)", note: "Very high potassium, oxalates & Vitamin K." },
+      { id: "tomato", cat: "Vegetables", name: "Tomato (Tamatar)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 small deseeded tomato (GERD)", note: "High potassium load in renal disease; acidic in GERD." },
+      { id: "onion", cat: "Vegetables", name: "Onion (Pyaz)", prot: 1.1, flags: { "GERD / Acid reflux": "limited" }, portion: "Max 1 tbsp well-cooked", note: "Can trigger reflux if eaten raw." },
 
-      // FRUITS
-      {
-        id: "apple", cat: "Fruits", name: "Apple (Seb)", prot: 0.3,
-        flags: {}, note: "Low potassium, pectin-rich fruit safe across conditions."
-      },
-      {
-        id: "papaya", cat: "Fruits", name: "Papaya", prot: 0.5,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" },
-        portion: "Max 1 small bowl (100g)",
-        note: "Aids digestion; moderate potassium."
-      },
-      {
-        id: "guava", cat: "Fruits", name: "Guava (Amrood)", prot: 2.6,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" },
-        portion: "Max 1 small guava without seeds",
-        note: "Low glycemic index; great for diabetes & immunity."
-      },
-      {
-        id: "berries", cat: "Fruits", name: "Berries / Jamun / Strawberry", prot: 0.7,
-        flags: {}, note: "Low potassium & high antioxidants."
-      },
-      {
-        id: "banana", cat: "Fruits", name: "Banana (Kela)", prot: 1.1,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated",
-          "Diabetes Mellitus Type 2": "limited",
-          "Diabetes Mellitus Type 1": "limited"
-        },
-        portion: "Max 1/2 small banana pre-workout (Diabetes)",
-        note: "High potassium (358mg/100g) — blocked in CKD/Dialysis."
-      },
-      {
-        id: "orange", cat: "Fruits", name: "Orange / Sweet Lime (Mosambi)", prot: 0.9,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated",
-          "GERD / Acid reflux": "limited"
-        },
-        portion: "Max 1/2 fruit after meal (GERD)",
-        note: "High potassium citrus fruit."
-      },
+      { id: "apple", cat: "Fruits", name: "Apple (Seb)", prot: 0.3, flags: {}, note: "Low potassium, pectin-rich fruit safe across conditions." },
+      { id: "papaya", cat: "Fruits", name: "Papaya", prot: 0.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small bowl (100g)", note: "Aids digestion; moderate potassium." },
+      { id: "guava", cat: "Fruits", name: "Guava (Amrood)", prot: 2.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small guava without seeds", note: "Low glycemic index; great for diabetes & immunity." },
+      { id: "berries", cat: "Fruits", name: "Berries / Jamun / Strawberry", prot: 0.7, flags: {}, note: "Low potassium & high antioxidants." },
+      { id: "banana", cat: "Fruits", name: "Banana (Kela)", prot: 1.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 small banana pre-workout (Diabetes)", note: "High potassium (358mg/100g) — blocked in CKD/Dialysis." },
+      { id: "orange", cat: "Fruits", name: "Orange / Sweet Lime (Mosambi)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 fruit after meal (GERD)", note: "High potassium citrus fruit." },
 
-      // PULSES & LENTILS
-      {
-        id: "moong_dal", cat: "Pulses & Lentils", name: "Yellow Moong Dal", prot: 24.5,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" },
-        portion: "Max 1/2 katori thin dal (20g raw)",
-        note: "Lightest pulse; portion-controlled in pre-dialysis CKD."
-      },
-      {
-        id: "masoor_dal", cat: "Pulses & Lentils", name: "Red Lentils (Masoor Dal)", prot: 24.0,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" },
-        portion: "Max 1/2 katori cooked",
-        note: "Good plant protein; control portion in CKD."
-      },
-      {
-        id: "chana_dal", cat: "Pulses & Lentils", name: "Bengal Gram (Chana Dal / Chickpeas)", prot: 20.5,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited",
-          "Hyperuricaemia / Gout": "limited"
-        },
-        portion: "Max 1/2 cup boiled",
-        note: "Moderate purine & phosphorus content."
-      },
-      {
-        id: "rajma", cat: "Pulses & Lentils", name: "Kidney Beans (Rajma)", prot: 22.9,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated",
-          "Hyperuricaemia / Gout": "limited"
-        },
-        portion: "Max 1/2 cup well-soaked & boiled (Gout)",
-        note: "Very high potassium & phosphorus in renal disease."
-      },
-      {
-        id: "soya_chunks", cat: "Pulses & Lentils", name: "Soya Chunks / Tofu", prot: 52.0,
-        flags: {
-          "Soy allergy": "contraindicated",
-          "Hypothyroidism": "limited",
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited"
-        },
-        portion: "Max 30g dry soya / 60g tofu (keep 4h gap from thyroid med)",
-        note: "Contraindicated in Soy Allergy."
-      },
+      { id: "moong_dal", cat: "Pulses & Lentils", name: "Yellow Moong Dal", prot: 24.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori thin dal (20g raw)", note: "Lightest pulse; portion-controlled in pre-dialysis CKD." },
+      { id: "masoor_dal", cat: "Pulses & Lentils", name: "Red Lentils (Masoor Dal)", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori cooked", note: "Good plant protein; control portion in CKD." },
+      { id: "chana_dal", cat: "Pulses & Lentils", name: "Bengal Gram (Chana Dal / Chickpeas)", prot: 20.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Moderate purine & phosphorus content." },
+      { id: "rajma", cat: "Pulses & Lentils", name: "Kidney Beans (Rajma)", prot: 22.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup well-soaked & boiled (Gout)", note: "Very high potassium & phosphorus in renal disease." },
+      { id: "soya_chunks", cat: "Pulses & Lentils", name: "Soya Chunks / Tofu", prot: 52.0, flags: { "Soy allergy": "contraindicated", "Hypothyroidism": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 30g dry soya / 60g tofu", note: "Contraindicated in Soy Allergy." },
 
-      // NUTS & SEEDS
-      {
-        id: "flax_seeds", cat: "Nuts & Seeds", name: "Flax Seeds (Alsi)", prot: 18.3,
-        flags: {}, note: "Rich in plant Omega-3 ALA; supports heart & cholesterol."
-      },
-      {
-        id: "chia_seeds", cat: "Nuts & Seeds", name: "Chia Seeds", prot: 16.5,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" },
-        portion: "Max 1 tsp soaked",
-        note: "High fiber & Omega-3; moderate phosphorus."
-      },
-      {
-        id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" },
-        note: "High zinc & magnesium for athletes; high phosphorus in CKD."
-      },
-      {
-        id: "sunflower_seeds", cat: "Nuts &        note: "High zinc & magnesium for athletes; high phosphorus in CKD."
-      },
-      {
-        id: "sunflower_seeds", cat: "Nuts & Seeds", name: "Sunflower Seeds", prot: 20.8,
-        flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" },
-        portion: "Max 1 tbsp unsalted",
-        note: "Rich in Vitamin E."
-      },
-      {
-        id: "almonds", cat: "Nuts & Seeds", name: "Almonds (Badam)", prot: 21.2,
-        flags: {
-          "Tree nut / Peanut allergy": "contraindicated",
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated",
-          "Nephrolithiasis (calcium oxalate stones)": "limited"
-        },
-        portion: "Max 4 soaked peeled almonds (Kidney stones)",
-        note: "Contraindicated in Tree Nut Allergy & high-phosphorus CKD."
-      },
-      {
-        id: "walnuts", cat: "Nuts & Seeds", name: "Walnuts (Akhrot)", prot: 15.2,
-        flags: { "Tree nut / Peanut allergy": "contraindicated" },
-        note: "Contraindicated in Tree Nut Allergy."
-      },
+      { id: "flax_seeds", cat: "Nuts & Seeds", name: "Flax Seeds (Alsi)", prot: 18.3, flags: {}, note: "Rich in plant Omega-3 ALA; supports heart & cholesterol." },
+      { id: "chia_seeds", cat: "Nuts & Seeds", name: "Chia Seeds", prot: 16.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tsp soaked", note: "High fiber & Omega-3; moderate phosphorus." },
+      { id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High zinc & magnesium for athletes; high phosphorus in CKD." },
+      { id: "sunflower_seeds", cat: "Nuts & Seeds", name: "Sunflower Seeds", prot: 20.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp unsalted", note: "Rich in Vitamin E." },
+      { id: "almonds", cat: "Nuts & Seeds", name: "Almonds (Badam)", prot: 21.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 4 soaked peeled almonds (Kidney stones)", note: "Contraindicated in Tree Nut Allergy & high-phosphorus CKD." },
+      { id: "walnuts", cat: "Nuts & Seeds", name: "Walnuts (Akhrot)", prot: 15.2, flags: { "Tree nut / Peanut allergy": "contraindicated" }, note: "Contraindicated in Tree Nut Allergy." },
 
-      // GRAINS & MILLETS
-      {
-        id: "jowar", cat: "Grains & Millets", name: "Jowar (Sorghum)", prot: 10.4,
-        flags: {}, note: "Gluten-free millet ideal for steady athletic energy."
-      },
-      {
-        id: "ragi", cat: "Grains & Millets", name: "Ragi (Finger Millet)", prot: 7.3,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited",
-          "Nephrolithiasis (calcium oxalate stones)": "limited"
-        },
-        portion: "Max 1 small roti (35g flour) / day",
-        note: "High calcium & potassium; portion-controlled in CKD/stones."
-      },
-      {
-        id: "oats", cat: "Grains & Millets", name: "Rolled Oats", prot: 13.2,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited",
-          "Diabetes Mellitus Type 2": "limited"
-        },
-        portion: "Max 1/3 cup dry (30g)",
-        note: "Beta-glucan fiber lowers LDL cholesterol."
-      },
-      {
-        id: "poha", cat: "Grains & Millets", name: "Poha (Flattened Rice)", prot: 6.6,
-        flags: {}, note: "Light, easily digestible pre-training carbohydrate."
-      },
-      {
-        id: "wheat", cat: "Grains & Millets", name: "Whole Wheat Atta", prot: 12.1,
-        flags: { "Coeliac disease": "contraindicated" },
-        note: "Contains gluten — strictly contraindicated in Coeliac disease."
-      },
-      {
-        id: "makhana", cat: "Grains & Millets", name: "Fox Nuts (Makhana)", prot: 9.7,
-        flags: {}, note: "Low sodium, low potassium crunchy snack."
-      },
+      { id: "jowar", cat: "Grains & Millets", name: "Jowar (Sorghum)", prot: 10.4, flags: {}, note: "Gluten-free millet ideal for steady athletic energy." },
+      { id: "ragi", cat: "Grains & Millets", name: "Ragi (Finger Millet)", prot: 7.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 small roti (35g flour) / day", note: "High calcium & potassium; portion-controlled in CKD/stones." },
+      { id: "oats", cat: "Grains & Millets", name: "Rolled Oats", prot: 13.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1/3 cup dry (30g)", note: "Beta-glucan fiber lowers LDL cholesterol." },
+      { id: "poha", cat: "Grains & Millets", name: "Poha (Flattened Rice)", prot: 6.6, flags: {}, note: "Light, easily digestible pre-training carbohydrate." },
+      { id: "wheat", cat: "Grains & Millets", name: "Whole Wheat Atta", prot: 12.1, flags: { "Coeliac disease": "contraindicated" }, note: "Contains gluten — strictly contraindicated in Coeliac disease." },
+      { id: "makhana", cat: "Grains & Millets", name: "Fox Nuts (Makhana)", prot: 9.7, flags: {}, note: "Low sodium, low potassium crunchy snack." },
 
-      // DAIRY
-      {
-        id: "paneer", cat: "Dairy", name: "Paneer (Cottage Cheese)", prot: 18.3,
-        flags: {
-          "Lactose intolerance": "limited",
-          "Dyslipidaemia / Hypercholesterolaemia": "limited",
-          "Fatty Liver (NAFLD / MASLD)": "limited",
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited"
-        },
-        portion: "Max 50g low-fat paneer",
-        note: "Use low-fat paneer in controlled portion."
-      },
-      {
-        id: "curd", cat: "Dairy", name: "Curd / Dahi (Probiotic)", prot: 3.1,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited",
-          "Lactose intolerance": "limited"
-        },
-        portion: "Max 100g (1 small cup) / day",
-        note: "Limit to 100g/day in CKD."
-      },
-      {
-        id: "milk_toned", cat: "Dairy", name: "Double-Toned / Skim Milk", prot: 3.2,
-        flags: {
-          "Lactose intolerance": "contraindicated",
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited"
-        },
-        portion: "Max 100ml / day in CKD",
-        note: "Contraindicated in Lactose Intolerance."
-      },
+      { id: "paneer", cat: "Dairy", name: "Paneer (Cottage Cheese)", prot: 18.3, flags: { "Lactose intolerance": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Fatty Liver (NAFLD / MASLD)": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 50g low-fat paneer", note: "Use low-fat paneer in controlled portion." },
+      { id: "curd", cat: "Dairy", name: "Curd / Dahi (Probiotic)", prot: 3.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g (1 small cup) / day", note: "Limit to 100g/day in CKD." },
+      { id: "milk_toned", cat: "Dairy", name: "Double-Toned / Skim Milk", prot: 3.2, flags: { "Lactose intolerance": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 100ml / day in CKD", note: "Contraindicated in Lactose Intolerance." },
 
-      // EGGS
-      {
-        id: "egg_white", cat: "Eggs", name: "Egg Whites", prot: 10.9,
-        flags: { "Egg allergy": "contraindicated" },
-        note: "Pure high-biological-value protein with negligible phosphorus."
-      },
-      {
-        id: "whole_egg", cat: "Eggs", name: "Whole Egg (with Yolk)", prot: 12.6,
-        flags: {
-          "Egg allergy": "contraindicated",
-          "Dyslipidaemia / Hypercholesterolaemia": "limited",
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited"
-        },
-        portion: "Max 1 whole egg / day (yolk has phosphorus & cholesterol)",
-        note: "Contraindicated in Egg Allergy; yolk portion-controlled in CKD/Dyslipidaemia."
-      },
+      { id: "egg_white", cat: "Eggs", name: "Egg Whites", prot: 10.9, flags: { "Egg allergy": "contraindicated" }, note: "Pure high-biological-value protein with negligible phosphorus." },
+      { id: "whole_egg", cat: "Eggs", name: "Whole Egg (with Yolk)", prot: 12.6, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Contraindicated in Egg Allergy; yolk portion-controlled in CKD/Dyslipidaemia." },
 
-      // MEATS & SEAFOOD
-      {
-        id: "chicken_breast", cat: "Meats & Seafood", name: "Chicken Breast (Skinless)", prot: 31.0,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited",
-          "Hyperuricaemia / Gout": "limited"
-        },
-        portion: "Max 75g boiled/grilled (non-dialysis CKD / Gout)",
-        note: "Lean athletic protein; portion-controlled in CKD & Gout."
-      },
-      {
-        id: "rohu_fish", cat: "Meats & Seafood", name: "Freshwater Fish (Rohu / Katla / Salmon)", prot: 22.0,
-        flags: {
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited",
-          "Hyperuricaemia / Gout": "limited"
-        },
-        portion: "Max 75g steamed/grilled",
-        note: "Rich in Omega-3 fatty acids."
-      },
-      {
-        id: "prawns", cat: "Meats & Seafood", name: "Prawns / Shrimp / Shellfish", prot: 24.0,
-        flags: {
-          "Shellfish allergy": "contraindicated",
-          "Hyperuricaemia / Gout": "contraindicated",
-          "Dyslipidaemia / Hypercholesterolaemia": "limited"
-        },
-        portion: "Max 60g steamed (Dyslipidaemia)",
-        note: "Contraindicated in Shellfish Allergy & Gout."
-      },
-      {
-        id: "mutton", cat: "Meats & Seafood", name: "Red Meat (Mutton / Lamb)", prot: 25.0,
-        flags: {
-          "Coronary Artery Disease / Post-MI": "contraindicated",
-          "Dyslipidaemia / Hypercholesterolaemia": "contraindicated",
-          "Hyperuricaemia / Gout": "contraindicated",
-          "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated"
-        },
-        note: "High saturated fat, purines & phosphorus — contraindicated in cardiac, gout & renal care."
-      }
+      { id: "chicken_breast", cat: "Meats & Seafood", name: "Chicken Breast (Skinless)", prot: 31.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g boiled/grilled", note: "Lean athletic protein; portion-controlled in CKD & Gout." },
+      { id: "rohu_fish", cat: "Meats & Seafood", name: "Freshwater Fish (Rohu / Katla / Salmon)", prot: 22.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g steamed/grilled", note: "Rich in Omega-3 fatty acids." },
+      { id: "prawns", cat: "Meats & Seafood", name: "Prawns / Shrimp / Shellfish", prot: 24.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g steamed (Dyslipidaemia)", note: "Contraindicated in Shellfish Allergy & Gout." },
+      { id: "mutton", cat: "Meats & Seafood", name: "Red Meat (Mutton / Lamb)", prot: 25.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High saturated fat, purines & phosphorus — contraindicated in cardiac, gout & renal care." }
     ];
 
     // =========================================================================
@@ -2208,425 +1103,4 @@
         protRange = "1.2–1.3 g/kg (Dialysis Replenishment Target)";
       }
 
-      const dailyProt = Math.round(w * mult);
-      document.getElementById("sportGuidelineBox").innerHTML = `
-        <div><strong>🏅 ${sport}</strong> <span style="color:#166534;">(${categoryTag})</span></div>
-        <div style="margin-top:3px;">Daily Target for ${w} kg: <strong>${dailyProt} g protein/day</strong> (${protRange}) spread over 4–5 meals.</div>
-        <div class="sport-session-split">
-          <div>⚡ <strong>Pre-Session:</strong> Moderate carbs + lean protein 90–120 min prior (roti + paneer/chicken/egg whites, oats + curd).</div>
-          <div>💪 <strong>Post-Session:</strong> 25–40 g protein within 1 h (soya/tofu, paneer, eggs, chicken, fish, dal + grain) + carbs.</div>
-        </div>
-      `;
-    }
-
-    // =========================================================================
-    // 6. CATEGORIZED KITCHEN TICK-BOX & 3-TIER TRAFFIC LIGHT SCREENING
-    // =========================================================================
-    function renderFoodCategoryTabs() {
-      const bar = document.getElementById("foodCatTabs");
-      const allCats = ["ALL", ...FOOD_CATEGORIES];
-      bar.innerHTML = allCats.map(c => `
-        <button class="cat-filter-btn ${activeFoodCategory === c ? "active" : ""}" onclick="setFoodCat('${c}')">
-          ${c === "ALL" ? "🍽️ All Food Sections" : c}
-        </button>
-      `).join("");
-    }
-
-    function setFoodCat(cat) {
-      activeFoodCategory = cat;
-      renderFoodCategoryTabs();
-      renderIngredients();
-    }
-
-    function checkRisk(item) {
-      const diet = document.getElementById("profDiet").value;
-
-      // Diet Category Filtering
-      if (diet === "jain" && ["potato", "onion", "carrot"].includes(item.id)) {
-        return { level: "contraindicated", portion: "", reason: "Contraindicated in Jain diet (root vegetable)." };
-      }
-      if (diet === "satvik" && (["onion"].includes(item.id) || item.cat === "Eggs" || item.cat === "Meats & Seafood")) {
-        return { level: "contraindicated", portion: "", reason: "Contraindicated in Satvik diet." };
-      }
-      if (diet === "veg" && (item.cat === "Eggs" || item.cat === "Meats & Seafood")) {
-        return { level: "contraindicated", portion: "", reason: "Excluded in Vegetarian diet." };
-      }
-      if (diet === "eggetarian" && item.cat === "Meats & Seafood") {
-        return { level: "contraindicated", portion: "", reason: "Meat/Seafood excluded in Eggetarian diet." };
-      }
-      if (diet === "pescatarian" && item.id === "chicken_breast" || diet === "pescatarian" && item.id === "mutton") {
-        return { level: "contraindicated", portion: "", reason: "Poultry & Red Meat excluded in Pescatarian diet." };
-      }
-      if (diet === "vegan" && (item.cat === "Dairy" || item.cat === "Eggs" || item.cat === "Meats & Seafood")) {
-        return { level: "contraindicated", portion: "", reason: "Animal products excluded in Vegan diet." };
-      }
-
-      // Clinical Condition Screening (Allowed / Limited Portion / Contraindicated)
-      let level = "allowed", notes = [], portion = "";
-      activeConditions.forEach(c => {
-        const f = item.flags?.[c];
-        if (f === "contraindicated") {
-          level = "contraindicated";
-          notes.push(`${c}: ${item.note}`);
-        } else if (f === "limited" && level !== "contraindicated") {
-          level = "limited";
-          portion = item.portion || "Controlled small portion only";
-          notes.push(`${c}: ${item.note}`);
-        }
-      });
-      return { level, portion, reason: notes.join(" | ") || item.note || "Allowed unrestricted for your profile" };
-    }
-
-    function renderIngredients() {
-      const q = (document.getElementById("ingSearch").value || "").toLowerCase().trim();
-      const mount = document.getElementById("categorizedIngredientsMount");
-      const catsToShow = activeFoodCategory === "ALL" ? FOOD_CATEGORIES : [activeFoodCategory];
-
-      let html = "";
-      catsToShow.forEach(cat => {
-        const items = INGREDIENTS.filter(i => i.cat === cat && (!q || i.name.toLowerCase().includes(q) || cat.toLowerCase().includes(q)));
-        if (!items.length) return;
-
-        html += `
-          <div class="food-section-block">
-            <div class="food-section-title">
-              <span>${cat}</span>
-              <span style="font-size:0.76rem;font-weight:700;color:#166534;">${items.length} items</span>
-            </div>
-            <div class="ing-grid">
-              ${items.map(item => {
-                const r = checkRisk(item);
-                const ticked = tickedIngredients.has(item.id);
-                let badgeHtml = `<span class="badge b-allowed">🟢 Allowed</span>`;
-                if (r.level === "contraindicated") badgeHtml = `<span class="badge b-contra">🔴 Contraindicated</span>`;
-                else if (r.level === "limited") badgeHtml = `<span class="badge b-limited">🟡 Limited Portion</span>`;
-
-                return `
-                  <label class="ing-tile ${r.level} ${ticked ? "ticked" : ""}">
-                    <input type="checkbox" ${ticked ? "checked" : ""} onchange="onTick('${item.id}')" />
-                    <div style="flex:1;">
-                      <div style="font-weight:700;font-size:0.87rem;">${item.name}</div>
-                      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
-                        ${badgeHtml}
-                        <small style="color:var(--muted);font-weight:700;">${item.prot}g P</small>
-                      </div>
-                      ${r.level === "limited" && r.portion ? `<span class="portion-tag">⚖️ ${r.portion}</span>` : ""}
-                    </div>
-                  </label>
-                `;
-              }).join("")}
-            </div>
-          </div>
-        `;
-      });
-
-      mount.innerHTML = html || `<p style="color:var(--muted);padding:1rem;">No matching food items found.</p>`;
-    }
-
-    function onTick(id) {
-      const item = INGREDIENTS.find(i => i.id === id);
-      const banner = document.getElementById("liveWarnBanner");
-      if (tickedIngredients.has(id)) {
-        tickedIngredients.delete(id);
-        banner.style.display = "none";
-      } else {
-        tickedIngredients.add(id);
-        const r = checkRisk(item);
-        banner.style.display = "block";
-        if (r.level === "contraindicated") {
-          banner.style.background = "#fee2e2"; banner.style.color = "#991b1b";
-          banner.textContent = `🔴 CONTRAINDICATED (${item.name}): ${r.reason}`;
-        } else if (r.level === "limited") {
-          banner.style.background = "#fef3c7"; banner.style.color = "#92400e";
-          banner.textContent = `🟡 LIMITED PORTION ALLOWED (${item.name}): ${r.portion} — ${r.reason}`;
-        } else {
-          banner.style.background = "#dcfce7"; banner.style.color = "#166534";
-          banner.textContent = `🟢 ALLOWED (${item.name}): ${r.reason}`;
-        }
-      }
-      renderIngredients();
-    }
-
-    function addCustomIng() {
-      const val = document.getElementById("customIng").value.trim().replace(/[<>]/g, "");
-      if (!val) return;
-      const cat = activeFoodCategory === "ALL" ? "Vegetables" : activeFoodCategory;
-      const id = "cust_" + Date.now();
-      INGREDIENTS.unshift({ id, cat, name: val, prot: 3.0, flags: {}, note: "Custom user item." });
-      tickedIngredients.add(id);
-      document.getElementById("customIng").value = "";
-      renderIngredients();
-    }
-
-    function clearTicks() {
-      tickedIngredients.clear();
-      document.getElementById("liveWarnBanner").style.display = "none";
-      document.getElementById("recipeCard").style.display = "none";
-      renderIngredients();
-    }
-
-    function cookSafeDishes() {
-      if (!tickedIngredients.size) return;
-      const allowed = [], limited = [], blocked = [];
-      tickedIngredients.forEach(id => {
-        const it = INGREDIENTS.find(i => i.id === id);
-        if (!it) return;
-        const r = checkRisk(it);
-        if (r.level === "contraindicated") blocked.push({ it, reason: r.reason });
-        else if (r.level === "limited") limited.push({ it, portion: r.portion });
-        else allowed.push(it);
-      });
-
-      const alertBox = document.getElementById("recipeAlert");
-      let msgs = [];
-      if (blocked.length) msgs.push(`🔴 Blocked Contraindicated Items Excluded: ${blocked.map(b => `${b.it.name} (${b.reason})`).join("; ")}`);
-      if (limited.length) msgs.push(`🟡 Portion-Controlled Items Included: ${limited.map(l => `${l.it.name} [${l.portion}]`).join("; ")}`);
-      if (!blocked.length && !limited.length) msgs.push(`🟢 All ${allowed.length} selected ingredients are unrestricted and safe!`);
-
-      alertBox.innerHTML = `<div style="padding:12px;border-radius:10px;background:${blocked.length ? "#fee2e2" : (limited.length ? "#fef3c7" : "#dcfce7")};color:${blocked.length ? "#991b1b" : (limited.length ? "#92400e" : "#166534")};font-size:0.86rem;font-weight:700;">${msgs.join(" | ")}</div>`;
-
-      const usable = [
-        ...allowed.map(s => s.name.split(" (")[0]),
-        ...limited.map(l => `${l.it.name.split(" (")[0]} (${l.portion})`)
-      ];
-
-      document.getElementById("recipeGrid").innerHTML = usable.length ? `
-        <div class="meal-photo-card">
-          <img src="[https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80)" alt="Safe Meal" />
-          <div class="meal-photo-body">
-            <span class="badge b-allowed">Clinically Safe &amp; Portion-Calibrated</span>
-            <h4 style="margin:8px 0;color:#14532d;">🍲 Custom Kitchen Bowl for ${document.getElementById("profSport").value}</h4>
-            <p style="font-size:0.86rem;color:#334155;">Prepared exclusively from your permitted ingredients: <strong>${usable.join(", ")}</strong>.</p>
-          </div>
-        </div>
-      ` : "";
-
-      document.getElementById("recipeCard").style.display = "block";
-    }
-
-    function generateDietChart() {
-      const isCKD = activeConditions.has("Chronic Kidney Disease (CKD 3-5, non-dialysis)") || activeConditions.has("End Stage Renal Disease on Dialysis (HD / PD)");
-      const diet = document.getElementById("profDiet").value;
-      const sport = document.getElementById("profSport").value || "Sport";
-      const isNonVeg = diet === "nonveg" || diet === "halal" || diet === "all";
-      const isEgg = isNonVeg || diet === "eggetarian";
-
-      const slots = [
-        {
-          t: "🌅 Pre-Session Nutrition (90m prior)",
-          m: isCKD ? "1 Small Apple + Poha with Jeera" : "Rolled Oats + 1/2 Banana + Flax Seeds",
-          n: `Pre-session fuel calibrated for ${sport}.`,
-          img: "[https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80)"
-        },
-        {
-          t: "💪 Post-Session Recovery (Within 1 hr)",
-          m: isNonVeg ? "75g Grilled Chicken Breast + Jowar Roti" : (isEgg ? "4 Boiled Egg Whites + Vegetable Poha" : "50g Low-Fat Paneer / Tofu + Kadak Jowar Roti"),
-          n: `25–40g protein recovery window for ${sport}.`,
-          img: "[https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80)"
-        },
-        {
-          t: "🍛 Balanced Lunch",
-          m: isCKD ? "2 Jowar Rotis + Lauki Sabzi + 1/2 Katori Thin Moong Dal" : "2 Jowar Rotis + Bhindi & Lauki Sabzi + Masoor Dal + Cucumber",
-          n: "Controlled potassium/glycemic plate.",
-          img: "[https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=600&q=80)"
-        },
-        {
-          t: "🌙 Light Dinner",
-          m: "Moong Dal & Bottle Gourd Khichdi + Roasted Makhana",
-          n: "Easy overnight digestion & muscle repair.",
-          img: "[https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80](https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80)"
-        }
-      ];
-
-      document.getElementById("dietChartGrid").innerHTML = slots.map(s => `
-        <div class="meal-photo-card">
-          <img src="${s.img}" alt="${s.t}" />
-          <div class="meal-photo-body">
-            <span class="badge b-allowed">${s.t}</span>
-            <h4 style="margin:8px 0;">${s.m}</h4>
-            <p style="font-size:0.84rem;color:var(--muted);">${s.n}</p>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    // =========================================================================
-    // 7. SUPABASE AUTH, CLOUD SAVE & TAB NAVIGATION
-    // =========================================================================
-    function initSupabase() {
-      const pill = document.getElementById("syncPill");
-      if (!SB.url || !SB.key) {
-        pill.style.background = "#fef3c7"; pill.style.color = "#92400e";
-        pill.textContent = "⚠️ Cloud sync OFF. Local mode active.";
-        return;
-      }
-      if (!sbClient) sbClient = window.supabase.createClient(SB.url, SB.key);
-      pill.style.background = "#dcfce7"; pill.style.color = "#166534";
-      pill.textContent = "☁️ Cloud sync ON: your profile follows you to any phone or laptop.";
-      sbClient.auth.getSession().then(({ data }) => {
-        if (data?.session) { currentUser = data.session.user; launchDashboard(); }
-      });
-    }
-
-    async function sha256(p) {
-      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("SwasthAahar_" + p));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
-    }
-
-    async function registerUser() {
-      const name = document.getElementById("authName").value.trim();
-      const email = document.getElementById("authEmail").value.trim();
-      const pass = document.getElementById("authPass").value;
-      const fb = document.getElementById("authFeedback");
-
-      if (!name || !email || pass.length < 6) {
-        fb.style.color = "#dc2626"; fb.textContent = "Please enter full name, valid email, and password (min 6 chars)."; return;
-      }
-      fb.style.color = "#15803d"; fb.textContent = "Creating account...";
-
-      if (sbClient) {
-        const { data, error } = await sbClient.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
-        if (error) { fb.style.color = "#dc2626"; fb.textContent = error.message; return; }
-        currentUser = data.user;
-        document.getElementById("profName").value = name;
-        await saveProfile(true);
-        launchDashboard();
-      } else {
-        const h = await sha256(pass);
-        localStorage.setItem("sa_u_" + email, JSON.stringify({ email, h, name }));
-        currentUser = { id: email, email, user_metadata: { full_name: name } };
-        document.getElementById("profName").value = name;
-        launchDashboard();
-      }
-    }
-
-    async function loginUser() {
-      const email = document.getElementById("authEmail").value.trim();
-      const pass = document.getElementById("authPass").value;
-      const fb = document.getElementById("authFeedback");
-
-      if (!email || !pass) { fb.style.color = "#dc2626"; fb.textContent = "Enter email and password."; return; }
-      fb.style.color = "#15803d"; fb.textContent = "Signing in...";
-
-      if (sbClient) {
-        const { data, error } = await sbClient.auth.signInWithPassword({ email, password: pass });
-        if (error) { fb.style.color = "#dc2626"; fb.textContent = error.message; return; }
-        currentUser = data.user;
-        launchDashboard();
-      } else {
-        const u = JSON.parse(localStorage.getItem("sa_u_" + email) || "null");
-        if (!u || u.h !== await sha256(pass)) {
-          fb.style.color = "#dc2626"; fb.textContent = "Invalid email or password."; return;
-        }
-        currentUser = { id: email, email, user_metadata: { full_name: u.name } };
-        launchDashboard();
-      }
-    }
-
-    async function logoutUser() {
-      if (sbClient) await sbClient.auth.signOut();
-      currentUser = null;
-      document.getElementById("appDashboard").style.display = "none";
-      document.getElementById("landingScreen").style.display = "flex";
-    }
-
-    async function launchDashboard() {
-      document.getElementById("landingScreen").style.display = "none";
-      document.getElementById("appDashboard").style.display = "block";
-      await loadProfile();
-      updateSportGuideline();
-      renderIngredients();
-    }
-
-    async function saveProfile(silent = false) {
-      if (!currentUser) return;
-      const pr = {
-        name: document.getElementById("profName").value.trim() || "Devika",
-        age: Number(document.getElementById("profAge").value) || 20,
-        gender: document.getElementById("profGender").value,
-        weight: Number(document.getElementById("profWeight").value) || 68,
-        height: Number(document.getElementById("profHeight").value) || 168,
-        diet: document.getElementById("profDiet").value,
-        sport: document.getElementById("profSport").value,
-        conditions: Array.from(activeConditions)
-      };
-      localStorage.setItem("sa_pr_" + currentUser.email, JSON.stringify(pr));
-      if (sbClient) {
-        await sbClient.from("profiles").upsert({ id: currentUser.id, pr, updated_at: new Date().toISOString() });
-      }
-      updateSportGuideline();
-      if (!silent) {
-        const toast = document.getElementById("saveToast");
-        toast.textContent = "✅ Profile saved to Supabase Cloud!";
-        setTimeout(() => toast.textContent = "", 3000);
-      }
-    }
-
-    async function loadProfile() {
-      let pr = null;
-      if (sbClient && currentUser) {
-        const { data } = await sbClient.from("profiles").select("pr").eq("id", currentUser.id).single();
-        if (data?.pr) pr = data.pr;
-      }
-      if (!pr) pr = JSON.parse(localStorage.getItem("sa_pr_" + currentUser.email) || "null");
-      if (pr) {
-        document.getElementById("profName").value = pr.name || "";
-        document.getElementById("profAge").value = pr.age || 20;
-        if (pr.gender) document.getElementById("profGender").value = pr.gender;
-        if (pr.weight) document.getElementById("profWeight").value = pr.weight;
-        if (pr.height) document.getElementById("profHeight").value = pr.height;
-        document.getElementById("profDiet").value = pr.diet || "veg";
-        if (pr.sport) document.getElementById("profSport").value = pr.sport;
-        activeConditions = new Set(pr.conditions || []);
-        renderCategorizedConditions();
-      } else {
-        document.getElementById("profName").value = currentUser?.user_metadata?.full_name || "Devika";
-      }
-    }
-
-    function switchView(id, btn) {
-      document.querySelectorAll(".panel-view").forEach(v => v.classList.remove("active"));
-      document.querySelectorAll(".top-tab-btn").forEach(b => b.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      if (btn) btn.classList.add("active");
-      if (id === "viewPlan") generateDietChart();
-    }
-
-    function toggleAiChat(forceOpen) {
-      const win = document.getElementById("aiWindow");
-      if (typeof forceOpen === "boolean") win.style.display = forceOpen ? "flex" : "none";
-      else win.style.display = win.style.display === "flex" ? "none" : "flex";
-    }
-
-    function askNutritionAi() {
-      const input = document.getElementById("aiInput");
-      const q = input.value.trim();
-      if (!q) return;
-      input.value = "";
-
-      const feed = document.getElementById("aiFeed");
-      feed.innerHTML += `<div class="bubble user">${q.replace(/[<>]/g, "")}</div>`;
-
-      const lower = q.toLowerCase();
-      const found = INGREDIENTS.find(i => lower.includes(i.name.toLowerCase().split(" (")[0]) || lower.includes(i.id));
-      let reply = "Use the Check & Cook tab to inspect Vegetables, Fruits, Pulses, Seeds, Grains, Dairy, Eggs & Meats with Green (Allowed), Yellow (Limited Portion), and Red (Contraindicated) ratings.";
-
-      if (found) {
-        const r = checkRisk(found);
-        if (r.level === "contraindicated") reply = `🔴 Contraindicated (${found.name}): ${r.reason}`;
-        else if (r.level === "limited") reply = `🟡 Limited Portion Allowed (${found.name}): ${r.portion} — ${r.reason}`;
-        else reply = `🟢 Allowed (${found.name}): ${r.reason}`;
-      }
-
-      feed.innerHTML += `<div class="bubble bot">${reply}</div>`;
-      feed.scrollTop = feed.scrollHeight;
-    }
-
-    function setAppLanguage(langCode) {
-      activeLang = langCode;
-      document.getElementById("langTop").value = langCode;
-      document.getElementById("langDash").value = langCode;
-    }
-  </script>
-</body>
-</html>
+      const dailyProt = Math.round(w * mult

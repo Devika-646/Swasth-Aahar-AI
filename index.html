@@ -446,7 +446,7 @@
       display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px; border-radius: 12px;
       border: 1.5px solid #e2e8f0; background: white; cursor: pointer;
     }
-    .ing-tile input[type="checkbox"] { width: 18px; height: 18px; accent-color: #15803d; margin-top: 2px; flex-shrink: 0; }
+    .ing-tile input[type="checkbox"] { width: 18px; height: 18px; accent-color: #15803d; margin-top: 2px; flex-shrink: 0; cursor: pointer; }
     .ing-tile.allowed { border-left: 5px solid #22c55e; }
     .ing-tile.limited { border-left: 5px solid #f59e0b; background: #fffbeb; }
     .ing-tile.contraindicated {
@@ -457,29 +457,16 @@
     }
     .ing-tile.contraindicated input[type="checkbox"] {
       cursor: not-allowed;
-      accent-color: #dc2626;
+      accent-color: #ef4444;
     }
     .ing-tile.ticked { box-shadow: 0 0 0 2px #15803d; }
-
-    .recipe-steps-list {
-      margin-top: 10px;
-      padding-left: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: #1e293b;
-      line-height: 1.48;
-    }
-    .recipe-steps-list li strong {
-      color: #14532d;
-    }
 
     .badge { font-size: 0.71rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; display: inline-block; }
     .b-allowed { background: #dcfce7; color: #166534; }
     .b-limited { background: #fef3c7; color: #92400e; }
     .b-contra { background: #fee2e2; color: #991b1b; }
     .portion-tag { display: block; font-size: 0.74rem; font-weight: 700; color: #b45309; margin-top: 4px; }
+    .blocked-tag { display: block; font-size: 0.72rem; font-weight: 700; color: #991b1b; margin-top: 4px; }
 
     .btn {
       padding: 11px 18px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.9rem;
@@ -492,9 +479,32 @@
     .meal-photo-card {
       border: 1px solid #cbd5e1; border-radius: 16px; overflow: hidden; background: white;
       box-shadow: 0 6px 18px rgba(15,23,42,0.05);
+      display: flex; flex-direction: column;
     }
-    .meal-photo-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
-    .meal-photo-body { padding: 1.15rem; }
+    .meal-photo-card img { width: 100%; height: 145px; object-fit: cover; display: block; }
+    .meal-photo-body { padding: 1.15rem; flex: 1; display: flex; flex-direction: column; }
+
+    .qty-pill {
+      display: inline-block;
+      margin: 4px 0 8px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #14532d;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .prep-steps-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      font-size: 0.8rem;
+      color: #334155;
+      line-height: 1.48;
+    }
+    .prep-steps-list li {
+      margin-bottom: 4px;
+    }
 
     /* AI CHATBOT */
     .ai-fab {
@@ -672,6 +682,7 @@
 
   <!-- ==================== 2. INNER WORKSPACE ==================== -->
   <div id="appDashboard" class="workspace">
+    <!-- TOP GREEN BANNER -->
     <header class="app-top-strip no-print">
       <div style="display:flex;align-items:center;gap:12px;">
         <div class="brand-emblem-sm" id="dashLogoSlot"></div>
@@ -711,8 +722,9 @@
       </div>
     </header>
 
+    <!-- CENTERED 4-BUTTON TAB BAR -->
     <nav class="centered-nav-tabs no-print">
-      <button type="button" class="top-tab-btn" id="tabCheck" onclick="switchView('viewKitchen', this)" data-t="tabCheck">🔍 Check &amp; Cook</button>
+      <button type="button" class="top-tab-btn" id="tabCheck" onclick="switchView('viewKitchen', this)" data-t="tabKitchen">🔍 Check &amp; Cook</button>
       <button type="button" class="top-tab-btn" id="tabDaily" onclick="switchView('viewPlan', this)" data-t="tabDaily">📅 Daily Aahar</button>
       <button type="button" class="top-tab-btn active" id="tabProfile" onclick="switchView('viewProfile', this)" data-t="tabProfile">👤 Profile</button>
       <button type="button" class="top-tab-btn" onclick="logoutUser()" data-t="tabLogout">Logout</button>
@@ -754,21 +766,21 @@
         <!-- ADD PRESCRIPTION & AUTO-SUMMARY SECTION -->
         <div class="rx-profile-box">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
-            <strong style="font-size:0.88rem;color:#14532d;">📄 Add Prescription &amp; Auto-Extract Clinical Summary</strong>
-            <span style="font-size:0.74rem;font-weight:700;color:#15803d;">Optional • Auto-fills conditions &amp; food restrictions</span>
+            <strong style="font-size:0.88rem;color:#14532d;" data-t="rxTitle">📄 Add Prescription &amp; Auto-Extract Clinical Summary</strong>
+            <span style="font-size:0.74rem;font-weight:700;color:#15803d;" data-t="rxBadge">Optional • Auto-fills conditions &amp; food restrictions</span>
           </div>
 
           <div class="rx-upload-grid">
             <div class="rx-file-trigger" onclick="document.getElementById('rxImageInput').click()">
               <input type="file" id="rxImageInput" accept="image/*" style="display:none;" onchange="handlePrescriptionUpload(event)" />
               <span style="font-size:1.5rem;">📸</span>
-              <strong style="font-size:0.82rem;color:#15803d;">Upload Prescription Photo</strong>
-              <span style="font-size:0.72rem;color:var(--muted);">JPG / PNG • Auto-reads medicines</span>
+              <strong style="font-size:0.82rem;color:#15803d;" data-t="rxUploadBtn">Upload Prescription Photo</strong>
+              <span style="font-size:0.72rem;color:var(--muted);" data-t="rxUploadSub">JPG / PNG • Auto-reads medicines</span>
             </div>
 
             <div style="display:flex;flex-direction:column;gap:6px;">
               <textarea id="rxTextInput" class="p-textarea" rows="3" placeholder="Or type/paste prescription details (e.g., Telmisartan 40mg, Metformin 500mg, Warfarin 5mg, Atorvastatin 10mg, CKD Stage 3)..."></textarea>
-              <button type="button" class="btn btn-emerald" style="padding:8px 12px;font-size:0.82rem;" onclick="summarizePrescription()">📋 Extract &amp; Summarize Prescription</button>
+              <button type="button" class="btn btn-emerald" style="padding:8px 12px;font-size:0.82rem;" onclick="summarizePrescription()" data-t="rxExtractBtn">📋 Extract &amp; Summarize Prescription</button>
             </div>
           </div>
 
@@ -778,7 +790,7 @@
         <label class="p-label" data-t="lblConditions">Clinical conditions / surgical history (select all that apply)</label>
         <div id="categorizedConditionsMount"></div>
 
-        <label class="p-label" style="margin-top:16px;">Athlete? Search &amp; choose from <span id="sportTotalCount">255</span>+ sports</label>
+        <label class="p-label" style="margin-top:16px;"><span data-t="lblSportPrefix">Athlete? Search &amp; choose from</span> <span id="sportTotalCount">255</span>+ <span data-t="lblSportSuffix">sports</span></label>
         <input type="text" id="sportSearchBox" class="p-input" style="margin-bottom:8px;" placeholder="Search sport (e.g. Powerlifting, Kabaddi, Swimming, Chess, Equestrian...)" oninput="filterSportsSelect()" />
         <select id="profSport" class="p-select" onchange="updateSportGuideline()"></select>
 
@@ -795,7 +807,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div>
             <h3 style="font-size:1.25rem;font-weight:800;" data-t="kitchenTitle">☑️ Check Kitchen Ingredients &amp; Cook</h3>
-            <p style="font-size:0.84rem;color:var(--muted);" data-t="kitchenSub">Tick what you have across Vegetables, Fruits, Pulses, Nuts &amp; Seeds, Grains, Dairy, Eggs, Fish &amp; Meats (Contraindicated Red items are locked)</p>
+            <p style="font-size:0.84rem;color:var(--muted);" data-t="kitchenSub">Tick what you have across Vegetables, Fruits, Pulses, Nuts &amp; Seeds, Grains, Dairy, Eggs, Fish &amp; Meats</p>
           </div>
           <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-ghost" onclick="clearTicks()" data-t="btnClearTicks">Clear Ticks</button>
@@ -806,7 +818,7 @@
         <div class="traffic-legend">
           <span class="legend-pill lp-green" data-t="legGreen">🟢 Allowed (Unrestricted Safe)</span>
           <span class="legend-pill lp-yellow" data-t="legYellow">🟡 Limited Portion Allowed (Portion Control)</span>
-          <span class="legend-pill lp-red" data-t="legRed">🔴 Contraindicated / Blocked (Selection Disabled)</span>
+          <span class="legend-pill lp-red" data-t="legRed">🔴 Contraindicated / Blocked</span>
         </div>
 
         <div id="liveWarnBanner" style="display:none;margin-bottom:12px;padding:11px 15px;border-radius:10px;font-weight:700;font-size:0.86rem;"></div>
@@ -814,7 +826,7 @@
         <div style="display:grid;grid-template-columns:1.2fr 1fr auto;gap:10px;margin-bottom:1rem;">
           <input type="text" id="ingSearch" class="p-input" placeholder="🔍 Search any vegetable, fruit, nut, seed, fish, egg, chicken, lamb, meat..." oninput="renderIngredients()" />
           <input type="text" id="customIng" class="p-input" placeholder="➕ Add custom item you have..." />
-          <button type="button" class="btn btn-ghost" onclick="addCustomIng()">Add</button>
+          <button type="button" class="btn btn-ghost" onclick="addCustomIng()" data-t="btnAddIng">Add</button>
         </div>
 
         <div class="cat-tabs-bar" id="foodCatTabs"></div>
@@ -823,28 +835,28 @@
 
       <div id="recipeCard" class="wide-workspace-card" style="display:none;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <h3 style="font-weight:800;" data-t="recipeHeading">🍲 Clinically Safe &amp; Portion-Calibrated Recipes (4–5 Step Guide)</h3>
-          <button type="button" class="btn btn-ghost no-print" onclick="window.print()">🖨️ Print</button>
+          <h3 style="font-weight:800;" data-t="recipeCardTitle">🍲 Clinically Safe &amp; Portion-Calibrated Recipes</h3>
+          <button type="button" class="btn btn-ghost no-print" onclick="window.print()" data-t="btnPrint">🖨️ Print</button>
         </div>
         <div id="recipeAlert" style="margin:1rem 0;"></div>
-        <div id="recipeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem;"></div>
+        <div id="recipeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;"></div>
       </div>
     </section>
 
-    <!-- VIEW C: DAILY AAHAR -->
+    <!-- VIEW C: DAILY AAHAR (MORNING, AFTERNOON, EVENING, NIGHT WITH QUANTITY & 5 STEPS) -->
     <section id="viewPlan" class="panel-view">
       <div class="wide-workspace-card">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
           <div>
-            <h3 style="font-weight:800;" data-t="planHeading">📅 Daily Aahar — Personalized Clinical &amp; Sports Diet Plan</h3>
-            <p style="font-size:0.84rem;color:var(--muted);">Tailored to your selected clinical conditions, prescription, diet type, and sport.</p>
+            <h3 style="font-weight:800;" data-t="dailyTitle">📅 Daily Aahar — Morning, Afternoon, Evening &amp; Night Diet Chart</h3>
+            <p style="font-size:0.84rem;color:var(--muted);" data-t="dailySub">Includes exact serving quantities and 5-step easy preparation guides tailored to your profile.</p>
           </div>
           <div style="display:flex;gap:8px;">
-            <button type="button" class="btn btn-emerald" onclick="generateDietChart()">🔄 Refresh Plan</button>
-            <button type="button" class="btn btn-ghost no-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+            <button type="button" class="btn btn-emerald" onclick="generateDietChart()" data-t="btnRefreshPlan">🔄 Refresh Plan</button>
+            <button type="button" class="btn btn-ghost no-print" onclick="window.print()" data-t="btnPrintPdf">🖨️ Print / Save PDF</button>
           </div>
         </div>
-        <div id="dietChartGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.15rem;"></div>
+        <div id="dietChartGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:1.15rem;"></div>
       </div>
     </section>
   </div>
@@ -852,7 +864,7 @@
   <!-- NUTRITION AI CHATBOT -->
   <button type="button" class="ai-fab no-print" onclick="toggleAiChat()">
     <span>🤖</span>
-    <span data-t="aiBtn">Ask Nutrition AI</span>
+    <span data-t="aiFab">Ask Nutrition AI</span>
   </button>
 
   <div class="ai-window no-print" id="aiWindow">
@@ -860,18 +872,14 @@
       <div style="display:flex;align-items:center;gap:10px;">
         <div class="brand-emblem-sm" id="aiLogoSlot" style="width:36px;height:36px;border-radius:10px;"></div>
         <div>
-          <strong style="display:block;font-size:0.95rem;">Swasth Aahar AI</strong>
-          <span style="font-size:0.73rem;color:#bbf7d0;">Clinical &amp; Sports Nutrition Assistant</span>
+          <strong style="display:block;font-size:0.95rem;" data-t="brandName">Swasth Aahar AI</strong>
+          <span style="font-size:0.73rem;color:#bbf7d0;" data-t="aiSub">Clinical &amp; Sports Nutrition Assistant</span>
         </div>
       </div>
       <button type="button" onclick="toggleAiChat(false)" style="background:transparent;border:none;color:white;font-size:1.2rem;cursor:pointer;">✕</button>
     </div>
 
-    <div class="ai-feed" id="aiFeed">
-      <div class="bubble bot">
-        Hello! Ask me whether any vegetable, fruit, pulse, nut, seed, fish, egg, chicken, lamb, or meat is <strong>Allowed</strong>, <strong>Limited Portion</strong>, or <strong>Contraindicated</strong> for your profile, or ask about any of the 255+ sports!
-      </div>
-    </div>
+    <div class="ai-feed" id="aiFeed"></div>
 
     <div class="ai-bar">
       <input type="text" id="aiInput" placeholder="Ask about any food or sport..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
@@ -897,20 +905,49 @@
     let rxDrugFlags = new Set();
 
     // =========================================================================
-    // MULTILINGUAL DICTIONARY (ALL 23 SELECTOR LANGUAGES SUPPORTED)
+    // 2. INDIAN LANGUAGE TRANSLATION ENGINE (ALL 22+ LANGUAGES IN SELECTOR)
     // =========================================================================
-    const RTL_LANGS = new Set(["ur", "sd", "ks"]);
+    const LANG_META = {
+      en: { label: "English", script: "en" },
+      hi: { label: "हिन्दी", script: "hi" },
+      mr: { label: "मराठी", script: "mr" },
+      kn: { label: "ಕನ್ನಡ", script: "kn" },
+      ta: { label: "தமிழ்", script: "ta" },
+      te: { label: "తెలుగు", script: "te" },
+      bn: { label: "বাংলা", script: "bn" },
+      gu: { label: "ગુજરાતી", script: "gu" },
+      pa: { label: "ਪੰਜਾਬੀ", script: "pa" },
+      ml: { label: "മലയാളം", script: "ml" },
+      or: { label: "ଓଡ଼ିଆ", script: "or" },
+      as: { label: "অসমীয়া", script: "as" },
+      ur: { label: "اردو", script: "ur" },
+      sa: { label: "संस्कृतम्", script: "sa" },
+      kok: { label: "कोंकणी", script: "kok" },
+      mai: { label: "मैथिली", script: "mai" },
+      ne: { label: "नेपाली", script: "ne" },
+      sd: { label: "سنڌي", script: "sd" },
+      doi: { label: "डोगरी", script: "doi" },
+      ks: { label: "कॉशुर", script: "ks" },
+      mni: { label: "ꯃꯩꯇꯩꯂꯣꯟ", script: "mni" },
+      sat: { label: "ᱥᱟᱱᱛᱟᱲᱤ", script: "sat" },
+      brx: { label: "बड़ो", script: "brx" }
+    };
 
-    const I18N = {
+    const UI_I18N = {
       en: {
         brandName: "Swasth Aahar AI",
         brandTagline: "Right Diet, Healthy Life • Clinical & Sports Nutrition",
         topPill: "✨ 22 Indian Languages • 255+ Sports • Clinical & Sports Nutrition",
+        heroHeading: 'Nourish Your Body with <em>Clinical Precision</em> & Sports Science',
         heroSub: "Personalized clinical and sports nutrition engine with condition-aware food screening, portion-controlled guidance, and safe kitchen ingredient meal planning.",
         picSports: "🏅 Peak Sports Strength",
         picFood: "🥗 Wholesome Healthy Food",
         picHealth: "🩺 Clinical Food Safety",
         picLife: "🌿 Mindful Active Life",
+        feat1: "⛔ <strong>Instant Allowed / Limited / Contraindicated verdicts</strong> with the medical reason for every food",
+        feat2: "🏅 <strong>255+ sports</strong> with pre- and post-session nutrition",
+        feat3: "🍲 <strong>Recipes only from safe ingredients</strong>, adapted to your condition",
+        feat4: "☁️ <strong>Cloud profile</strong> that follows you to any phone or laptop",
         authTitle: "Secure Login / Registration",
         authSub: "Sign in or create your encrypted health & diet vault",
         lblFullName: "Full Name (Required for Registration)",
@@ -918,902 +955,699 @@
         lblPass: "Password (Minimum 6 characters)",
         btnLogin: "Sign In",
         btnRegister: "Create Account",
-        tabCheck: "🔍 Check & Cook",
+        dashBrand: "Swasth Aahar AI - स्वस्थ आहार",
+        dashSub: "सही आहार, स्वस्थ जीवन — Smart food choices for every health condition & 255+ sports",
+        tabKitchen: "🔍 Check & Cook",
         tabDaily: "📅 Daily Aahar",
         tabProfile: "👤 Profile",
         tabLogout: "Logout",
         profTitle: "Your Profile",
         lblDietType: "Diet type",
+        rxTitle: "📄 Add Prescription & Auto-Extract Clinical Summary",
+        rxBadge: "Optional • Auto-fills conditions & food restrictions",
+        rxUploadBtn: "Upload Prescription Photo",
+        rxUploadSub: "JPG / PNG • Auto-reads medicines",
+        rxExtractBtn: "📋 Extract & Summarize Prescription",
         lblConditions: "Clinical conditions / surgical history (select all that apply)",
+        lblSportPrefix: "Athlete? Search & choose from",
+        lblSportSuffix: "sports",
         btnSaveProfile: "Save profile",
         kitchenTitle: "☑️ Check Kitchen Ingredients & Cook",
-        kitchenSub: "Tick what you have across categories (Contraindicated Red items are locked)",
+        kitchenSub: "Tick what you have across Vegetables, Fruits, Pulses, Nuts & Seeds, Grains, Dairy, Eggs, Fish & Meats",
         btnClearTicks: "Clear Ticks",
         btnCookSafe: "🍳 Cook Safe Recipes",
         legGreen: "🟢 Allowed (Unrestricted Safe)",
         legYellow: "🟡 Limited Portion Allowed (Portion Control)",
-        legRed: "🔴 Contraindicated / Blocked (Selection Disabled)",
-        recipeHeading: "🍲 Clinically Safe & Portion-Calibrated Recipes (4–5 Step Guide)",
-        planHeading: "📅 Daily Aahar — Personalized Clinical & Sports Diet Plan",
-        aiBtn: "Ask Nutrition AI",
-        badgeAllowed: "🟢 Allowed",
-        badgeLimited: "🟡 Limited Portion",
-        badgeContra: "🔴 Contraindicated"
+        legRed: "🔴 Contraindicated / Blocked (Cannot Tick)",
+        btnAddIng: "Add",
+        recipeCardTitle: "🍲 Clinically Safe & Portion-Calibrated Recipes",
+        btnPrint: "🖨️ Print",
+        dailyTitle: "📅 Daily Aahar — Morning, Afternoon, Evening & Night Diet Chart",
+        dailySub: "Includes exact serving quantities and 5-step easy preparation guides tailored to your profile.",
+        btnRefreshPlan: "🔄 Refresh Plan",
+        btnPrintPdf: "🖨️ Print / Save PDF",
+        aiFab: "Ask Nutrition AI",
+        aiSub: "Clinical & Sports Nutrition Assistant",
+        aiGreeting: "Hello! Ask me whether any vegetable, fruit, pulse, nut, seed, fish, egg, chicken, lamb, or meat is Allowed, Limited Portion, or Contraindicated for your profile, or ask about any of the 255+ sports!",
+        allowedBadge: "🟢 Allowed",
+        limitedBadge: "🟡 Limited Portion",
+        contraBadge: "🔴 Contraindicated (Blocked)",
+        blockedNote: "⛔ Blocked for selection — contraindicated for your profile",
+        allFoodCats: "🍽️ All Food Sections",
+        morningSlot: "🌅 Morning / Pre-Session",
+        afternoonSlot: "☀️ Afternoon / Lunch",
+        eveningSlot: "🌇 Evening / Recovery & Snack",
+        nightSlot: "🌙 Night / Dinner",
+        qtyLabel: "Quantity",
+        stepsLabel: "5-Step Preparation",
+        step1: "Rinse and measure the exact ingredient quantity cleanly.",
+        step2: "Prep vegetables/grains/protein by chopping, soaking, or marinating lightly.",
+        step3: "Cook with minimal healthy oil and gentle spices suited to your health profile.",
+        step4: "Simmer or steam until tender and well-cooked for easy digestion.",
+        step5: "Plate in the recommended serving portion and eat mindfully."
       },
       hi: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "सही आहार, स्वस्थ जीवन • क्लिनिकल और स्पोर्ट्स न्यूट्रिशन",
-        topPill: "✨ 22 भारतीय भाषाएं • 255+ खेल • क्लिनिकल और स्पोर्ट्स न्यूट्रिशन",
-        heroSub: "स्वास्थ्य स्थितियों के अनुसार भोजन जांच, नियंत्रित मात्रा और सुरक्षित रसोई सामग्री से भोजन योजना बनाने वाला स्मार्ट पोषण मंच।",
-        picSports: "🏅 खेल शक्ति",
-        picFood: "🥗 पौष्टिक आहार",
-        picHealth: "🩺 सुरक्षित भोजन",
-        picLife: "🌿 स्वस्थ जीवन",
+        brandName: "स्वस्थ आहार एआई (Swasth Aahar AI)",
+        brandTagline: "सही आहार, स्वस्थ जीवन • क्लिनिकल और स्पोर्ट्स पोषण",
+        topPill: "✨ 22 भारतीय भाषाएं • 255+ खेल • क्लिनिकल और स्पोर्ट्स पोषण",
+        heroHeading: '<em>क्लिनिकल सटीकता</em> और खेल विज्ञान के साथ शरीर को पोषण दें',
+        heroSub: "स्वास्थ्य स्थितियों के अनुसार भोजन जांच, नियंत्रित मात्रा और सुरक्षित रसोई सामग्री से भोजन योजना बनाने वाला पर्सनलाइज़्ड पोषण इंजन।",
+        picSports: "🏅 खेल शक्ति और प्रदर्शन",
+        picFood: "🥗 पौष्टिक संतुलित भोजन",
+        picHealth: "🩺 क्लिनिकल आहार सुरक्षा",
+        picLife: "🌿 स्वस्थ सक्रिय जीवनशैली",
+        feat1: "⛔ हर भोजन के लिए <strong>अनुमत / सीमित / वर्जित</strong> निर्णय और चिकित्सीय कारण",
+        feat2: "🏅 <strong>255+ खेलों</strong> के लिए व्यायाम से पहले और बाद का पोषण",
+        feat3: "🍲 केवल <strong>सुरक्षित सामग्री</strong> से आपकी स्थिति के अनुसार व्यंजन",
+        feat4: "☁️ <strong>क्लाउड प्रोफ़ाइल</strong> जो किसी भी फ़ोन या लैपटॉप पर उपलब्ध रहे",
         authTitle: "सुरक्षित लॉगिन / पंजीकरण",
         authSub: "अपने स्वास्थ्य और आहार वॉल्ट में साइन इन करें या नया खाता बनाएं",
         lblFullName: "पूरा नाम (पंजीकरण के लिए आवश्यक)",
         lblEmail: "ईमेल पता",
         lblPass: "पासवर्ड (कम से कम 6 अक्षर)",
-        btnLogin: "साइन इन",
+        btnLogin: "साइन इन करें",
         btnRegister: "खाता बनाएं",
-        tabCheck: "🔍 जांचें और पकाएं",
+        dashBrand: "स्वस्थ आहार एआई - Swasth Aahar AI",
+        dashSub: "सही आहार, स्वस्थ जीवन — हर स्वास्थ्य स्थिति और 255+ खेलों के लिए स्मार्ट भोजन चयन",
+        tabKitchen: "🔍 जांचें और पकाएं",
         tabDaily: "📅 दैनिक आहार",
         tabProfile: "👤 प्रोफ़ाइल",
-        tabLogout: "लॉग आउट",
+        tabLogout: "लॉगआउट",
         profTitle: "आपकी प्रोफ़ाइल",
         lblDietType: "आहार प्रकार",
-        lblConditions: "स्वास्थ्य स्थितियां / सर्जरी इतिहास (लागू विकल्प चुनें)",
+        rxTitle: "📄 प्रिस्क्रिप्शन जोड़ें और क्लिनिकल सारांश निकालें",
+        rxBadge: "वैकल्पिक • बीमारियां और आहार प्रतिबंध स्वतः लागू होते हैं",
+        rxUploadBtn: "प्रिस्क्रिप्शन फ़ोटो अपलोड करें",
+        rxUploadSub: "JPG / PNG • दवाइयां स्वतः पढ़ें",
+        rxExtractBtn: "📋 प्रिस्क्रिप्शन का सारांश निकालें",
+        lblConditions: "स्वास्थ्य स्थितियां / सर्जरी का इतिहास (लागू विकल्प चुनें)",
+        lblSportPrefix: "खिलाड़ी हैं? खोजें और चुनें",
+        lblSportSuffix: "खेलों में से",
         btnSaveProfile: "प्रोफ़ाइल सहेजें",
-        kitchenTitle: "☑️ रसोई सामग्री जांचें और पकाएं",
-        kitchenSub: "उपलब्ध सामग्री चुनें (निषिद्ध लाल खाद्य पदार्थ चयन के लिए बंद हैं)",
+        kitchenTitle: "☑️ रसोई की सामग्री जांचें और पकाएं",
+        kitchenSub: "सब्ज़ियां, फल, दालें, मेवे और बीज, अनाज, डेयरी, अंडे, मछली और मांस में से उपलब्ध सामग्री चुनें",
         btnClearTicks: "चयन हटाएं",
-        btnCookSafe: "🍳 सुरक्षित रेसिपी बनाएं",
+        btnCookSafe: "🍳 सुरक्षित व्यंजन बनाएं",
         legGreen: "🟢 अनुमत (पूर्णतः सुरक्षित)",
-        legYellow: "🟡 सीमित मात्रा अनुमत",
-        legRed: "🔴 निषिद्ध / अवरुद्ध (चयन बंद)",
-        recipeHeading: "🍲 सुरक्षित और मात्रा-नियंत्रित रेसिपी (4–5 चरण मार्गदर्शिका)",
-        planHeading: "📅 दैनिक आहार — व्यक्तिगत क्लिनिकल और स्पोर्ट्स डाइट चार्ट",
-        aiBtn: "न्यूट्रिशन AI से पूछें",
-        badgeAllowed: "🟢 अनुमत",
-        badgeLimited: "🟡 सीमित मात्रा",
-        badgeContra: "🔴 निषिद्ध"
+        legYellow: "🟡 सीमित मात्रा अनुमत (मात्रा नियंत्रण)",
+        legRed: "🔴 वर्जित / प्रतिबंधित (चयन बंद)",
+        btnAddIng: "जोड़ें",
+        recipeCardTitle: "🍲 सुरक्षित और मात्रा-नियंत्रित व्यंजन",
+        btnPrint: "🖨️ प्रिंट करें",
+        dailyTitle: "📅 दैनिक आहार — सुबह, दोपहर, शाम और रात का चार्ट",
+        dailySub: "सही मात्रा और आसान 5-चरणीय बनाने की विधि के साथ।",
+        btnRefreshPlan: "🔄 योजना अपडेट करें",
+        btnPrintPdf: "🖨️ प्रिंट / PDF सहेजें",
+        aiFab: "पोषण एआई से पूछें",
+        aiSub: "क्लिनिकल और स्पोर्ट्स पोषण सहायक",
+        aiGreeting: "नमस्ते! पूछें कि कौन-सी सब्ज़ी, फल, दाल, बीज, मछली, अंडा या मांस आपकी प्रोफ़ाइल के लिए अनुमत, सीमित मात्रा या वर्जित है, या किसी भी खेल के पोषण के बारे में पूछें!",
+        allowedBadge: "🟢 अनुमत",
+        limitedBadge: "🟡 सीमित मात्रा",
+        contraBadge: "🔴 वर्जित (अवरुद्ध)",
+        blockedNote: "⛔ चयन वर्जित — आपकी स्वास्थ्य स्थिति के लिए अनुकूल नहीं",
+        allFoodCats: "🍽️ सभी खाद्य वर्ग",
+        morningSlot: "🌅 सुबह / अभ्यास से पहले",
+        afternoonSlot: "☀️ दोपहर / भोजन",
+        eveningSlot: "🌇 शाम / रिकवरी और नाश्ता",
+        nightSlot: "🌙 रात / रात्रि भोजन",
+        qtyLabel: "मात्रा",
+        stepsLabel: "5-चरणीय बनाने की विधि",
+        step1: "सामग्री की सही मात्रा नापें और साफ़ पानी से धो लें।",
+        step2: "सब्ज़ियों, अनाज या प्रोटीन को काटें, भिगोएं या हल्का तैयार करें।",
+        step3: "स्वास्थ्य के अनुसार कम तेल और हल्के मसालों में पकाएं।",
+        step4: "आसानी से पचने तक धीमी आंच पर पकाएं या भाप दें।",
+        step5: "निर्धारित मात्रा में परोसें और शांति से खाएं।"
       },
       mr: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "योग्य आहार, निरोगी जीवन • क्लिनिकल आणि स्पोर्ट्स न्यूट्रिशन",
-        topPill: "✨ 22 भारतीय भाषा • 255+ खेळ • क्लिनिकल आणि स्पोर्ट्स न्यूट्रिशन",
-        heroSub: "आरोग्य स्थितीनुसार अन्न तपासणी, मर्यादित प्रमाण आणि सुरक्षित स्वयंपाकघर घटकांवर आधारित आहार नियोजन.",
-        picSports: "🏅 क्रीडा सामर्थ्य",
-        picFood: "🥗 पोषक आहार",
-        picHealth: "🩺 आरोग्यदायी निवड",
-        picLife: "🌿 सक्रिय जीवन",
-        authTitle: "लॉगिन / नोंदणी",
-        authSub: "तुमच्या आरोग्य आणि आहार खात्यात प्रवेश करा किंवा नवीन खाते तयार करा",
-        lblFullName: "पूर्ण नाव (नोंदणीसाठी आवश्यक)",
-        lblEmail: "ईमेल पत्ता",
-        lblPass: "पासवर्ड (किमान 6 अक्षरे)",
-        btnLogin: "लॉगिन",
+        brandName: "स्वस्थ आहार एआय",
+        brandTagline: "योग्य आहार, निरोगी जीवन • क्लिनिकल आणि स्पोर्ट्स पोषण",
+        topPill: "✨ २२ भारतीय भाषा • २५५+ खेळ • क्लिनिकल आणि स्पोर्ट्स पोषण",
+        heroHeading: '<em>क्लिनिकल अचूकता</em> आणि क्रीडा विज्ञानाने शरीराला पोषण द्या',
+        heroSub: "आरोग्य स्थितीनुसार अन्न तपासणी, मर्यादित प्रमाण आणि सुरक्षित साहित्यापासून आहार योजना तयार करणारे पोषण माध्यम.",
+        authTitle: "सुरक्षित लॉगिन / नोंदणी",
+        btnLogin: "लॉगिन करा",
         btnRegister: "खाते तयार करा",
-        tabCheck: "🔍 तपासा आणि शिजवा",
+        tabKitchen: "🔍 तपासा आणि शिजवा",
         tabDaily: "📅 दैनंदिन आहार",
         tabProfile: "👤 प्रोफाइल",
-        tabLogout: "लॉगआउट",
+        tabLogout: "बाहेर पडा",
         profTitle: "तुमचे प्रोफाइल",
         lblDietType: "आहाराचा प्रकार",
-        lblConditions: "आरोग्य स्थिती / शस्त्रक्रिया इतिहास",
         btnSaveProfile: "प्रोफाइल जतन करा",
-        kitchenTitle: "☑️ स्वयंपाकघरातील घटक तपासा आणि शिजवा",
-        kitchenSub: "उपलब्ध घटक निवडा (लाल निषिद्ध घटक निवडण्यासाठी बंद आहेत)",
-        btnClearTicks: "निवड काढा",
-        btnCookSafe: "🍳 सुरक्षित पाककृती",
-        legGreen: "🟢 परवानगी आहे",
-        legYellow: "🟡 मर्यादित प्रमाणात परवानगी",
-        legRed: "🔴 निषिद्ध / बंद (निवड अक्षम)",
-        recipeHeading: "🍲 सुरक्षित आणि प्रमाणबद्ध पाककृती (4–5 टप्पे)",
-        planHeading: "📅 दैनंदिन आहार — वैयक्तिक डाएट चार्ट",
-        aiBtn: "न्यूट्रिशन AI विचारा",
-        badgeAllowed: "🟢 परवानगी",
-        badgeLimited: "🟡 मर्यादित",
-        badgeContra: "🔴 निषिद्ध"
+        kitchenTitle: "☑️ स्वयंपाकघरातील साहित्य तपासा आणि शिजवा",
+        btnClearTicks: "निवड पुसा",
+        btnCookSafe: "🍳 सुरक्षित पाककृती तयार करा",
+        legGreen: "🟢 परवानगी आहे (सुरक्षित)",
+        legYellow: "🟡 मर्यादित प्रमाण (प्रमाण नियंत्रण)",
+        legRed: "🔴 वर्ज्य / प्रतिबंधित (निवड बंद)",
+        dailyTitle: "📅 दैनंदिन आहार — सकाळ, दुपार, संध्याकाळ आणि रात्र",
+        dailySub: "अचूक प्रमाण आणि सोप्या ५ पायऱ्यांच्या कृतीसह.",
+        btnRefreshPlan: "🔄 योजना पुन्हा तयार करा",
+        aiFab: "पोषण एआय विचारा",
+        aiGreeting: "नमस्कार! कोणताही पदार्थ किंवा खेळ तुमच्या प्रोफाइलसाठी योग्य, मर्यादित किंवा वर्ज्य आहे का ते विचारा.",
+        allowedBadge: "🟢 परवानगी आहे",
+        limitedBadge: "🟡 मर्यादित प्रमाण",
+        contraBadge: "🔴 वर्ज्य (अवरोधित)",
+        blockedNote: "⛔ निवड वर्ज्य — तुमच्या आरोग्य स्थितीसाठी योग्य नाही",
+        allFoodCats: "🍽️ सर्व अन्न गट",
+        morningSlot: "🌅 सकाळ / सरावापूर्वी",
+        afternoonSlot: "☀️ दुपार / जेवण",
+        eveningSlot: "🌇 संध्याकाळ / रिकव्हरी आणि नाश्ता",
+        nightSlot: "🌙 रात्र / रात्रीचे जेवण",
+        qtyLabel: "प्रमाण",
+        stepsLabel: "५ पायऱ्यांची कृती",
+        step1: "साहित्याचे अचूक प्रमाण मोजून स्वच्छ धुवा.",
+        step2: "भाज्या, धान्य किंवा प्रथिने चिरून/भिजवून तयार करा.",
+        step3: "कमी तेलात आणि सौम्य मसाल्यात परता.",
+        step4: "पचायला हलके होईपर्यंत मऊ शिजवा किंवा वाफवा.",
+        step5: "ठरलेल्या प्रमाणात वाढून शांतपणे खा."
       },
       kn: {
-        brandName: "ಸ್ವಸ್ಥ ಆಹಾರ AI",
-        brandTagline: "ಸರಿಯಾದ ಆಹಾರ, ಆರೋಗ್ಯಕರ ಜೀವನ • ಕ್ಲಿನಿಕಲ್ ಮತ್ತು ಕ್ರೀಡಾ ಪೋಷಣೆ",
-        topPill: "✨ 22 ಭಾರತೀಯ ಭಾಷೆಗಳು • 255+ ಕ್ರೀಡೆಗಳು • ಕ್ಲಿನಿಕಲ್ ಮತ್ತು ಕ್ರೀಡಾ ಪೋಷಣೆ",
-        heroSub: "ಆರೋಗ್ಯ ಸ್ಥಿತಿಗೆ ಅನುಗುಣವಾಗಿ ಆಹಾರ ಪರಿಶೀಲನೆ, ಪ್ರಮಾಣ ನಿಯಂತ್ರಣ ಮತ್ತು ಸುರಕ್ಷಿತ ಅಡುಗೆ ಪದಾರ್ಥಗಳ ಆಹಾರ ಯೋಜನೆ.",
-        picSports: "🏅 ಕ್ರೀಡಾ ಶಕ್ತಿ",
-        picFood: "🥗 ಪೌಷ್ಟಿಕ ಆಹಾರ",
-        picHealth: "🩺 ಆರೋಗ್ಯ ಸುರಕ್ಷತೆ",
-        picLife: "🌿 ಸಕ್ರಿಯ ಜೀವನ",
+        brandName: "ಸ್ವಸ್ಥ ಆಹಾರ ಎಐ (Swasth Aahar AI)",
+        brandTagline: "ಸರಿಯಾದ ಆಹಾರ, ಆರೋಗ್ಯಕರ ಜೀವನ • ವೈದ್ಯಕೀಯ ಮತ್ತು ಕ್ರೀಡಾ ಪೋಷಣೆ",
+        topPill: "✨ 22 ಭಾರತೀಯ ಭಾಷೆಗಳು • 255+ ಕ್ರೀಡೆಗಳು • ಕ್ರೀಡಾ ಪೋಷಣೆ",
+        heroHeading: '<em>ವೈದ್ಯಕೀಯ ನಿಖರತೆ</em> ಮತ್ತು ಕ್ರೀಡಾ ವಿಜ್ಞಾನದಿಂದ ದೇಹವನ್ನು ಪೋಷಿಸಿ',
+        heroSub: "ಆರೋಗ್ಯ ಸ್ಥಿತಿಗೆ ಅನುಗುಣವಾಗಿ ಆಹಾರ ಪರೀಕ್ಷೆ, ನಿಯಂತ್ರಿತ ಪ್ರಮಾಣ ಮತ್ತು ಸುರಕ್ಷಿತ ಪದಾರ್ಥಗಳಿಂದ ಊಟದ ಯೋಜನೆ.",
         authTitle: "ಸುರಕ್ಷಿತ ಲಾಗಿನ್ / ನೋಂದಣಿ",
-        authSub: "ನಿಮ್ಮ ಆರೋಗ್ಯ ಮತ್ತು ಆಹಾರ ಖಾತೆಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ ಅಥವಾ ಹೊಸ ಖಾತೆ ರಚಿಸಿ",
-        lblFullName: "ಪೂರ್ಣ ಹೆಸರು (ನೋಂದಣಿಗೆ ಅಗತ್ಯ)",
-        lblEmail: "ಇಮೇಲ್ ವಿಳಾಸ",
-        lblPass: "ಪಾಸ್‌ವರ್ಡ್ (ಕನಿಷ್ಠ 6 ಅಕ್ಷರಗಳು)",
-        btnLogin: "ಸೈನ್ ಇನ್",
+        btnLogin: "ಲಾಗಿನ್ ಮಾಡಿ",
         btnRegister: "ಖಾತೆ ರಚಿಸಿ",
-        tabCheck: "🔍 ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಡುಗೆ ಮಾಡಿ",
+        tabKitchen: "🔍 ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಡುಗೆ ಮಾಡಿ",
         tabDaily: "📅 ದೈನಂದಿನ ಆಹಾರ",
         tabProfile: "👤 ಪ್ರೊಫೈಲ್",
         tabLogout: "ಲಾಗ್ ಔಟ್",
         profTitle: "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್",
         lblDietType: "ಆಹಾರದ ವಿಧ",
-        lblConditions: "ಆರೋಗ್ಯ ಸ್ಥಿತಿಗಳು / ಶಸ್ತ್ರಚಿಕಿತ್ಸಾ ಇತಿಹಾಸ",
         btnSaveProfile: "ಪ್ರೊಫೈಲ್ ಉಳಿಸಿ",
-        kitchenTitle: "☑️ ಅಡುಗೆ ಪದಾರ್ಥಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಡುಗೆ ಮಾಡಿ",
-        kitchenSub: "ಲಭ್ಯವಿರುವ ಪದಾರ್ಥಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ (ಕೆಂಪು ನಿಷೇಧಿತ ಪದಾರ್ಥಗಳು ಲಾಕ್ ಆಗಿವೆ)",
+        kitchenTitle: "☑️ ಅಡುಗೆಮನೆಯ ಪದಾರ್ಥಗಳನ್ನು ಪರಿಶೀಲಿಸಿ",
         btnClearTicks: "ಆಯ್ಕೆ ತೆರವುಗೊಳಿಸಿ",
-        btnCookSafe: "🍳 ಸುರಕ್ಷಿತ ಪಾಕವಿಧಾನಗಳು",
-        legGreen: "🟢 ಅನುಮತಿಸಲಾಗಿದೆ",
-        legYellow: "🟡 ಸೀಮಿತ ಪ್ರಮಾಣ ಅನುಮತಿಸಲಾಗಿದೆ",
-        legRed: "🔴 ನಿಷೇಧಿಸಲಾಗಿದೆ / ಆಯ್ಕೆ ನಿಷ್ಕ್ರಿಯ",
-        recipeHeading: "🍲 ಸುರಕ್ಷಿತ ಪಾಕವಿಧಾನಗಳು (4–5 ಹಂತಗಳು)",
-        planHeading: "📅 ದೈನಂದಿನ ಆಹಾರ — ವೈಯಕ್ತಿಕ ಆಹಾರ ಕೋಷ್ಟಕ",
-        aiBtn: "ನ್ಯೂಟ್ರಿಷನ್ AI ಕೇಳಿ",
-        badgeAllowed: "🟢 ಅನುಮತಿಸಲಾಗಿದೆ",
-        badgeLimited: "🟡 ಸೀಮಿತ",
-        badgeContra: "🔴 ನಿಷೇಧಿತ"
+        btnCookSafe: "🍳 ಸುರಕ್ಷಿತ ಅಡುಗೆ ತಯಾರಿಸಿ",
+        legGreen: "🟢 ಅನುಮತಿಸಲಾಗಿದೆ (ಸುರಕ್ಷಿತ)",
+        legYellow: "🟡 ಸೀಮಿತ ಪ್ರಮಾಣ (ಪ್ರಮಾಣ ನಿಯಂತ್ರಣ)",
+        legRed: "🔴 ನಿಷೇಧಿತ / ತಡೆಯಲಾಗಿದೆ (ಆಯ್ಕೆ ಲಭ್ಯವಿಲ್ಲ)",
+        dailyTitle: "📅 ದೈನಂದಿನ ಆಹಾರ — ಬೆಳಿಗ್ಗೆ, ಮಧ್ಯಾಹ್ನ, ಸಂಜೆ ಮತ್ತು ರಾತ್ರಿ",
+        dailySub: "ನಿಖರ ಪ್ರಮಾಣ ಮತ್ತು 5 ಸುಲಭ ತಯಾರಿಕಾ ಹಂತಗಳೊಂದಿಗೆ.",
+        btnRefreshPlan: "🔄 ಯೋಜನೆ ನವೀಕರಿಸಿ",
+        aiFab: "ಪೋಷಣಾ ಎಐ ಕೇಳಿ",
+        aiGreeting: "ನಮಸ್ಕಾರ! ಯಾವುದೇ ಆಹಾರ ಅಥವಾ ಕ್ರೀಡೆಯ ಪೋಷಣೆಯ ಬಗ್ಗೆ ಕೇಳಿ.",
+        allowedBadge: "🟢 ಅನುಮತಿಸಲಾಗಿದೆ",
+        limitedBadge: "🟡 ಸೀಮಿತ ಪ್ರಮಾಣ",
+        contraBadge: "🔴 ನಿಷೇಧಿತ",
+        blockedNote: "⛔ ಆಯ್ಕೆ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ — ನಿಮ್ಮ ಆರೋಗ್ಯ ಸ್ಥಿತಿಗೆ ಸೂಕ್ತವಲ್ಲ",
+        allFoodCats: "🍽️ ಎಲ್ಲಾ ಆಹಾರ ವಿಭಾಗಗಳು",
+        morningSlot: "🌅 ಬೆಳಿಗ್ಗೆ / ಅಭ್ಯಾಸದ ಮೊದಲು",
+        afternoonSlot: "☀️ ಮಧ್ಯಾಹ್ನ / ಊಟ",
+        eveningSlot: "🌇 ಸಂಜೆ / ಚೇತರಿಕೆ ಮತ್ತು ತಿಂಡಿ",
+        nightSlot: "🌙 ರಾತ್ರಿ / ರಾತ್ರಿಯ ಊಟ",
+        qtyLabel: "ಪ್ರಮಾಣ",
+        stepsLabel: "5 ಹಂತಗಳ ತಯಾರಿಕೆ",
+        step1: "ಅಗತ್ಯ ಪ್ರಮಾಣವನ್ನು ಅಳೆದು ಸ್ವಚ್ಛ ನೀರಿನಿಂದ ತೊಳೆಯಿರಿ.",
+        step2: "ತರಕಾರಿ, ಧಾನ್ಯ ಅಥವಾ ಪ್ರೋಟೀನ್ ಅನ್ನು ಹೆಚ್ಚಿ ಅಥವಾ ನೆನೆಸಿ.",
+        step3: "ಕಡಿಮೆ ಎಣ್ಣೆ ಮತ್ತು ಹಗುರ ಮಸಾಲೆಗಳೊಂದಿಗೆ ಹುರಿಯಿರಿ.",
+        step4: "ಸುಲಭವಾಗಿ ಜೀರ್ಣವಾಗುವಂತೆ ಚೆನ್ನಾಗಿ ಬೇಯಿಸಿ ಅಥವಾ ಆವಿಯಲ್ಲಿ ಬೇಯಿಸಿ.",
+        step5: "ನಿಗದಿತ ಪ್ರಮಾಣದಲ್ಲಿ ಬಡಿಸಿ ಸೇವಿಸಿ."
       },
       ta: {
         brandName: "ஸ்வஸ்த் ஆகார் AI",
-        brandTagline: "சரியான உணவு, ஆரோக்கியமான வாழ்வு • மருத்துவ மற்றும் விளையாட்டு ஊட்டச்சத்து",
-        topPill: "✨ 22 இந்திய மொழிகள் • 255+ விளையாட்டுகள் • மருத்துவ மற்றும் விளையாட்டு ஊட்டச்சத்து",
-        heroSub: "உடல்நல நிலைகளுக்கு ஏற்ப உணவுப் பரிசோதனை, அளவு கட்டுப்பாடு மற்றும் பாதுகாப்பான சமையல் பொருட்களுக்கான உணவுத் திட்டம்.",
-        picSports: "🏅 விளையாட்டு வலிமை",
-        picFood: "🥗 சத்தான உணவு",
-        picHealth: "🩺 உணவுப் பாதுகாப்பு",
-        picLife: "🌿 ஆரோக்கிய வாழ்க்கை",
+        brandTagline: "சரியான உணவு, ஆரோக்கியமான வாழ்வு • மருத்துவ & விளையாட்டு ஊட்டச்சத்து",
+        topPill: "✨ 22 இந்திய மொழிகள் • 255+ விளையாட்டுகள் • ஊட்டச்சத்து வழிகாட்டி",
+        heroHeading: '<em>மருத்துவ துல்லியம்</em> மற்றும் விளையாட்டு அறிவியலுடன் ஆரோக்கியம்',
+        heroSub: "உடல்நிலைக்கேற்ற உணவு பரிசோதனை, அளவு கட்டுப்பாடு மற்றும் பாதுகாப்பான சமையல் திட்டம்.",
         authTitle: "பாதுகாப்பான உள்நுழைவு / பதிவு",
-        authSub: "உங்கள் சுகாதார மற்றும் உணவு கணக்கில் உள்நுழையவும் அல்லது உருவாக்கவும்",
-        lblFullName: "முழு பெயர் (பதிவுக்கு அவசியம்)",
-        lblEmail: "மின்னஞ்சல் முகவரி",
-        lblPass: "கடவுச்சொல் (குறைந்தது 6 எழுத்துகள்)",
         btnLogin: "உள்நுழைக",
-        btnRegister: "கணக்கு உருவாக்கவும்",
-        tabCheck: "🔍 சரிபார்த்து சமைக்கவும்",
+        btnRegister: "கணக்கு உருவாக்குக",
+        tabKitchen: "🔍 சரிபார்த்து சமைக்கவும்",
         tabDaily: "📅 தினசரி உணவு",
         tabProfile: "👤 சுயவிவரம்",
         tabLogout: "வெளியேறு",
         profTitle: "உங்கள் சுயவிவரம்",
         lblDietType: "உணவு வகை",
-        lblConditions: "மருத்துவ நிலைகள் / அறுவை சிகிச்சை வரலாறு",
         btnSaveProfile: "சுயவிவரத்தை சேமிக்கவும்",
-        kitchenTitle: "☑️ சமையலறை பொருட்களை சரிபார்த்து சமைக்கவும்",
-        kitchenSub: "உங்களிடம் உள்ள பொருட்களைத் தேர்ந்தெடுக்கவும் (சிவப்பு தடைசெய்யப்பட்டவை முடக்கப்பட்டுள்ளன)",
+        kitchenTitle: "☑️ சமையலறை பொருட்களை சரிபார்க்கவும்",
         btnClearTicks: "தேர்வுகளை நீக்கு",
-        btnCookSafe: "🍳 பாதுகாப்பான சமையல் குறிப்புகள்",
-        legGreen: "🟢 அனுமதிக்கப்பட்டது",
-        legYellow: "🟡 வரையறுக்கப்பட்ட அளவு அனுமதி",
-        legRed: "🔴 தடைசெய்யப்பட்டது / தேர்வு முடக்கம்",
-        recipeHeading: "🍲 பாதுகாப்பான சமையல் குறிப்புகள் (4–5 படிகள்)",
-        planHeading: "📅 தினசரி உணவு — தனிப்பயனாக்கப்பட்ட உணவு அட்டவணை",
-        aiBtn: "ஊட்டச்சத்து AI-யிடம் கேளுங்கள்",
-        badgeAllowed: "🟢 அனுமதி",
-        badgeLimited: "🟡 வரையறுக்கப்பட்ட",
-        badgeContra: "🔴 தடை"
+        btnCookSafe: "🍳 பாதுகாப்பான உணவுகள்",
+        legGreen: "🟢 அனுமதிக்கப்பட்டது (பாதுகாப்பானது)",
+        legYellow: "🟡 வரையறுக்கப்பட்ட அளவு",
+        legRed: "🔴 தவிர்க்க வேண்டியது (தடுக்கப்பட்டது)",
+        dailyTitle: "📅 தினசரி உணவு — காலை, மதியம், மாலை, இரவு",
+        dailySub: "துல்லியமான அளவு மற்றும் 5 எளிய செய்முறை படிகளுடன்.",
+        btnRefreshPlan: "🔄 திட்டத்தை புதுப்பி",
+        aiFab: "ஊட்டச்சத்து AI கேட்கவும்",
+        aiGreeting: "வணக்கம்! எந்த உணவு அல்லது விளையாட்டு ஊட்டச்சத்து பற்றியும் கேளுங்கள்.",
+        allowedBadge: "🟢 அனுமதிக்கப்பட்டது",
+        limitedBadge: "🟡 வரையறுக்கப்பட்ட அளவு",
+        contraBadge: "🔴 தவிர்க்க வேண்டியது",
+        blockedNote: "⛔ தேர்வு தடுக்கப்பட்டது — உங்கள் உடல்நிலைக்கு ஏற்றதல்ல",
+        allFoodCats: "🍽️ அனைத்து உணவு வகைகள்",
+        morningSlot: "🌅 காலை / பயிற்சிக்கு முன்",
+        afternoonSlot: "☀️ மதியம் / உணவு",
+        eveningSlot: "🌇 மாலை / மீட்பு மற்றும் சிற்றுண்டி",
+        nightSlot: "🌙 இரவு / இரவு உணவு",
+        qtyLabel: "அளவு",
+        stepsLabel: "5-படி செய்முறை",
+        step1: "தேவையான அளவை அளந்து சுத்தமாக கழுவவும்.",
+        step2: "காய்கறி, தானியம் அல்லது புரதத்தை நறுக்கி/ஊறவைத்து தயாரிக்கவும்.",
+        step3: "குறைந்த எண்ணெய் மற்றும் மிதமான மசாலாவுடன் வதக்கவும்.",
+        step4: "எளிதில் செரிக்க வேகவைக்கவும் அல்லது ஆவியில் வேகவைக்கவும்.",
+        step5: "பரிந்துரைக்கப்பட்ட அளவில் பரிமாறி உண்ணவும்."
       },
       te: {
-        brandName: "స్వస్థ ఆహార్ AI",
+        brandName: "స్వస్థ్ ఆహార్ AI",
         brandTagline: "సరైన ఆహారం, ఆరోగ్యకరమైన జీవితం • క్లినికల్ & స్పోర్ట్స్ న్యూట్రిషన్",
-        topPill: "✨ 22 భారతీయ భాషలు • 255+ క్రీడలు • క్లినికల్ & స్పోర్ట్స్ న్యూట్రిషన్",
-        heroSub: "ఆరోగ్య పరిస్థితులకు అనుగుణంగా ఆహార తనిఖీ, పరిమిత మోతాదు మరియు సురక్షిత వంట పదార్థాలతో ఆహార ప్రణాళిక.",
-        picSports: "🏅 క్రీడా శక్తి",
-        picFood: "🥗 ఆరోగ్యకర ఆహారం",
-        picHealth: "🩺 వైద్య భద్రత",
-        picLife: "🌿 చురుకైన జీవనం",
+        topPill: "✨ 22 భారతీయ భాషలు • 255+ క్రీడలు • పోషకాహార మార్గదర్శి",
+        heroHeading: '<em>వైద్య ఖచ్చితత్వం</em> మరియు క్రీడా శాస్త్రంతో ఆరోగ్యకరమైన పోషణ',
+        heroSub: "ఆరోగ్య స్థితి ఆధారంగా ఆహార తనిఖీ, మోతాదు నియంత్రణ మరియు సురక్షిత వంటకాల ప్రణాళిక.",
         authTitle: "సురక్షిత లాగిన్ / నమోదు",
-        authSub: "మీ ఆరోగ్య మరియు ఆహార ఖాతాలోకి లాగిన్ అవ్వండి లేదా కొత్త ఖాతా తెరవండి",
-        lblFullName: "పూర్తి పేరు (నమోదుకు తప్పనిసరి)",
-        lblEmail: "ఇమెయిల్ చిరునామా",
-        lblPass: "పాస్‌వర్డ్ (కనీసం 6 అక్షరాలు)",
-        btnLogin: "లాగిన్",
+        btnLogin: "లాగిన్ చేయండి",
         btnRegister: "ఖాతా సృష్టించండి",
-        tabCheck: "🔍 తనిఖీ & వంట",
+        tabKitchen: "🔍 తనిఖీ & వంట",
         tabDaily: "📅 రోజువారీ ఆహారం",
         tabProfile: "👤 ప్రొఫైల్",
-        tabLogout: "లాగ్ అవుట్",
+        tabLogout: "లాగ్అవుట్",
         profTitle: "మీ ప్రొఫైల్",
         lblDietType: "ఆహార రకం",
-        lblConditions: "ఆరోగ్య సమస్యలు / శస్త్రచికిత్స చరిత్ర",
         btnSaveProfile: "ప్రొఫైల్ సేవ్ చేయండి",
-        kitchenTitle: "☑️ వంటగది పదార్థాలను తనిఖీ చేసి వండండి",
-        kitchenSub: "మీ వద్ద ఉన్న పదార్థాలను ఎంచుకోండి (ఎరుపు నిషిద్ధ పదార్థాలు లాక్ చేయబడ్డాయి)",
-        btnClearTicks: "ఎంపికలు తొలగించండి",
+        kitchenTitle: "☑️ వంటగది పదార్థాలను తనిఖీ చేయండి",
+        btnClearTicks: "ఎంపికలు తీసివేయండి",
         btnCookSafe: "🍳 సురక్షిత వంటకాలు",
-        legGreen: "🟢 అనుమతించబడింది",
-        legYellow: "🟡 పరిమిత మోతాదులో అనుమతి",
-        legRed: "🔴 నిషిద్ధం / ఎంపిక నిలిపివేయబడింది",
-        recipeHeading: "🍲 సురక్షిత వంటకాలు (4–5 దశలు)",
-        planHeading: "📅 రోజువారీ ఆహారం — వ్యక్తిగత డైట్ చార్ట్",
-        aiBtn: "న్యూట్రిషన్ AI అడగండి",
-        badgeAllowed: "🟢 అనుమతి",
-        badgeLimited: "🟡 పరిమితం",
-        badgeContra: "🔴 నిషిద్ధం"
+        legGreen: "🟢 అనుమతించబడింది (సురక్షితం)",
+        legYellow: "🟡 పరిమిత మోతాదు",
+        legRed: "🔴 నిషిద్ధం (ఎంపిక నిలిపివేయబడింది)",
+        dailyTitle: "📅 రోజువారీ ఆహారం — ఉదయం, మధ్యాహ్నం, సాయంత్రం, రాత్రి",
+        dailySub: "ఖచ్చితమైన పరిమాణం మరియు 5 సులభమైన తయారీ దశలతో.",
+        btnRefreshPlan: "🔄 ప్రణాళిక పునరుద్ధరించండి",
+        aiFab: "న్యూట్రిషన్ AI అడగండి",
+        aiGreeting: "నమస్కారం! ఏ ఆహారం లేదా క్రీడ పోషకాహారం గురించైనా అడగండి.",
+        allowedBadge: "🟢 అనుమతించబడింది",
+        limitedBadge: "🟡 పరిమిత మోతాదు",
+        contraBadge: "🔴 నిషిద్ధం",
+        blockedNote: "⛔ ఎంపిక నిలిపివేయబడింది — మీ ఆరోగ్య స్థితికి తగినది కాదు",
+        allFoodCats: "🍽️ అన్ని ఆహార విభాగాలు",
+        morningSlot: "🌅 ఉదయం / వ్యాయామానికి ముందు",
+        afternoonSlot: "☀️ మధ్యాహ్నం / భోజనం",
+        eveningSlot: "🌇 సాయంత్రం / రికవరీ & స్నాక్",
+        nightSlot: "🌙 రాత్రి / రాత్రి భోజనం",
+        qtyLabel: "పరిమాణం",
+        stepsLabel: "5 దశల తయారీ విధానం",
+        step1: "సరైన పరిమాణాన్ని కొలిచి శుభ్రంగా కడగండి.",
+        step2: "కూరగాయలు, ధాన్యాలు లేదా ప్రోటీన్‌ను తరిగి/నానబెట్టి సిద్ధం చేయండి.",
+        step3: "తక్కువ నూనె మరియు తేలికపాటి మసాలాలతో వేయించండి.",
+        step4: "సులభంగా జీర్ణమయ్యేలా మెత్తగా ఉడికించండి లేదా ఆవిరిలో ఉడికించండి.",
+        step5: "సూచించిన మోతాదులో వడ్డించి ప్రశాంతంగా తినండి."
       },
       bn: {
-        brandName: "স্বাস্থ্য আহার AI",
-        brandTagline: "সঠিক আহার, সুস্থ জীবন • ক্লিনিক্যাল ও স্পোর্টস নিউট্রিশন",
-        topPill: "✨ 22টি ভারতীয় ভাষা • 255+ খেলাধুলা • ক্লিনিক্যাল ও স্পোর্টস নিউট্রিশন",
-        heroSub: "স্বাস্থ্যগত অবস্থা অনুযায়ী খাদ্য যাচাই, পরিমিত অংশ এবং নিরাপদ রান্নাঘরের উপাদান দিয়ে খাবার পরিকল্পনা।",
-        picSports: "🏅 ক্রীড়া শক্তি",
-        picFood: "🥗 পুষ্টিকর খাবার",
-        picHealth: "🩺 খাদ্য নিরাপত্তা",
-        picLife: "🌿 সুস্থ জীবনযাত্রা",
+        brandName: "স্বাস্থ্য আহার এআই (Swasth Aahar AI)",
+        brandTagline: "সঠিক আহার, সুস্থ জীবন • ক্লিনিক্যাল ও স্পোর্টস পুষ্টি",
+        topPill: "✨ ২২টি ভারতীয় ভাষা • ২৫৫+ খেলা • ক্লিনিক্যাল ও স্পোর্টস পুষ্টি",
+        heroHeading: '<em>ক্লিনিক্যাল নির্ভুলতা</em> ও ক্রীড়া বিজ্ঞানে দেহের সঠিক পুষ্টি',
+        heroSub: "স্বাস্থ্য অবস্থা অনুযায়ী খাদ্য যাচাই, পরিমিত অংশ এবং নিরাপদ রান্নার উপকরণে খাবার পরিকল্পনা।",
         authTitle: "নিরাপদ লগইন / রেজিস্ট্রেশন",
-        authSub: "আপনার স্বাস্থ্য ও খাদ্য ভল্টে সাইন ইন করুন বা নতুন অ্যাকাউন্ট তৈরি করুন",
-        lblFullName: "পূর্ণ নাম (রেজিস্ট্রেশনের জন্য আবশ্যক)",
-        lblEmail: "ইমেইল ঠিকানা",
-        lblPass: "পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)",
         btnLogin: "সাইন ইন",
         btnRegister: "অ্যাকাউন্ট তৈরি করুন",
-        tabCheck: "🔍 যাচাই ও রান্না",
+        tabKitchen: "🔍 যাচাই ও রান্না",
         tabDaily: "📅 দৈনিক আহার",
         tabProfile: "👤 প্রোফাইল",
         tabLogout: "লগআউট",
         profTitle: "আপনার প্রোফাইল",
-        lblDietType: "খাদ্যাভ্যাসের ধরন",
-        lblConditions: "স্বাস্থ্যগত অবস্থা / অস্ত্রোপচারের ইতিহাস",
+        lblDietType: "খাদ্যাভ্যাস",
         btnSaveProfile: "প্রোফাইল সংরক্ষণ করুন",
-        kitchenTitle: "☑️ রান্নাঘরের উপাদান যাচাই ও রান্না করুন",
-        kitchenSub: "আপনার কাছে থাকা উপাদান টিক দিন (লাল নিষিদ্ধ উপাদান নির্বাচন বন্ধ)",
+        kitchenTitle: "☑️ রান্নাঘরের উপকরণ যাচাই করুন",
         btnClearTicks: "টিক মুছুন",
-        btnCookSafe: "🍳 নিরাপদ রেসিপি",
-        legGreen: "🟢 অনুমোদিত",
-        legYellow: "🟡 সীমিত পরিমাণে অনুমোদিত",
-        legRed: "🔴 নিষিদ্ধ / নির্বাচন বন্ধ",
-        recipeHeading: "🍲 নিরাপদ ও পরিমিত রেসিপি (৪–৫ ধাপ)",
-        planHeading: "📅 দৈনিক আহার — ব্যক্তিগত ডায়েট চার্ট",
-        aiBtn: "নিউট্রিশন AI-কে জিজ্ঞাসা করুন",
-        badgeAllowed: "🟢 অনুমোদিত",
-        badgeLimited: "🟡 সীমিত",
-        badgeContra: "🔴 নিষিদ্ধ"
+        btnCookSafe: "🍳 নিরাপদ রেসিপি তৈরি করুন",
+        legGreen: "🟢 অনুমোদিত (নিরাপদ)",
+        legYellow: "🟡 সীমিত পরিমাণ",
+        legRed: "🔴 নিষিদ্ধ (টিক দেওয়া যাবে না)",
+        dailyTitle: "📅 দৈনিক আহার — সকাল, দুপুর, সন্ধ্যা ও রাত",
+        dailySub: "সঠিক পরিমাণ ও ৫টি সহজ রান্নার ধাপসহ।",
+        btnRefreshPlan: "🔄 পরিকল্পনা আপডেট করুন",
+        aiFab: "পুষ্টি এআই জিজ্ঞাসা করুন",
+        aiGreeting: "নমস্কার! যেকোনো খাবার বা খেলার পুষ্টি সম্পর্কে জানতে চান?",
+        allowedBadge: "🟢 অনুমোদিত",
+        limitedBadge: "🟡 সীমিত পরিমাণ",
+        contraBadge: "🔴 নিষিদ্ধ",
+        blockedNote: "⛔ নির্বাচন নিষিদ্ধ — আপনার স্বাস্থ্য অবস্থার জন্য উপযুক্ত নয়",
+        allFoodCats: "🍽️ সব খাদ্য বিভাগ",
+        morningSlot: "🌅 সকাল / অনুশীলনের আগে",
+        afternoonSlot: "☀️ দুপুর / দুপুরের খাবার",
+        eveningSlot: "🌇 সন্ধ্যা / রিকভারি ও স্ন্যাক",
+        nightSlot: "🌙 রাত / রাতের খাবার",
+        qtyLabel: "পরিমাণ",
+        stepsLabel: "৫ ধাপে প্রস্তুত প্রণালী",
+        step1: "সঠিক পরিমাণে উপকরণ মেপে পরিষ্কার জলে ধুয়ে নিন।",
+        step2: "সবজি, শস্য বা প্রোটিন কেটে বা ভিজিয়ে প্রস্তুত করুন।",
+        step3: "সামান্য তেল ও হালকা মশলায় ভেজে নিন।",
+        step4: "সহজে হজম হওয়ার মতো নরম করে সেদ্ধ বা ভাপিয়ে নিন।",
+        step5: "নির্দিষ্ট পরিমাণে পরিবেশন করে শান্তভাবে খান।"
       },
       gu: {
         brandName: "સ્વસ્થ આહાર AI",
-        brandTagline: "યોગ્ય આહાર, સ્વસ્થ જીવન • ક્લિનિકલ અને સ્પોર્ટ્સ ન્યુટ્રિશન",
-        topPill: "✨ 22 ભારતીય ભાષાઓ • 255+ રમતો • ક્લિનિકલ અને સ્પોર્ટ્સ ન્યુટ્રિશન",
-        heroSub: "આરોગ્ય સ્થિતિ અનુસાર ખોરાક ચકાસણી, નિયંત્રિત પ્રમાણ અને સુરક્ષિત રસોડા સામગ્રી સાથે આહાર આયોજન.",
-        picSports: "🏅 રમતગમત શક્તિ",
-        picFood: "🥗 પૌષ્ટિક ખોરાક",
-        picHealth: "🩺 આરોગ્ય સુરક્ષા",
-        picLife: "🌿 સક્રિય જીવન",
-        authTitle: "સુરક્ષિત લોગીન / નોંધણી",
-        authSub: "તમારા આરોગ્ય અને આહાર વૉલ્ટમાં સાઇન ઇન કરો અથવા એકાઉન્ટ બનાવો",
-        lblFullName: "પૂરું નામ (નોંધણી માટે જરૂરી)",
-        lblEmail: "ઈમેલ સરનામું",
-        lblPass: "પાસવર્ડ (ઓછામાં ઓછા 6 અક્ષરો)",
-        btnLogin: "સાઇન ઇન",
-        btnRegister: "એકાઉન્ટ બનાવો",
-        tabCheck: "🔍 ચકાસો અને રાંધો",
+        brandTagline: "યોગ્ય આહાર, સ્વસ્થ જીવન • ક્લિનિકલ અને સ્પોર્ટ્સ પોષણ",
+        topPill: "✨ ૨૨ ભારતીય ભાષાઓ • ૨૫૫+ રમતો • પોષણ માર્ગદર્શિકા",
+        heroHeading: '<em>ક્લિનિકલ ચોકસાઈ</em> અને રમત વિજ્ઞાન સાથે સ્વસ્થ પોષણ',
+        heroSub: "આરોગ્ય સ્થિતિ મુજબ ખોરાક ચકાસણી, નિયંત્રિત માત્રા અને સુરક્ષિત રસોઈ સામગ્રીમાંથી ભોજન યોજના.",
+        authTitle: "સુરક્ષિત લોગિન / નોંધણી",
+        btnLogin: "લોગિન કરો",
+        btnRegister: "ખાતું બનાવો",
+        tabKitchen: "🔍 ચકાસો અને રાંધો",
         tabDaily: "📅 દૈનિક આહાર",
         tabProfile: "👤 પ્રોફાઇલ",
         tabLogout: "લોગઆઉટ",
         profTitle: "તમારી પ્રોફાઇલ",
         lblDietType: "આહારનો પ્રકાર",
-        lblConditions: "આરોગ્ય સ્થિતિઓ / સર્જરી ઇતિહાસ",
         btnSaveProfile: "પ્રોફાઇલ સાચવો",
-        kitchenTitle: "☑️ રસોડાની સામગ્રી ચકાસો અને રાંધો",
-        kitchenSub: "તમારી પાસે રહેલી વસ્તુઓ પસંદ કરો (લાલ પ્રતિબંધિત વસ્તુઓ પસંદ કરી શકાશે નહીં)",
+        kitchenTitle: "☑️ રસોડાની સામગ્રી ચકાસો",
         btnClearTicks: "પસંદગી ભૂંસો",
-        btnCookSafe: "🍳 સુરક્ષિત વાનગીઓ",
-        legGreen: "🟢 માન્ય",
-        legYellow: "🟡 મર્યાદિત માત્રામાં માન્ય",
-        legRed: "🔴 પ્રતિબંધિત / પસંદગી બંધ",
-        recipeHeading: "🍲 સુરક્ષિત વાનગીઓ (4–5 પગલાં)",
-        planHeading: "📅 દૈનિક આહાર — વ્યક્તિગત ડાયટ ચાર્ટ",
-        aiBtn: "ન્યુટ્રિશન AI ને પૂછો",
-        badgeAllowed: "🟢 માન્ય",
-        badgeLimited: "🟡 મર્યાદિત",
-        badgeContra: "🔴 પ્રતિબંધિત"
+        btnCookSafe: "🍳 સુરક્ષિત વાનગીઓ બનાવો",
+        legGreen: "🟢 માન્ય (સુરક્ષિત)",
+        legYellow: "🟡 મર્યાદિત માત્રા",
+        legRed: "🔴 પ્રતિબંધિત (પસંદગી બંધ)",
+        dailyTitle: "📅 દૈનિક આહાર — સવાર, બપોર, સાંજ અને રાત્રિ",
+        dailySub: "ચોક્કસ માત્રા અને ૫ સરળ બનાવવાની રીત સાથે.",
+        btnRefreshPlan: "🔄 યોજના અપડેટ કરો",
+        aiFab: "પોષણ AI ને પૂછો",
+        aiGreeting: "નમસ્તે! કોઈપણ ખોરાક અથવા રમતના પોષણ વિશે પૂછો.",
+        allowedBadge: "🟢 માન્ય",
+        limitedBadge: "🟡 મર્યાદિત માત્રા",
+        contraBadge: "🔴 પ્રતિબંધિત",
+        blockedNote: "⛔ પસંદગી પ્રતિબંધિત — તમારી સ્થિતિ માટે યોગ્ય નથી",
+        allFoodCats: "🍽️ બધા ખોરાક વિભાગ",
+        morningSlot: "🌅 સવાર / કસરત પહેલાં",
+        afternoonSlot: "☀️ બપોર / ભોજન",
+        eveningSlot: "🌇 સાંજ / રિકવરી અને નાસ્તો",
+        nightSlot: "🌙 રાત્રિ / રાત્રિ ભોજન",
+        qtyLabel: "માત્રા",
+        stepsLabel: "૫ પગલાંમાં બનાવવાની રીત",
+        step1: "ચોક્કસ માત્રા માપીને સ્વચ્છ પાણીથી ધોઈ લો.",
+        step2: "શાકભાજી, અનાજ અથવા પ્રોટીન સમારી/પલાળીને તૈયાર કરો.",
+        step3: "ઓછા તેલ અને હળવા મસાલા સાથે સાંતળો.",
+        step4: "સરળતાથી પચે તે રીતે નરમ રાંધો અથવા વરાળથી પકાવો.",
+        step5: "નિર્ધારિત માત્રામાં પીરસીને શાંતિથી જમો."
       },
       pa: {
         brandName: "ਸਵਸਥ ਆਹਾਰ AI",
-        brandTagline: "ਸਹੀ ਆਹਾਰ, ਸਿਹਤਮੰਦ ਜੀਵਨ • ਕਲੀਨਿਕਲ ਅਤੇ ਸਪੋਰਟਸ ਨਿਊਟ੍ਰੀਸ਼ਨ",
-        topPill: "✨ 22 ਭਾਰਤੀ ਭਾਸ਼ਾਵਾਂ • 255+ ਖੇਡਾਂ • ਕਲੀਨਿਕਲ ਅਤੇ ਸਪੋਰਟਸ ਨਿਊਟ੍ਰੀਸ਼ਨ",
-        heroSub: "ਸਿਹਤ ਸਥਿਤੀਆਂ ਅਨੁਸਾਰ ਭੋਜਨ ਜਾਂਚ, ਨਿਯੰਤਰਿਤ ਮਾਤਰਾ ਅਤੇ ਸੁਰੱਖਿਅਤ ਰਸੋਈ ਸਮੱਗਰੀ ਨਾਲ ਖੁਰਾਕ ਯੋਜਨਾ।",
-        picSports: "🏅 ਖੇਡ ਤਾਕਤ",
-        picFood: "🥗 ਪੌਸ਼ਟਿਕ ਭੋਜਨ",
-        picHealth: "🩺 ਸਿਹਤ ਸੁਰੱਖਿਆ",
-        picLife: "🌿 ਸਰਗਰਮ ਜੀਵਨ",
+        brandTagline: "ਸਹੀ ਖੁਰਾਕ, ਸਿਹਤਮੰਦ ਜੀਵਨ • ਕਲੀਨਿਕਲ ਅਤੇ ਖੇਡ ਪੋਸ਼ਣ",
+        topPill: "✨ 22 ਭਾਰਤੀ ਭਾਸ਼ਾਵਾਂ • 255+ ਖੇਡਾਂ • ਪੋਸ਼ਣ ਗਾਈਡ",
+        heroHeading: '<em>ਕਲੀਨਿਕਲ ਸਟੀਕਤਾ</em> ਅਤੇ ਖੇਡ ਵਿਗਿਆਨ ਨਾਲ ਸਿਹਤਮੰਦ ਪੋਸ਼ਣ',
+        heroSub: "ਸਿਹਤ ਸਥਿਤੀ ਅਨੁਸਾਰ ਭੋਜਨ ਜਾਂਚ, ਸਹੀ ਮਾਤਰਾ ਅਤੇ ਸੁਰੱਖਿਅਤ ਰਸੋਈ ਸਮੱਗਰੀ ਨਾਲ ਖੁਰਾਕ ਯੋਜਨਾ।",
         authTitle: "ਸੁਰੱਖਿਅਤ ਲੌਗਇਨ / ਰਜਿਸਟ੍ਰੇਸ਼ਨ",
-        authSub: "ਆਪਣੇ ਸਿਹਤ ਅਤੇ ਖੁਰਾਕ ਵਾਲਟ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ ਜਾਂ ਖਾਤਾ ਬਣਾਓ",
-        lblFullName: "ਪੂਰਾ ਨਾਮ (ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਲਈ ਜ਼ਰੂਰੀ)",
-        lblEmail: "ਈਮੇਲ ਪਤਾ",
-        lblPass: "ਪਾਸਵਰਡ (ਘੱਟੋ-ਘੱਟ 6 ਅੱਖਰ)",
         btnLogin: "ਸਾਈਨ ਇਨ",
         btnRegister: "ਖਾਤਾ ਬਣਾਓ",
-        tabCheck: "🔍 ਜਾਂਚੋ ਅਤੇ ਪਕਾਓ",
+        tabKitchen: "🔍 ਜਾਂਚੋ ਅਤੇ ਪਕਾਓ",
         tabDaily: "📅 ਰੋਜ਼ਾਨਾ ਆਹਾਰ",
         tabProfile: "👤 ਪ੍ਰੋਫਾਈਲ",
         tabLogout: "ਲੌਗਆਊਟ",
         profTitle: "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ",
         lblDietType: "ਖੁਰਾਕ ਦੀ ਕਿਸਮ",
-        lblConditions: "ਸਿਹਤ ਸਥਿਤੀਆਂ / ਸਰਜਰੀ ਦਾ ਇਤਿਹਾਸ",
         btnSaveProfile: "ਪ੍ਰੋਫਾਈਲ ਸੁਰੱਖਿਅਤ ਕਰੋ",
-        kitchenTitle: "☑️ ਰਸੋਈ ਸਮੱਗਰੀ ਜਾਂਚੋ ਅਤੇ ਪਕਾਓ",
-        kitchenSub: "ਮੌਜੂਦ ਸਮੱਗਰੀ ਚੁਣੋ (ਲਾਲ ਵਰਜਿਤ ਚੀਜ਼ਾਂ ਦੀ ਚੋਣ ਬੰਦ ਹੈ)",
+        kitchenTitle: "☑️ ਰਸੋਈ ਦੀ ਸਮੱਗਰੀ ਜਾਂਚੋ",
         btnClearTicks: "ਚੋਣ ਸਾਫ਼ ਕਰੋ",
-        btnCookSafe: "🍳 ਸੁਰੱਖਿਅਤ ਪਕਵਾਨ",
-        legGreen: "🟢 ਮਨਜ਼ੂਰ",
-        legYellow: "🟡 ਸੀਮਤ ਮਾਤਰਾ ਮਨਜ਼ੂਰ",
-        legRed: "🔴 ਵਰਜਿਤ / ਚੋਣ ਬੰਦ",
-        recipeHeading: "🍲 ਸੁਰੱਖਿਅਤ ਪਕਵਾਨ (4–5 ਪੜਾਅ)",
-        planHeading: "📅 ਰੋਜ਼ਾਨਾ ਆਹਾਰ — ਨਿੱਜੀ ਡਾਈਟ ਚਾਰਟ",
-        aiBtn: "ਨਿਊਟ੍ਰੀਸ਼ਨ AI ਨੂੰ ਪੁੱਛੋ",
-        badgeAllowed: "🟢 ਮਨਜ਼ੂਰ",
-        badgeLimited: "🟡 ਸੀਮਤ",
-        badgeContra: "🔴 ਵਰਜਿਤ"
+        btnCookSafe: "🍳 ਸੁਰੱਖਿਅਤ ਪਕਵਾਨ ਬਣਾਓ",
+        legGreen: "🟢 ਮਨਜ਼ੂਰ (ਸੁਰੱਖਿਅਤ)",
+        legYellow: "🟡 ਸੀਮਤ ਮਾਤਰਾ",
+        legRed: "🔴 ਵਰਜਿਤ (ਚੋਣ ਬੰਦ)",
+        dailyTitle: "📅 ਰੋਜ਼ਾਨਾ ਆਹਾਰ — ਸਵੇਰ, ਦੁਪਹਿਰ, ਸ਼ਾਮ ਅਤੇ ਰਾਤ",
+        dailySub: "ਸਹੀ ਮਾਤਰਾ ਅਤੇ 5 ਆਸਾਨ ਤਿਆਰੀ ਕਦਮਾਂ ਸਮੇਤ।",
+        btnRefreshPlan: "🔄 ਯੋਜਨਾ ਤਾਜ਼ਾ ਕਰੋ",
+        aiFab: "ਪੋਸ਼ਣ AI ਨੂੰ ਪੁੱਛੋ",
+        aiGreeting: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਕਿਸੇ ਵੀ ਭੋਜਨ ਜਾਂ ਖੇਡ ਦੇ ਪੋਸ਼ਣ ਬਾਰੇ ਪੁੱਛੋ।",
+        allowedBadge: "🟢 ਮਨਜ਼ੂਰ",
+        limitedBadge: "🟡 ਸੀਮਤ ਮਾਤਰਾ",
+        contraBadge: "🔴 ਵਰਜਿਤ",
+        blockedNote: "⛔ ਚੋਣ ਵਰਜਿਤ — ਤੁਹਾਡੀ ਸਿਹਤ ਸਥਿਤੀ ਲਈ ਢੁਕਵੀਂ ਨਹੀਂ",
+        allFoodCats: "🍽️ ਸਾਰੇ ਭੋਜਨ ਵਰਗ",
+        morningSlot: "🌅 ਸਵੇਰ / ਅਭਿਆਸ ਤੋਂ ਪਹਿਲਾਂ",
+        afternoonSlot: "☀️ ਦੁਪਹਿਰ / ਭੋਜਨ",
+        eveningSlot: "🌇 ਸ਼ਾਮ / ਰਿਕਵਰੀ ਅਤੇ ਸਨੈਕ",
+        nightSlot: "🌙 ਰਾਤ / ਰਾਤ ਦਾ ਖਾਣਾ",
+        qtyLabel: "ਮਾਤਰਾ",
+        stepsLabel: "5-ਕਦਮ ਤਿਆਰੀ ਵਿਧੀ",
+        step1: "ਸਹੀ ਮਾਤਰਾ ਮਿਣ ਕੇ ਸਾਫ਼ ਪਾਣੀ ਨਾਲ ਧੋ ਲਓ।",
+        step2: "ਸਬਜ਼ੀਆਂ, ਅਨਾਜ ਜਾਂ ਪ੍ਰੋਟੀਨ ਨੂੰ ਕੱਟ ਕੇ ਜਾਂ ਭਿਉਂ ਕੇ ਤਿਆਰ ਕਰੋ।",
+        step3: "ਘੱਟ ਤੇਲ ਅਤੇ ਹਲਕੇ ਮਸਾਲਿਆਂ ਨਾਲ ਭੁੰਨੋ।",
+        step4: "ਆਸਾਨੀ ਨਾਲ ਹਜ਼ਮ ਹੋਣ ਲਈ ਨਰਮ ਪਕਾਓ ਜਾਂ ਭਾਫ਼ ਦਿਓ।",
+        step5: "ਨਿਰਧਾਰਤ ਮਾਤਰਾ ਵਿੱਚ ਪਰੋਸ ਕੇ ਖਾਓ।"
       },
       ml: {
         brandName: "സ്വസ്ഥ് ആഹാർ AI",
-        brandTagline: "ശരിയായ ആഹാരം, ആരോഗ്യകരമായ ജീവിതം • ക്ലിനിക്കൽ & സ്പോർട്സ് ന്യൂട്രീഷൻ",
-        topPill: "✨ 22 ഇന്ത്യൻ ഭാഷകൾ • 255+ കായിക ഇനങ്ങൾ • ക്ലിനിക്കൽ & സ്പോർട്സ് ന്യൂട്രീഷൻ",
-        heroSub: "ആരോഗ്യാവസ്ഥയ്ക്കനുസരിച്ചുള്ള ഭക്ഷണ പരിശോധന, അളവ് നിയന്ത്രണം, സുരക്ഷിത ഭക്ഷണ ആസൂത്രണം.",
-        picSports: "🏅 കായിക കരുത്ത്",
-        picFood: "🥗 പോഷകസമൃദ്ധമായ ഭക്ഷണം",
-        picHealth: "🩺 ആരോഗ്യ സുരക്ഷ",
-        picLife: "🌿 സജീവ ജീവിതം",
+        brandTagline: "ശരിയായ ആഹാരം, ആരോഗ്യകരമായ ജീവിതം • ക്ലിനിക്കൽ & സ്പോർട്സ് പോഷകാഹാരം",
+        topPill: "✨ 22 ഇന്ത്യൻ ഭാഷകൾ • 255+ കായിക ഇനങ്ങൾ • പോഷകാഹാര ഗൈഡ്",
+        heroHeading: '<em>വൈദ്യശാസ്ത്ര കൃത്യതയും</em> കായിക ശാസ്ത്രവും ചേർന്ന പോഷണം',
+        heroSub: "ആരോഗ്യാവസ്ഥയ്ക്കനുസരിച്ചുള്ള ഭക്ഷണ പരിശോധന, അളവ് നിയന്ത്രണം, സുരക്ഷിത പാചക പദ്ധതി.",
         authTitle: "സുരക്ഷിത ലോഗിൻ / രജിസ്ട്രേഷൻ",
-        authSub: "നിങ്ങളുടെ ആരോഗ്യ ആഹാര അക്കൗണ്ടിലേക്ക് സൈൻ ഇൻ ചെയ്യുക അല്ലെങ്കിൽ തുടങ്ങുക",
-        lblFullName: "മുഴുവൻ പേര് (രജിസ്ട്രേഷന് ആവശ്യമാണ്)",
-        lblEmail: "ഇമെയിൽ വിലാസം",
-        lblPass: "പാസ്‌വേഡ് (കുറഞ്ഞത് 6 അക്ഷരങ്ങൾ)",
-        btnLogin: "സൈൻ ഇൻ",
-        btnRegister: "അക്കൗണ്ട് തുടങ്ങുക",
-        tabCheck: "🔍 പരിശോധിക്കുക & പാചകം",
+        btnLogin: "ലോഗിൻ",
+        btnRegister: "അക്കൗണ്ട് ഉണ്ടാക്കുക",
+        tabKitchen: "🔍 പരിശോധിച്ച് പാചകം ചെയ്യുക",
         tabDaily: "📅 ദൈനംദിന ആഹാരം",
         tabProfile: "👤 പ്രൊഫൈൽ",
-        tabLogout: "ലോഗ് ഔട്ട്",
+        tabLogout: "ലോഗൗട്ട്",
         profTitle: "നിങ്ങളുടെ പ്രൊഫൈൽ",
         lblDietType: "ഭക്ഷണ രീതി",
-        lblConditions: "ആരോഗ്യ പ്രശ്നങ്ങൾ / ശസ്ത്രക്രിയ ചരിത്രം",
         btnSaveProfile: "പ്രൊഫൈൽ സേവ് ചെയ്യുക",
-        kitchenTitle: "☑️ അടുക്കള ചേരുവകൾ പരിശോധിച്ച് പാചകം ചെയ്യുക",
-        kitchenSub: "കയ്യിലുള്ള ചേരുവകൾ തിരഞ്ഞെടുക്കുക (ചുവപ്പ് നിരോധിത ഇനങ്ങൾ ലോക്ക് ചെയ്തിരിക്കുന്നു)",
+        kitchenTitle: "☑️ അടുക്കളയിലെ ചേരുവകൾ പരിശോധിക്കുക",
         btnClearTicks: "തിരഞ്ഞെടുപ്പ് മാറ്റുക",
-        btnCookSafe: "🍳 സുരക്ഷിത പാചകക്കുറിപ്പുകൾ",
-        legGreen: "🟢 അനുവദനീയം",
-        legYellow: "🟡 പരിമിത അളവിൽ അനുവദനീയം",
-        legRed: "🔴 നിരോധിതം / തിരഞ്ഞെടുക്കാനാവില്ല",
-        recipeHeading: "🍲 സുരക്ഷിത പാചകക്കുറിപ്പുകൾ (4–5 ഘട്ടങ്ങൾ)",
-        planHeading: "📅 ദൈനംദിന ആഹാരം — വ്യക്തിഗത ഡയറ്റ് ചാർട്ട്",
-        aiBtn: "ന്യൂട്രീഷൻ AI-യോട് ചോദിക്കുക",
-        badgeAllowed: "🟢 അനുവദനീയം",
-        badgeLimited: "🟡 പരിമിതം",
-        badgeContra: "🔴 നിരോധിതം"
+        btnCookSafe: "🍳 സുരക്ഷിത വിഭവങ്ങൾ",
+        legGreen: "🟢 അനുവദനീയം (സുരക്ഷിതം)",
+        legYellow: "🟡 പരിമിത അളവ്",
+        legRed: "🔴 നിരോധിച്ചത് (തിരഞ്ഞെടുക്കാൻ കഴിയില്ല)",
+        dailyTitle: "📅 ദൈനംദിന ആഹാരം — രാവിലെ, ഉച്ചയ്ക്ക്, വൈകുന്നേരം, രാത്രി",
+        dailySub: "കൃത്യമായ അളവും 5 ലളിതമായ പാചക ഘട്ടങ്ങളും.",
+        btnRefreshPlan: "🔄 പ്ലാൻ പുതുക്കുക",
+        aiFab: "ന്യൂട്രീഷൻ AI ചോദിക്കുക",
+        aiGreeting: "നമസ്കാരം! ഏത് ഭക്ഷണത്തെയും കായിക പോഷകാഹാരത്തെയും കുറിച്ച് ചോദിക്കാം.",
+        allowedBadge: "🟢 അനുവദനീയം",
+        limitedBadge: "🟡 പരിമിത അളവ്",
+        contraBadge: "🔴 നിരോധിച്ചത്",
+        blockedNote: "⛔ തിരഞ്ഞെടുക്കൽ തടഞ്ഞിരിക്കുന്നു — നിങ്ങളുടെ ആരോഗ്യാവസ്ഥയ്ക്ക് അനുയോജ്യമല്ല",
+        allFoodCats: "🍽️ എല്ലാ ഭക്ഷണ വിഭാഗങ്ങളും",
+        morningSlot: "🌅 രാവിലെ / പരിശീലനത്തിന് മുമ്പ്",
+        afternoonSlot: "☀️ ഉച്ചയ്ക്ക് / ഉച്ചഭക്ഷണം",
+        eveningSlot: "🌇 വൈകുന്നേരം / റിക്കവറി & ലഘുഭക്ഷണം",
+        nightSlot: "🌙 രാത്രി / അത്താഴം",
+        qtyLabel: "അളവ്",
+        stepsLabel: "5-ഘട്ട പാചക രീതി",
+        step1: "കൃത്യമായ അളവ് എടുത്ത് ശുദ്ധജലത്തിൽ കഴുകുക.",
+        step2: "പച്ചക്കറികൾ, ധാന്യങ്ങൾ അല്ലെങ്കിൽ പ്രോട്ടീൻ അരിഞ്ഞ്/കുതിർത്ത് തയ്യാറാക്കുക.",
+        step3: "കുറഞ്ഞ എണ്ണയിലും മൃദുവായ മസാലയിലും വഴറ്റുക.",
+        step4: "എളുപ്പം ദഹിക്കാൻ പാകത്തിൽ വേവിക്കുക അല്ലെങ്കിൽ ആവിയിൽ വേവിക്കുക.",
+        step5: "നിർദ്ദേശിച്ച അളവിൽ വിളമ്പി കഴിക്കുക."
       },
       or: {
-        brandName: "ସ୍ଵସ୍ଥ ଆହାର AI",
-        brandTagline: "ସଠିକ୍ ଆହାର, ସୁସ୍ଥ ଜୀବନ • କ୍ଲିନିକାଲ୍ ଏବଂ ସ୍ପୋର୍ଟ୍ସ ନ୍ୟୁଟ୍ରିସନ୍",
-        topPill: "✨ 22 ଭାରତୀୟ ଭାଷା • 255+ କ୍ରୀଡ଼ା • କ୍ଲିନିକାଲ୍ ଏବଂ ସ୍ପୋର୍ଟ୍ସ ନ୍ୟୁଟ୍ରିସନ୍",
-        heroSub: "ସ୍ଵାସ୍ଥ୍ୟାବସ୍ଥା ଅନୁଯାୟୀ ଖାଦ୍ୟ ଯାଞ୍ଚ, ପରିମିତ ମାତ୍ରା ଏବଂ ସୁରକ୍ଷିତ ରୋଷେଇ ସାମଗ୍ରୀ ସହିତ ଖାଦ୍ୟ ଯୋଜନା।",
-        picSports: "🏅 କ୍ରୀଡ଼ା ଶକ୍ତି",
-        picFood: "🥗 ପୁଷ୍ଟିକର ଖାଦ୍ୟ",
-        picHealth: "🩺 ସ୍ଵାସ୍ଥ୍ୟ ସୁରକ୍ଷା",
-        picLife: "🌿 ସକ୍ରିୟ ଜୀବନ",
+        brandName: "ସ୍ୱସ୍ଥ ଆହାର AI",
+        brandTagline: "ସଠିକ୍ ଆହାର, ସୁସ୍ଥ ଜୀବନ • କ୍ଲିନିକାଲ୍ ଏବଂ ସ୍ପୋର୍ଟସ୍ ପୋଷଣ",
+        topPill: "✨ ୨୨ ଭାରତୀୟ ଭାଷା • ୨୫୫+ କ୍ରୀଡ଼ା • ପୋଷଣ ମାର୍ଗଦର୍ଶିକା",
+        heroHeading: '<em>କ୍ଲିନିକାଲ୍ ସଠିକତା</em> ଏବଂ କ୍ରୀଡ଼ା ବିଜ୍ଞାନ ସହିତ ସୁସ୍ଥ ପୋଷଣ',
+        heroSub: "ସ୍ୱାସ୍ଥ୍ୟ ସ୍ଥିତି ଅନୁଯାୟୀ ଖାଦ୍ୟ ପରୀକ୍ଷା, ସୀମିତ ପରିମାଣ ଏବଂ ସୁରକ୍ଷିତ ରନ୍ଧା ଯୋଜନା।",
         authTitle: "ସୁରକ୍ଷିତ ଲଗଇନ୍ / ପଞ୍ଜୀକରଣ",
-        authSub: "ଆପଣଙ୍କ ସ୍ଵାସ୍ଥ୍ୟ ଏବଂ ଆହାର ଆକାଉଣ୍ଟରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ କିମ୍ବା ନୂଆ ଖାତା ଖୋଲନ୍ତୁ",
-        lblFullName: "ପୂର୍ଣ୍ଣ ନାମ (ପଞ୍ଜୀକରଣ ପାଇଁ ଆବଶ୍ୟକ)",
-        lblEmail: "ଇମେଲ୍ ଠିକଣା",
-        lblPass: "ପାସୱାର୍ଡ (ଅତିକମରେ 6 ଅକ୍ଷର)",
-        btnLogin: "ସାଇନ୍ ଇନ୍",
-        btnRegister: "ଖାତା ଖୋଲନ୍ତୁ",
-        tabCheck: "🔍 ଯାଞ୍ଚ ଓ ରୋଷେଇ",
+        btnLogin: "ଲଗଇନ୍",
+        btnRegister: "ଆକାଉଣ୍ଟ ତିଆରି କରନ୍ତୁ",
+        tabKitchen: "🔍 ଯାଞ୍ଚ ଓ ରାନ୍ଧନ୍ତୁ",
         tabDaily: "📅 ଦୈନିକ ଆହାର",
         tabProfile: "👤 ପ୍ରୋଫାଇଲ୍",
         tabLogout: "ଲଗଆଉଟ୍",
         profTitle: "ଆପଣଙ୍କ ପ୍ରୋଫାଇଲ୍",
         lblDietType: "ଆହାର ପ୍ରକାର",
-        lblConditions: "ସ୍ଵାସ୍ଥ୍ୟାବସ୍ଥା / ଅସ୍ତ୍ରୋପଚାର ଇତିହାସ",
-        btnSaveProfile: "ପ୍ରୋଫାଇଲ୍ ସଞ୍ଚୟ କରନ୍ତୁ",
-        kitchenTitle: "☑️ ରୋଷେଇ ସାମଗ୍ରୀ ଯାଞ୍ଚ ଓ ରୋଷେଇ କରନ୍ତୁ",
-        kitchenSub: "ଉପଲବ୍ଧ ସାମଗ୍ରୀ ବାଛନ୍ତୁ (ନାଲି ନିଷିଦ୍ଧ ସାମଗ୍ରୀ ଚୟନ ବନ୍ଦ ଅଛି)",
+        btnSaveProfile: "ପ୍ରୋଫାଇଲ୍ ସେଭ୍ କରନ୍ତୁ",
+        kitchenTitle: "☑️ ରୋଷେଇ ସାମଗ୍ରୀ ଯାଞ୍ଚ କରନ୍ତୁ",
         btnClearTicks: "ଚୟନ ହଟାନ୍ତୁ",
-        btnCookSafe: "🍳 ସୁରକ୍ଷିତ ରନ୍ଧା ପ୍ରଣାଳୀ",
-        legGreen: "🟢 ଅନୁମୋଦିତ",
-        legYellow: "🟡 ସୀମିତ ମାତ୍ରାରେ ଅନୁମୋଦିତ",
-        legRed: "🔴 ନିଷିଦ୍ଧ / ଚୟନ ବନ୍ଦ",
-        recipeHeading: "🍲 ସୁରକ୍ଷିତ ରନ୍ଧା ପ୍ରଣାଳୀ (4–5 ପର୍ଯ୍ୟାୟ)",
-        planHeading: "📅 ଦୈନିକ ଆହାର — ବ୍ୟକ୍ତିଗତ ଡାଏଟ୍ ଚାର୍ଟ",
-        aiBtn: "ନ୍ୟୁଟ୍ରିସନ୍ AI କୁ ପଚାରନ୍ତୁ",
-        badgeAllowed: "🟢 ଅନୁମୋଦିତ",
-        badgeLimited: "🟡 ସୀମିତ",
-        badgeContra: "🔴 ନିଷିଦ୍ଧ"
+        btnCookSafe: "🍳 ସୁରକ୍ଷିତ ବ୍ୟଞ୍ଜନ",
+        legGreen: "🟢 ଅନୁମୋଦିତ (ସୁରକ୍ଷିତ)",
+        legYellow: "🟡 ସୀମିତ ପରିମାଣ",
+        legRed: "🔴 ନିଷିଦ୍ଧ (ଚୟନ ବନ୍ଦ)",
+        dailyTitle: "📅 ଦୈନିକ ଆହାର — ସକାଳ, ଦ୍ୱିପ୍ରହର, ସନ୍ଧ୍ୟା ଓ ରାତି",
+        dailySub: "ସଠିକ୍ ପରିମାଣ ଏବଂ ୫ଟି ସହଜ ପ୍ରସ୍ତୁତି ସୋପାନ ସହିତ।",
+        btnRefreshPlan: "🔄 ଯୋଜନା ଅପଡେଟ୍ କରନ୍ତୁ",
+        aiFab: "ପୋଷଣ AI କୁ ପଚାରନ୍ତୁ",
+        aiGreeting: "ନମସ୍କାର! ଯେକୌଣସି ଖାଦ୍ୟ କିମ୍ବା କ୍ରୀଡ଼ା ପୋଷଣ ବିଷୟରେ ପଚାରନ୍ତୁ।",
+        allowedBadge: "🟢 ଅନୁମୋଦିତ",
+        limitedBadge: "🟡 ସୀମିତ ପରିମାଣ",
+        contraBadge: "🔴 ନିଷିଦ୍ଧ",
+        blockedNote: "⛔ ଚୟନ ନିଷିଦ୍ଧ — ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ସ୍ଥିତି ପାଇଁ ଉପଯୁକ୍ତ ନୁହେଁ",
+        allFoodCats: "🍽️ ସମସ୍ତ ଖାଦ୍ୟ ବର୍ଗ",
+        morningSlot: "🌅 ସକାଳ / ଅଭ୍ୟାସ ପୂର୍ବରୁ",
+        afternoonSlot: "☀️ ଦ୍ୱିପ୍ରହର / ମଧ୍ୟାହ୍ନ ଭୋଜନ",
+        eveningSlot: "🌇 ସନ୍ଧ୍ୟା / ରିକଭରୀ ଓ ଜଳଖିଆ",
+        nightSlot: "🌙 ରାତି / ରାତ୍ରୀ ଭୋଜନ",
+        qtyLabel: "ପରିମାଣ",
+        stepsLabel: "୫-ସୋପାନ ପ୍ରସ୍ତୁତି ପ୍ରଣାଳୀ",
+        step1: "ସଠିକ୍ ପରିମାଣ ମାପି ସଫା ପାଣିରେ ଧୋଇ ନିଅନ୍ତୁ।",
+        step2: "ପରିବା, ଶସ୍ୟ କିମ୍ବା ପ୍ରୋଟିନ୍ କାଟି/ଭିଜାଇ ପ୍ରସ୍ତୁତ କରନ୍ତୁ।",
+        step3: "ଅଳ୍ପ ତେଲ ଓ ହାଲୁକା ମସଲାରେ ଭାଜନ୍ତୁ।",
+        step4: " ସହଜରେ ହଜମ ହେବା ପରି ନରମ ସିଝାନ୍ତୁ କିମ୍ବା ବାମ୍ଫ ଦିଅନ୍ତୁ।",
+        step5: "ନିର୍ଦ୍ଧାରିତ ପରିମାଣରେ ପରଷି ଖାଆନ୍ତୁ।"
       },
       as: {
         brandName: "স্বাস্থ্য আহাৰ AI",
-        brandTagline: "সঠিক আহাৰ, সুস্থ জীৱন • ক্লিনিকেল আৰু স্পৰ্টছ নিউট্ৰিচন",
-        topPill: "✨ ২২টা ভাৰতীয় ভাষা • ২৫৫+ ক্ৰীড়া • ক্লিনিকেল আৰু স্পৰ্টছ নিউট্ৰিচন",
-        heroSub: "স্বাস্থ্যৰ অৱস্থা অনুসৰি খাদ্য পৰীক্ষা, পৰিমিত মাত্ৰা আৰু সুৰক্ষিত খাদ্য পৰিকল্পনা।",
-        picSports: "🏅 ক্ৰীড়া শক্তি",
-        picFood: "🥗 পুষ্টিকৰ আহাৰ",
-        picHealth: "🩺 খাদ্য সুৰক্ষা",
-        picLife: "🌿 সক্ৰিয় জীৱন",
-        authTitle: "সুৰক্ষিত লগ-ইন / পঞ্জীয়ন",
-        authSub: "আপোনাৰ স্বাস্থ্য আৰু আহাৰ একাউণ্টত ছাইন ইন কৰক বা নতুন একাউণ্ট খোলক",
-        lblFullName: "সম্পূৰ্ণ নাম (পঞ্জীয়নৰ বাবে প্ৰয়োজনীয়)",
-        lblEmail: "ইমেইল ঠিকনা",
-        lblPass: "পাছৱৰ্ড (অন্ততঃ ৬টা আখৰ)",
-        btnLogin: "ছাইন ইন",
-        btnRegister: "একাউণ্ট খোলক",
-        tabCheck: "🔍 পৰীক্ষা আৰু ৰন্ধা",
+        brandTagline: "সঠিক আহাৰ, সুস্থ জীৱন • ক্লিনিকেল আৰু স্পৰ্টছ পুষ্টি",
+        topPill: "✨ ২২টা ভাৰতীয় ভাষা • ২৫৫+ খেল • পুষ্টি নিৰ্দেশিকা",
+        heroHeading: '<em>ক্লিনিকেল নিখুঁততা</em> আৰু ক্ৰীড়া বিজ্ঞানৰ সৈতে সুষম পুষ্টি',
+        heroSub: "স্বাস্থ্য অৱস্থা অনুসৰি খাদ্য পৰীক্ষা, পৰিমিত অংশ আৰু নিৰাপদ ৰন্ধন পৰিকল্পনা।",
+        authTitle: "সুৰক্ষিত লগইন / পঞ্জীয়ন",
+        btnLogin: "লগইন",
+        btnRegister: "একাউণ্ট বনাওক",
+        tabKitchen: "🔍 পৰীক্ষা আৰু ৰন্ধা",
         tabDaily: "📅 দৈনিক আহাৰ",
         tabProfile: "👤 প্ৰফাইল",
-        tabLogout: "লগ-আউট",
+        tabLogout: "লগআউট",
         profTitle: "আপোনাৰ প্ৰফাইল",
         lblDietType: "আহাৰৰ ধৰণ",
-        lblConditions: "স্বাস্থ্যৰ অৱস্থা / অস্ত্ৰোপচাৰৰ ইতিহাস",
         btnSaveProfile: "প্ৰফাইল সংৰক্ষণ কৰক",
-        kitchenTitle: "☑️ পাকঘৰৰ সামগ্ৰী পৰীক্ষা আৰু ৰন্ধা",
-        kitchenSub: "উপলব্ধ সামগ্ৰী বাছনি কৰক (ৰঙা নিষিদ্ধ সামগ্ৰী নিৰ্বাচন বন্ধ)",
-        btnClearTicks: "বাছনি মচক",
-        btnCookSafe: "🍳 সুৰক্ষিত ৰন্ধা প্ৰণালী",
-        legGreen: "🟢 অনুমোদিত",
-        legYellow: "🟡 সীমিত মাত্ৰাত অনুমোদিত",
-        legRed: "🔴 নিষিদ্ধ / নিৰ্বাচন বন্ধ",
-        recipeHeading: "🍲 সুৰক্ষিত ৰন্ধা প্ৰণালী (৪–৫টা পদক্ষেপ)",
-        planHeading: "📅 দৈনিক আহাৰ — ব্যক্তিগত ডায়েট চাৰ্ট",
-        aiBtn: "নিউট্ৰিচন AI-ক সুধক",
-        badgeAllowed: "🟢 অনুমোদিত",
-        badgeLimited: "🟡 সীমিত",
-        badgeContra: "🔴 নিষিদ্ধ"
+        kitchenTitle: "☑️ পাকঘৰৰ সামগ্ৰী পৰীক্ষা কৰক",
+        btnClearTicks: "নিৰ্বাচন আঁতৰাওক",
+        btnCookSafe: "🍳 নিৰাপদ ৰেচিপি",
+        legGreen: "🟢 অনুমোদিত (নিৰাপদ)",
+        legYellow: "🟡 সীমিত পৰিমাণ",
+        legRed: "🔴 নিষিদ্ধ (নিৰ্বাচন বন্ধ)",
+        dailyTitle: "📅 দৈনিক আহাৰ — ৰাতিপুৱা, দুপৰীয়া, সন্ধিয়া আৰু ৰাতি",
+        dailySub: "সঠিক পৰিমাণ আৰু ৫টা সহজ প্ৰস্তুতি ধাপৰ সৈতে।",
+        btnRefreshPlan: "🔄 পৰিকল্পনা নবীকৰণ কৰক",
+        aiFab: "পুষ্টি AI-ক সোধক",
+        aiGreeting: "নমস্কাৰ! যিকোনো খাদ্য বা খেলৰ পুষ্টিৰ বিষয়ে সোধক।",
+        allowedBadge: "🟢 অনুমোদিত",
+        limitedBadge: "🟡 সীমিত পৰিমাণ",
+        contraBadge: "🔴 নিষিদ্ধ",
+        blockedNote: "⛔ নিৰ্বাচন নিষিদ্ধ — আপোনাৰ স্বাস্থ্য অৱস্থাৰ বাবে উপযুক্ত নহয়",
+        allFoodCats: "🍽️ সকলো খাদ্য শাখা",
+        morningSlot: "🌅 ৰাতিপুৱা / অনুশীলনৰ আগতে",
+        afternoonSlot: "☀️ দুপৰীয়া / আহাৰ",
+        eveningSlot: "🌇 সন্ধিয়া / ৰিকভাৰী আৰু জলপান",
+        nightSlot: "🌙 ৰাতি / নিশাৰ আহাৰ",
+        qtyLabel: "পৰিমাণ",
+        stepsLabel: "৫-ধাপ প্ৰস্তুতি পদ্ধতি",
+        step1: "সঠিক পৰিমাণ জুখি পৰিষ্কাৰ পানীৰে ধুই লওক।",
+        step2: "শাক-পাচলি, শস্য বা প্ৰটিন কাটি/তিয়াই সাজু কৰক।",
+        step3: "কম তেল আৰু লঘু মছলাৰে ভাজি লওক।",
+        step4: "সহজে হজম হোৱাকৈ কোমলকৈ সিজাওক বা ভাপ দিয়ক।",
+        step5: "নিৰ্ধাৰিত পৰিমাণত পৰিৱেশন কৰি খাওক।"
       },
       ur: {
         brandName: "سوستھ آہار AI",
         brandTagline: "صحیح غذا، صحت مند زندگی • کلینیکل اور اسپورٹس نیوٹریشن",
-        topPill: "✨ 22 بھارتی زبانیں • 255+ کھیل • کلینیکل اور اسپورٹس نیوٹریشن",
-        heroSub: "طبی حالت کے مطابق خوراک کی جانچ، متوازن مقدار اور محفوظ اجزاء سے ڈائٹ پلاننگ۔",
-        picSports: "🏅 کھیلوں کی طاقت",
-        picFood: "🥗 صحت بخش غذا",
-        picHealth: "🩺 غذائی تحفظ",
-        picLife: "🌿 فعال زندگی",
+        topPill: "✨ 22 بھارتی زبانیں • 255+ کھیل • غذائی رہنمائی",
+        heroHeading: '<em>طبی درستگی</em> اور اسپورٹس سائنس کے ساتھ بہترین غذا',
+        heroSub: "طبی حالت کے مطابق کھانے کی جانچ، مناسب مقدار اور محفوظ اجزاء سے ڈائٹ پلان۔",
         authTitle: "محفوظ لاگ ان / رجسٹریشن",
-        authSub: "اپنے ہیلتھ اور ڈائٹ اکاؤنٹ میں سائن ان کریں یا نیا اکاؤنٹ بنائیں",
-        lblFullName: "پورا نام (رجسٹریشن کے لیے ضروری)",
-        lblEmail: "ای میل ایڈریس",
-        lblPass: "پاس ورڈ (کم از کم 6 حروف)",
         btnLogin: "سائن ان",
         btnRegister: "اکاؤنٹ بنائیں",
-        tabCheck: "🔍 جانچ اور پکائیں",
-        tabDaily: "📅 روزانہ غذا",
+        tabKitchen: "🔍 جانچیں اور پکائیں",
+        tabDaily: "📅 روزانہ آہار",
         tabProfile: "👤 پروفائل",
         tabLogout: "لاگ آؤٹ",
-        profTitle: "آپ کی پروفائل",
+        profTitle: "آپ کا پروفائل",
         lblDietType: "غذا کی قسم",
-        lblConditions: "طبی حالات / سرجری کی تاریخ",
         btnSaveProfile: "پروفائل محفوظ کریں",
-        kitchenTitle: "☑️ کچن کے اجزاء جانچیں اور پکائیں",
-        kitchenSub: "موجود اجزاء منتخب کریں (سرخ ممنوعہ اشیاء کا انتخاب بند ہے)",
+        kitchenTitle: "☑️ باورچی خانے کے اجزاء جانچیں",
         btnClearTicks: "انتخاب ہٹائیں",
         btnCookSafe: "🍳 محفوظ ترکیبیں",
-        legGreen: "🟢 مجاز",
-        legYellow: "🟡 محدود مقدار میں مجاز",
-        legRed: "🔴 ممنوع / انتخاب بند",
-        recipeHeading: "🍲 محفوظ ترکیبیں (4–5 مراحل)",
-        planHeading: "📅 روزانہ غذا — ذاتی ڈائٹ چارٹ",
-        aiBtn: "نیوٹریشن AI سے پوچھیں",
-        badgeAllowed: "🟢 مجاز",
-        badgeLimited: "🟡 محدود",
-        badgeContra: "🔴 ممنوع"
+        legGreen: "🟢 اجازت ہے (محفوظ)",
+        legYellow: "🟡 محدود مقدار",
+        legRed: "🔴 ممنوع (انتخاب بند)",
+        dailyTitle: "📅 روزانہ آہار — صبح، دوپہر، شام اور رات",
+        dailySub: "درست مقدار اور 5 آسان تیاری کے مراحل کے ساتھ۔",
+        btnRefreshPlan: "🔄 پلان تازہ کریں",
+        aiFab: "نیوٹریشن AI سے پوچھیں",
+        aiGreeting: "آداب! کسی بھی غذا یا کھیل کی غذائیت کے بارے میں پوچھیں۔",
+        allowedBadge: "🟢 اجازت ہے",
+        limitedBadge: "🟡 محدود مقدار",
+        contraBadge: "🔴 ممنوع",
+        blockedNote: "⛔ انتخاب ممنوع ہے — آپ کی طبی حالت کے لیے موزوں نہیں",
+        allFoodCats: "🍽️ تمام غذائی اقسام",
+        morningSlot: "🌅 صبح / ورزش سے پہلے",
+        afternoonSlot: "☀️ دوپہر / کھانا",
+        eveningSlot: "🌇 شام / ریکوری اور اسنیک",
+        nightSlot: "🌙 رات / رات کا کھانا",
+        qtyLabel: "مقدار",
+        stepsLabel: "5 مراحل میں تیاری",
+        step1: "مناسب مقدار ناپ کر صاف پانی سے دھو لیں۔",
+        step2: "سبزی، اناج یا پروٹین کاٹ کر یا بھگو کر تیار کریں۔",
+        step3: "کم تیل اور ہلکے مصالحوں کے ساتھ پکائیں۔",
+        step4: "آسانی سے ہضم ہونے تک نرم پکائیں یا بھاپ دیں۔",
+        step5: "مقررہ مقدار میں پیش کریں اور کھائیں۔"
       },
       sa: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "समीचीन आहारः, स्वस्थ जीवनम् • स्वास्थ्य एवं क्रीडा पोषणम्",
-        topPill: "✨ २२ भारतीय भाषाः • २५५+ क्रीडाः • स्वास्थ्य एवं क्रीडा पोषणम्",
-        heroSub: "स्वास्थ्यस्थित्यनुसारं आहारपरीक्षणम्, परिमितमात्रा तथा सुरक्षितपाकयोजना।",
-        picSports: "🏅 क्रीडाबलम्",
-        picFood: "🥗 पौष्टिकाहारः",
-        picHealth: "🩺 स्वास्थ्यरक्षा",
-        picLife: "🌿 सक्रियजीवनम्",
+        brandName: "स्वस्थ आहार एआई",
+        brandTagline: "सही आहारः, स्वस्थ जीवनम् • चिकित्सा एवं क्रीडा पोषणम्",
+        topPill: "✨ २२ भारतीय भाषाः • २५५+ क्रीडाः • पोषणमार्गदर्शिका",
+        heroHeading: '<em>चिकित्सा-निष्ठतया</em> क्रीडाविज्ञानेन च शरीरपोषणम्',
+        heroSub: "स्वास्थ्यस्थित्यनुसारं भोज्यपरीक्षणम्, परिमितमात्रा, सुरक्षितपाकयोजना च।",
         authTitle: "सुरक्षितप्रवेशः / पञ्जीकरणम्",
-        authSub: "स्वस्वास्थ्य-आहारकोषे प्रविशतु अथवा नूतनकोषं रचयतु",
-        lblFullName: "पूर्णनाम (पञ्जीकरणाय आवश्यकम्)",
-        lblEmail: "ईमेल-सङ्केतः",
-        lblPass: "गुप्तशब्दः (न्यूनतमं ६ वर्णाः)",
-        btnLogin: "प्रविशतु",
-        btnRegister: "कोषं रचयतु",
-        tabCheck: "🔍 परीक्षणं पाकश्च",
-        tabDaily: "📅 दैनिकाहारः",
-        tabProfile: "👤 परिचयः",
-        tabLogout: "निर्गच्छतु",
-        profTitle: "भवतः परिचयः",
+        btnLogin: "प्रवेशः",
+        btnRegister: "खातं रचयतु",
+        tabKitchen: "🔍 परीक्ष्य पचतु",
+        tabDaily: "📅 दैनिक आहारः",
+        tabProfile: "👤 विवरणिका",
+        tabLogout: "निर्गमः",
+        profTitle: "भवतः विवरणिका",
         lblDietType: "आहारप्रकारः",
-        lblConditions: "स्वास्थ्यस्थितयः / शस्त्रक्रियाविवरणम्",
-        btnSaveProfile: "परिचयः रक्ष्यताम्",
-        kitchenTitle: "☑️ पाकद्रव्याणि परीक्ष्य पचतु",
-        kitchenSub: "उपलब्धद्रव्याणि चिनुत (निषिद्धानि द्रव्याणि अवरुद्धानि)",
-        btnClearTicks: "चयनं त्यजतु",
-        btnCookSafe: "🍳 सुरक्षितपाकविधयः",
-        legGreen: "🟢 अनुमतम्",
-        legYellow: "🟡 परिमितमात्रानुमतम्",
-        legRed: "🔴 निषिद्धम् / अवरुद्धम्",
-        recipeHeading: "🍲 सुरक्षितपाकविधयः (४–५ सोपानानि)",
-        planHeading: "📅 दैनिकाहारः — वैयक्तिकाहारसारणी",
-        aiBtn: "पोषण-AI पृच्छतु",
-        badgeAllowed: "🟢 अनुमतम्",
-        badgeLimited: "🟡 परिमितम्",
-        badgeContra: "🔴 निषिद्धम्"
-      },
-      kok: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "योग्य आहार, भलायकीपूर्ण जिवीत • क्लिनिकल आनी स्पोर्ट्स न्युट्रिशन",
-        topPill: "✨ 22 भारतीय भासो • 255+ खेळ • क्लिनिकल आनी स्पोर्ट्स न्युट्रिशन",
-        heroSub: "भलायकेचे स्थितीप्रमाण अन्न तपासणी, मर्यादित प्रमाण आनी सुरक्षित रांदपाची येवजण.",
-        picSports: "🏅 खेळ त्राण",
-        picFood: "🥗 पोशक जेवण",
-        picHealth: "🩺 भलायकी राखण",
-        picLife: "🌿 सक्रिय जिवीत",
-        authTitle: "सुरक्षित लॉगीन / नोंदणी",
-        authSub: "तुमच्या भलायकी आनी आहार खात्यांत सायन इन करात वा नवे खाते तयार करात",
-        lblFullName: "पुराय नांव (नोंदणीक गरजेचे)",
-        lblEmail: "ईमेल पत्ता",
-        lblPass: "पासवर्ड (कमीत कमी 6 अक्षरां)",
-        btnLogin: "सायन इन",
-        btnRegister: "खाते तयार करात",
-        tabCheck: "🔍 तपासात आनी रांदात",
-        tabDaily: "📅 दर दिसाचो आहार",
-        tabProfile: "👤 प्रोफाइल",
-        tabLogout: "लॉगआउट",
-        profTitle: "तुमचे प्रोफाइल",
-        lblDietType: "आहाराचो प्रकार",
-        lblConditions: "भलायकेच्यो स्थिती / शस्त्रक्रिया इतिहास",
-        btnSaveProfile: "प्रोफाइल सांबाळात",
-        kitchenTitle: "☑️ रांदपाचे घटक तपासात आनी रांदात",
-        kitchenSub: "आशिल्ले घटक निवडात (तांबडे निषिद्ध घटक बंद आसात)",
-        btnClearTicks: "निवड काडात",
-        btnCookSafe: "🍳 सुरक्षित पाककृती",
-        legGreen: "🟢 परवानगी आसा",
-        legYellow: "🟡 मर्यादित प्रमाणांत परवानगी",
-        legRed: "🔴 निषिद्ध / निवड बंद",
-        recipeHeading: "🍲 सुरक्षित पाककृती (4–5 पांवडो)",
-        planHeading: "📅 दर दिसाचो आहार — वैयक्तिक डायट चार्ट",
-        aiBtn: "न्युट्रिशन AIक विचारात",
-        badgeAllowed: "🟢 परवानगी",
-        badgeLimited: "🟡 मर्यादित",
-        badgeContra: "🔴 निषिद्ध"
-      },
-      mai: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "सही आहार, स्वस्थ जीवन • क्लिनिकल आ स्पोर्ट्स न्यूट्रिशन",
-        topPill: "✨ 22 भारतीय भाषा • 255+ खेल • क्लिनिकल आ स्पोर्ट्स न्यूट्रिशन",
-        heroSub: "स्वास्थ्य स्थितिक अनुसार भोजन जांच, नियंत्रित मात्रा आ सुरक्षित भोजन योजना।",
-        picSports: "🏅 खेल शक्ति",
-        picFood: "🥗 पौष्टिक भोजन",
-        picHealth: "🩺 स्वास्थ्य सुरक्षा",
-        picLife: "🌿 सक्रिय जीवन",
-        authTitle: "सुरक्षित लॉगिन / पंजीकरण",
-        authSub: "अपन स्वास्थ्य आ आहार खाता मे साइन इन करू वा नव खाता बनाउ",
-        lblFullName: "पूरा नाम (पंजीकरण लेल आवश्यक)",
-        lblEmail: "ईमेल पता",
-        lblPass: "पासवर्ड (कम सँ कम 6 अक्षर)",
-        btnLogin: "साइन इन",
-        btnRegister: "खाता बनाउ",
-        tabCheck: "🔍 जांचू आ पकाउ",
-        tabDaily: "📅 दैनिक आहार",
-        tabProfile: "👤 प्रोफाइल",
-        tabLogout: "लॉग आउट",
-        profTitle: "अपन प्रोफाइल",
-        lblDietType: "आहारक प्रकार",
-        lblConditions: "स्वास्थ्य स्थिति / सर्जरी इतिहास",
-        btnSaveProfile: "प्रोफाइल सहेजू",
-        kitchenTitle: "☑️ रसोई सामग्री जांचू आ पकाउ",
-        kitchenSub: "उपलब्ध सामग्री चुनू (लाल निषिद्ध सामग्री चयन बंद अछि)",
-        btnClearTicks: "चयन हटाउ",
-        btnCookSafe: "🍳 सुरक्षित रेसिपी",
-        legGreen: "🟢 अनुमति अछि",
-        legYellow: "🟡 सीमित मात्रामे अनुमति",
-        legRed: "🔴 निषिद्ध / चयन बंद",
-        recipeHeading: "🍲 सुरक्षित रेसिपी (4–5 चरण)",
-        planHeading: "📅 दैनिक आहार — व्यक्तिगत डाइट चार्ट",
-        aiBtn: "न्यूट्रिशन AI सँ पूछू",
-        badgeAllowed: "🟢 अनुमति",
-        badgeLimited: "🟡 सीमित",
-        badgeContra: "🔴 निषिद्ध"
-      },
-      ne: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "सही आहार, स्वस्थ जीवन • क्लिनिकल र स्पोर्ट्स न्युट्रिसन",
-        topPill: "✨ २२ भारतीय भाषा • २५५+ खेल • क्लिनिकल र स्पोर्ट्स न्युट्रिसन",
-        heroSub: "स्वास्थ्य अवस्था अनुसार खाना जाँच, नियन्त्रित मात्रा र सुरक्षित भान्सा सामग्रीको आहार योजना।",
-        picSports: "🏅 खेल शक्ति",
-        picFood: "🥗 स्वस्थ खाना",
-        picHealth: "🩺 स्वास्थ्य सुरक्षा",
-        picLife: "🌿 सक्रिय जीवन",
-        authTitle: "सुरक्षित लगइन / दर्ता",
-        authSub: "आफ्नो स्वास्थ्य र आहार खातामा साइन इन गर्नुहोस् वा नयाँ खाता बनाउनुहोस्",
-        lblFullName: "पूरा नाम (दर्ताका लागि आवश्यक)",
-        lblEmail: "इमेल ठेगाना",
-        lblPass: "पासवर्ड (कम्तीमा ६ अक्षर)",
-        btnLogin: "साइन इन",
-        btnRegister: "खाता बनाउनुहोस्",
-        tabCheck: "🔍 जाँच र पकाउनुहोस्",
-        tabDaily: "📅 दैनिक आहार",
-        tabProfile: "👤 प्रोफाइल",
-        tabLogout: "लगआउट",
-        profTitle: "तपाईंको प्रोफाइल",
-        lblDietType: "आहारको प्रकार",
-        lblConditions: "स्वास्थ्य अवस्था / शल्यक्रिया इतिहास",
-        btnSaveProfile: "प्रोफाइल सुरक्षित गर्नुहोस्",
-        kitchenTitle: "☑️ भान्सा सामग्री जाँच र पकाउनुहोस्",
-        kitchenSub: "उपलब्ध सामग्री छान्नुहोस् (रातो निषेधित सामग्री चयन बन्द छ)",
-        btnClearTicks: "छनोट हटाउनुहोस्",
-        btnCookSafe: "🍳 सुरक्षित रेसिपी",
-        legGreen: "🟢 अनुमति छ",
-        legYellow: "🟡 सीमित मात्रामा अनुमति",
-        legRed: "🔴 निषेधित / चयन बन्द",
-        recipeHeading: "🍲 सुरक्षित रेसिपी (४–५ चरण)",
-        planHeading: "📅 दैनिक आहार — व्यक्तिगत डाइट चार्ट",
-        aiBtn: "न्युट्रिसन AI लाई सोध्नुहोस्",
-        badgeAllowed: "🟢 अनुमति",
-        badgeLimited: "🟡 सीमित",
-        badgeContra: "🔴 निषेधित"
-      },
-      sd: {
-        brandName: "سوستھ آہار AI",
-        brandTagline: "صحيح غذا، صحتمند زندگي • ڪلينڪل ۽ اسپورٽس نيوٽريشن",
-        topPill: "✨ 22 ڀارتي ٻوليون • 255+ رانديون • ڪلينڪل ۽ اسپورٽس نيوٽريشن",
-        heroSub: "صحت جي حالت مطابق کاڌي جي چڪاس، محدود مقدار ۽ محفوظ کاڌي جي رٿابندي.",
-        picSports: "🏅 راندين جي طاقت",
-        picFood: "🥗 صحتمند کاڌو",
-        picHealth: "🩺 صحت تحفظ",
-        picLife: "🌿 سرگرم زندگي",
-        authTitle: "محفوظ لاگ ان / رجسٽريشن",
-        authSub: "پنھنجي صحت ۽ غذا اڪائونٽ ۾ سائن ان ڪريو يا نئون اڪائونٽ ٺاھيو",
-        lblFullName: "پورو نالو (رجسٽريشن لاءِ ضروري)",
-        lblEmail: "اي ميل پتو",
-        lblPass: "پاسورڊ (گھٽ ۾ گھٽ 6 اکر)",
-        btnLogin: "سائن ان",
-        btnRegister: "اڪائونٽ ٺاھيو",
-        tabCheck: "🔍 چڪاس ۽ پچايو",
-        tabDaily: "📅 روزاني غذا",
-        tabProfile: "👤 پروفائيل",
-        tabLogout: "لاگ آئوٽ",
-        profTitle: "توهان جي پروفائيل",
-        lblDietType: "غذا جو قسم",
-        lblConditions: "طبي حالتون / سرجري تاريخ",
-        btnSaveProfile: "پروفائيل محفوظ ڪريو",
-        kitchenTitle: "☑️ باورچیخاني جا جزا چڪاسيو ۽ پچايو",
-        kitchenSub: "موجود جزا چونڊيو (ڳاڙھيون منع ٿيل شيون چونڊڻ بند آھن)",
-        btnClearTicks: "چونڊ صاف ڪريو",
-        btnCookSafe: "🍳 محفوظ ترڪيبون",
-        legGreen: "🟢 جائز",
-        legYellow: "🟡 محدود مقدار ۾ جائز",
-        legRed: "🔴 منع ٿيل / چونڊ بند",
-        recipeHeading: "🍲 محفوظ ترڪيبون (4–5 مرحلا)",
-        planHeading: "📅 روزاني غذا — ذاتي ڊائٽ چارٽ",
-        aiBtn: "نيوٽريشن AI کان پڇو",
-        badgeAllowed: "🟢 جائز",
-        badgeLimited: "🟡 محدود",
-        badgeContra: "🔴 منع ٿيل"
-      },
-      doi: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "सही आहार, स्वस्थ जीवन • क्लिनिकल ते स्पोर्ट्स न्यूट्रिशन",
-        topPill: "✨ 22 भारतीय भाशावां • 255+ खेड्ढां • क्लिनिकल ते स्पोर्ट्स न्यूट्रिशन",
-        heroSub: "सेहत दी हालत मुजब खाना जांच, नियंत्रित मात्रा ते सुरक्षित रसोई सामग्री कन्नै डाइट योजना।",
-        picSports: "🏅 खेड्ढ ताकत",
-        picFood: "🥗 पौष्टिक खाना",
-        picHealth: "🩺 सेहत सुरक्षा",
-        picLife: "🌿 सक्रिय जीवन",
-        authTitle: "सुरक्षित लॉगिन / पंजीकरण",
-        authSub: "अपनी सेहत ते डाइट खाते च साइन इन करो या नवा खाता बनाओ",
-        lblFullName: "पूरा नांऽ (पंजीकरण लेई जरूरी)",
-        lblEmail: "ईमेल पता",
-        lblPass: "पासवर्ड (घट्टोघट्ट 6 अक्खर)",
-        btnLogin: "साइन इन",
-        btnRegister: "खाता बनाओ",
-        tabCheck: "🔍 जांचो ते पकाओ",
-        tabDaily: "📅 रोजाना आहार",
-        tabProfile: "👤 प्रोफाइल",
-        tabLogout: "लॉगआउट",
-        profTitle: "तुंदी प्रोफाइल",
-        lblDietType: "आहार दी किस्म",
-        lblConditions: "सेहत दियां हालत / सर्जरी इतिहास",
-        btnSaveProfile: "प्रोफाइल सहेजो",
-        kitchenTitle: "☑️ रसोई सामग्री जांचो ते पकाओ",
-        kitchenSub: "मजूद सामग्री चुनो (लाल मनाही आह्‌लियां चिजां दी चोन बंद ऐ)",
-        btnClearTicks: "चोन हटाओ",
-        btnCookSafe: "🍳 सुरक्षित पक्वान",
-        legGreen: "🟢 मंजूर",
-        legYellow: "🟡 सीमित मात्रा मंजूर",
-        legRed: "🔴 मनाही / चोन बंद",
-        recipeHeading: "🍲 सुरक्षित पक्वान (4–5 चरण)",
-        planHeading: "📅 रोजाना आहार — निजी डाइट चार्ट",
-        aiBtn: "न्यूट्रिशन AI गी पुच्छो",
-        badgeAllowed: "🟢 मंजूर",
-        badgeLimited: "🟡 सीमित",
-        badgeContra: "🔴 मनाही"
-      },
-      ks: {
-        brandName: "سوستھ آہار AI",
-        brandTagline: "صحیح غذا، صحت مند زندگی • کلینیکل تہٕ اسپورٹس نیوٹریشن",
-        topPill: "✨ 22 ہِندوستٲنۍ زَبانہٕ • 255+ کھیٚل • کلینیکل تہٕ اسپورٹس نیوٹریشن",
-        heroSub: "صحت چہِ حالتہِ مُطٲبِق غذاچ جانچ، مُناسب مقدار تہٕ مٲحول تہٕ صحت مند ڈائٹ پلاننگ۔",
-        picSports: "🏅 کھیٚل طاقت",
-        picFood: "🥗 صحت بخش غذا",
-        picHealth: "🩺 صحت حفاظت",
-        picLife: "🌿 سرگرم زندگی",
-        authTitle: "محفوظ لاگ ان / رجسٹریشن",
-        authSub: "پننہِ صحت تہٕ ڈائٹ کھاتس منز سائن ان کریو یا نوٚو کھاتہٕ بنائیو",
-        lblFullName: "پوٚر ناو (رجسٹریشن خٲطرٕ ضۆروری)",
-        lblEmail: "ای میل پتہٕ",
-        lblPass: "پاس ورڈ (کم از کم 6 اَکھر)",
-        btnLogin: "سائن ان",
-        btnRegister: "کھاتہٕ بنائیو",
-        tabCheck: "🔍 جانچ تہٕ پکاوِو",
-        tabDaily: "📅 دۄہَن ہُنٛد غذا",
-        tabProfile: "👤 پروفائل",
-        tabLogout: "لاگ آؤٹ",
-        profTitle: "تُہُنٛز پروفائل",
-        lblDietType: "غذاچ قٕسم",
-        lblConditions: "طبی حالات / سرجری ہُنٛد تاریخ",
-        btnSaveProfile: "پروفائل محفوٗظ کریو",
-        kitchenTitle: "☑️ کچن اجزا جانچِو تہٕ پکاوِو",
-        kitchenSub: "مۆجوٗد اجزا ژٲرِو (وۄزُل ممنوعہ چیٖزَن ہُنٛد اِنتِخاب بند چھُ)",
-        btnClearTicks: "اِنتِخاب صاف کریو",
-        btnCookSafe: "🍳 محفوٗظ ترکیبہٕ",
-        legGreen: "🟢 مجاز",
-        legYellow: "🟡 مَحدوٗد مقدارَس منز مجاز",
-        legRed: "🔴 ممنوع / اِنتِخاب بند",
-        recipeHeading: "🍲 محفوٗظ ترکیبہٕ (4–5 مرحلہٕ)",
-        planHeading: "📅 دۄہَن ہُنٛد غذا — ذٲتی ڈائٹ چارٹ",
-        aiBtn: "نیوٹریشن AI یَس پُرٛچھِو",
-        badgeAllowed: "🟢 مجاز",
-        badgeLimited: "🟡 مَحدوٗد",
-        badgeContra: "🔴 ممنوع"
-      },
-      mni: {
-        brandName: "স্বস্থ আহার AI",
-        brandTagline: "চুম্বা চিনজাক, হকচাং ফবা পুন্সি • ক্লিনিক্যাল অমসুং স্পোর্টস ন্যুট্রিশন",
-        topPill: "✨ ২২ ভারতকী লোল • ২৫৫+ শান্নবশিং • ক্লিনিক্যাল অমসুং স্পোর্টস ন্যুট্রিশন",
-        heroSub: "হকচাংগী ফীভমগী মতুং ইন্না চিনজাক য়েংশিনবা, চাং নাইবা অমসুং শাফবা চিনজাক্কী থৌরাং।",
-        picSports: "🏅 শান্নবগী পাঙ্গল",
-        picFood: "🥗 হকচাং ফবা চিনজাক",
-        picHealth: "🩺 হকচাং ঙাকপা",
-        picLife: "🌿 থৌনা ফবা পুন্সি",
-        authTitle: "লোগইন / রেজিস্ট্রেশন",
-        authSub: "অদোমগী হকচাং অমসুং চিনজাক একাউন্টতা সাইন ইন তৌবিয়ু নত্ত্রগা অনৌবা শেম্বিয়ু",
-        lblFullName: "মপুং ফাবা মিং (রেজিস্ট্রেশনগী মথৌ তাই)",
-        lblEmail: "ইমেল এড্রেস",
-        lblPass: "পাসৱার্ড (অদুমক ৬ ময়েক)",
-        btnLogin: "সাইন ইন",
-        btnRegister: "একাউন্ট শেম্বিয়ু",
-        tabCheck: "🔍 য়েংশিনবা অমসুং থোংবা",
-        tabDaily: "📅 নুমিৎ খুদিংগী চিনজাক",
-        tabProfile: "👤 প্রোফাইল",
-        tabLogout: "লোগআউট",
-        profTitle: "অদোমগী প্রোফাইল",
-        lblDietType: "চিনজাক্কী মখল",
-        lblConditions: "হকচাংগী ফীভম / অপরেসনগী ৱারী",
-        btnSaveProfile: "প্রোফাইল সেভ তৌবিয়ু",
-        kitchenTitle: "☑️ য়ুমথোং পোতলমশিং য়েংশিনবা অমসুং থোংবা",
-        kitchenSub: "লৈবা পোতলমশিং খনবিয়ু (অঙাংবা য়াদবা পোতলমশিং খনবা থিংলে)",
-        btnClearTicks: "খনবা ককথত্পা",
-        btnCookSafe: "🍳 শাফবা থোংবগী মওং",
-        legGreen: "🟢 য়াবা",
-        legYellow: "🟡 চাং নাইনা য়াবা",
-        legRed: "🔴 য়াদবা / খনবা থিংলে",
-        recipeHeading: "🍲 শাফবা থোংবগী মওং (৪–৫ তাঙ্কক)",
-        planHeading: "📅 নুমিৎ খুদিংগী চিনজাক — মশাগী দাইট চার্ট",
-        aiBtn: "ন্যুট্রিশন AI হংবিয়ু",
-        badgeAllowed: "🟢 য়াবা",
-        badgeLimited: "🟡 চাং নাইনা",
-        badgeContra: "🔴 য়াদবা"
-      },
-      sat: {
-        brandName: "ᱥᱣᱟᱥᱛᱷ ᱟᱦᱟᱨ AI",
-        brandTagline: "ᱴᱷᱤᱠ ᱡᱚᱢ, ᱵᱷᱟᱹᱜᱤ ᱡᱤᱭᱚᱱ • ᱠᱞᱤᱱᱤᱠᱟᱞ ᱟᱨ ᱥᱯᱚᱨᱴᱥ ᱱᱤᱭᱩᱴᱨᱤᱥᱚᱱ",
-        topPill: "✨ 22 ᱵᱷᱟᱨᱚᱛᱤᱭᱟᱹ ᱯᱟᱹᱨᱥᱤ • 255+ ᱠᱷᱮᱞ • ᱠᱞᱤᱱᱤᱠᱟᱞ ᱟᱨ ᱥᱯᱚᱨᱴᱥ ᱱᱤᱭᱩᱴᱨᱤᱥᱚᱱ",
-        heroSub: "ᱦᱚᱲᱢᱚ ᱦᱟᱞᱚᱛ ᱞᱮᱠᱟᱛᱮ ᱡᱚᱢᱟᱜ ᱵᱤᱰᱟᱹᱣ, ᱥᱟᱹᱦᱤ ᱡᱚᱠᱷᱟ ᱟᱨ ᱵᱟᱧᱪᱟᱣ ᱡᱚᱢ ᱥᱟᱯᱲᱟᱣ᱾",
-        picSports: "🏅 ᱠᱷᱮᱞ ᱫᱟᱲᱮ",
-        picFood: "🥗 ᱥᱟᱠᱟᱢ ᱡᱚᱢᱟᱜ",
-        picHealth: "🩺 ᱦᱚᱲᱢᱚ ᱥᱩᱨᱚᱠᱷᱟ",
-        picLife: "🌿 ᱠᱟᱹᱢᱤ ᱡᱤᱭᱚᱱ",
-        authTitle: "ᱵᱟᱧᱪᱟᱣ ᱞᱚᱜᱤᱱ / ᱨᱮᱡᱤᱥᱴᱨᱮᱥᱚᱱ",
-        authSub: "ᱟᱢᱟᱜ ᱦᱚᱲᱢᱚ ᱟᱨ ᱡᱚᱢ ᱠᱷᱟᱛᱟ ᱨᱮ ᱥᱟᱭᱤᱱ ᱤᱱ ᱢᱮ ᱥᱮ ᱱᱟᱣᱟ ᱠᱷᱟᱛᱟ ᱵᱮᱱᱟᱣ ᱢᱮ",
-        lblFullName: "ᱯᱩᱨᱟᱹ ᱧᱩᱛᱩᱢ (ᱨᱮᱡᱤᱥᱴᱨᱮᱥᱚᱱ ᱞᱟᱹᱜᱤᱫ ᱞᱟᱹᱠᱛᱤᱭᱟᱱ)",
-        lblEmail: "ᱤᱢᱮᱞ ᱴᱷᱤᱠᱟᱹᱱᱟ",
-        lblPass: "ᱯᱟᱥᱣᱟᱨᱰ (ᱠᱚᱢ ᱥᱮ ᱠᱚᱢ 6 ᱟᱠᱷᱚᱨ)",
-        btnLogin: "ᱥᱟᱭᱤᱱ ᱤᱱ",
-        btnRegister: "ᱠᱷᱟᱛᱟ ᱵᱮᱱᱟᱣ ᱢᱮ",
-        tabCheck: "🔍 ᱵᱤᱰᱟᱹᱣ ᱟᱨ ᱤᱥᱤᱱ",
-        tabDaily: "📅 ᱫᱤᱱᱟᱹᱢ ᱡᱚᱢ",
-        tabProfile: "👤 ᱯᱨᱚᱯᱷᱟᱭᱤᱞ",
-        tabLogout: "ᱞᱚᱜᱽ ᱟᱣᱩᱴ",
-        profTitle: "ᱟᱢᱟᱜ ᱯᱨᱚᱯᱷᱟᱭᱤᱞ",
-        lblDietType: "ᱡᱚᱢᱟᱜ ᱞᱮᱠᱟᱱ",
-        lblConditions: "ᱦᱚᱲᱢᱚ ᱦᱟᱞᱚᱛ / ᱚᱯᱟᱨᱮᱥᱚᱱ ᱱᱟᱜᱟᱢ",
-        btnSaveProfile: "ᱯᱨᱚᱯᱷᱟᱭᱤᱞ ᱥᱟᱺᱪᱟᱣ ᱢᱮ",
-        kitchenTitle: "☑️ ᱵᱟᱲᱜᱮ ᱡᱤᱱᱤᱥ ᱵᱤᱰᱟᱹᱣ ᱟᱨ ᱤᱥᱤᱱ ᱢᱮ",
-        kitchenSub: "ᱢᱮᱱᱟᱜ ᱡᱤᱱᱤᱥ ᱵᱟᱪᱷᱟᱣ ᱢᱮ (ᱟᱨᱟᱜ ᱵᱟᱝ ᱵᱟᱹᱜᱤ ᱡᱤᱱᱤᱥ ᱵᱟᱪᱷᱟᱣ ᱵᱚᱱᱫᱚ ᱜᱮᱭᱟ)",
-        btnClearTicks: "ᱵᱟᱪᱷᱟᱣ ᱚᱪᱚᱜ ᱢᱮ",
-        btnCookSafe: "🍳 ᱵᱟᱧᱪᱟᱣ ᱨᱮᱥᱤᱯᱤ",
-        legGreen: "🟢 ᱦᱩᱭᱩᱜᱼᱟ",
-        legYellow: "🟡 ᱠᱚᱢ ᱡᱚᱠᱷᱟ ᱦᱩᱭᱩᱜᱼᱟ",
-        legRed: "🔴 ᱵᱟᱝ ᱦᱩᱭᱩᱜᱼᱟ / ᱵᱟᱪᱷᱟᱣ ᱵᱚᱱᱫᱚ",
-        recipeHeading: "🍲 ᱵᱟᱧᱪᱟᱣ ᱨᱮᱥᱤᱯᱤ (4–5 ᱛᱟᱲᱟ)",
-        planHeading: "📅 ᱫᱤᱱᱟᱹᱢ ᱡᱚᱢ — ᱱᱤᱡᱮᱨᱟᱜ ᱰᱟᱭᱮᱴ ᱪᱟᱨᱴ",
-        aiBtn: "ᱱᱤᱭᱩᱴᱨᱤᱥᱚᱱ AI ᱠᱩᱞᱤ ᱢᱮ",
-        badgeAllowed: "🟢 ᱦᱩᱭᱩᱜᱼᱟ",
-        badgeLimited: "🟡 ᱠᱚᱢ ᱡᱚᱠᱷᱟ",
-        badgeContra: "🔴 ᱵᱟᱝ ᱦᱩᱭᱩᱜᱼᱟ"
-      },
-      brx: {
-        brandName: "स्वस्थ आहार AI",
-        brandTagline: "थार आदार, मोजां जिउ • क्लिनिकल आरो स्पोर्ट्स निउट्रिसन",
-        topPill: "✨ २२ भारतारि राव • २५५+ गेलेनाय • क्लिनिकल आरो स्पोर्ट्स निउट्रिसन",
-        heroSub: "हग्रामायारि थासारि बादियै जामुन नायनाय, रुजु मात्रा आरो रैखाथि गोनां जामुन थिन्नाय।",
-        picSports: "🏅 गेलेनाय गोहो",
-        picFood: "🥗 गोखों जामुन",
-        picHealth: "🩺 हग्रामा रैखाथि",
-        picLife: "🌿 गोरोबथा जिउ",
-        authTitle: "रैखाथि गोनां ल'गइन / रेजिसट्रेसन",
-        authSub: "नोंनि हग्रामा आरो आदार एकाउन्टआव साइन इन खालाम एबा गोदान एकाउन्ट सोरजि",
-        lblFullName: "आबुं मुं (रेजिसट्रेसननि थाखाय गोनां)",
-        lblEmail: "इमेल थिसन",
-        lblPass: "पासवर्ड (खमबो ६ हांखो)",
-        btnLogin: "साइन इन",
-        btnRegister: "एकाउन्ट सोरजि",
-        tabCheck: "🔍 नाय आरो सं",
-        tabDaily: "📅 सानफ्रोमनि आदार",
-        tabProfile: "👤 प्र'फायल",
-        tabLogout: "ल'गआउट",
-        profTitle: "नोंनि प्र'फायल",
-        lblDietType: "आदारनि रोखोम",
-        lblConditions: "हग्रामायारि थासारि / सालायारि जारिमिन",
-        btnSaveProfile: "प्र'फायल थिना दोन",
-        kitchenTitle: "☑️ संनाय मुवा नाय आरो सं",
-        kitchenSub: "थानो गोनां मुवा सायख' (गोथां हेंथा होजानाय मुवा सायख'नाय बन्द)",
-        btnClearTicks: "सायख'नाय हुखुम",
-        btnCookSafe: "🍳 रैखाथि गोनां संनाय राहा",
-        legGreen: "🟢 गनायजानाय",
-        legYellow: "🟡 थोजासे मात्रायै गनायजानाय",
-        legRed: "🔴 हेंथा होजानाय / सायख'नाय बन्द",
-        recipeHeading: "🍲 रैखाथि गोनां संनाय राहा (४–५ थाखो)",
-        planHeading: "📅 सानफ्रोमनि आदार — गावनि दायत सार्ट",
-        aiBtn: "निउट्रिसन AI-खौ सों",
-        badgeAllowed: "🟢 गनायजानाय",
-        badgeLimited: "🟡 थोजासे",
-        badgeContra: "🔴 हेंथा होजानाय"
+        btnSaveProfile: "विवरणिकां रक्षतु",
+        kitchenTitle: "☑️ पाकशालासामग्रीं परीक्ष्यताम्",
+        btnClearTicks: "चयनं निरस्यतु",
+        btnCookSafe: "🍳 सुरक्षितव्यञ्जनानि",
+        legGreen: "🟢 अनुमतम् (सुरक्षितम्)",
+        legYellow: "🟡 सीमितमात्रा",
+        legRed: "🔴 वर्जितम् (चयनं रुद्धम्)",
+        dailyTitle: "📅 दैनिक आहारः — प्रातः, मध्याह्नः, सायम्, रात्रौ",
+        dailySub: "उचितमात्रया पञ्चसोपानपाकविधिना च सह।",
+        btnRefreshPlan: "🔄 योजनां नवीकुरुत",
+        aiFab: "पोषण-एआई पृच्छतु",
+        aiGreeting: "नमस्कारः! कस्यापि भोज्यस्य क्रीडापोषणस्य वा विषये पृच्छतु।",
+        allowedBadge: "🟢 अनुमतम्",
+        limitedBadge: "🟡 सीमितमात्रा",
+        contraBadge: "🔴 वर्जितम्",
+        blockedNote: "⛔ चयनं वर्जितम् — स्वास्थ्यस्थित्यै न युक्तम्",
+        allFoodCats: "🍽️ सर्वे आहारवर्गाः",
+        morningSlot: "🌅 प्रातः / व्यायामात् पूर्वम्",
+        afternoonSlot: "☀️ मध्याह्नः / भोजनम्",
+        eveningSlot: "🌇 सायम् / विश्रान्तिः अल्पाहारश्च",
+        nightSlot: "🌙 रात्रौ / रात्रिभोजनम्",
+        qtyLabel: "मात्रा",
+        stepsLabel: "पञ्चसोपानपाकविधिः",
+        step1: "समीचीनां मात्रां मापयित्वा स्वच्छजलेन प्रक्षालयतु।",
+        step2: "शाकानि धान्यानि वा कर्तयित्वा/आर्द्रयित्वा सज्जीकुरुत।",
+        step3: "अल्पतैलेन मृदुमसालैश्च संस्करोतु।",
+        step4: "सुखपाचनार्थं मृदु पचतु वाष्पेण वा साधयतु।",
+        step5: "उचितमात्रायां परिवेष्य शान्त्या भुङ्क्ष्व।"
       }
     };
 
-    function tText(key) {
-      const pack = I18N[activeLang] || I18N.en;
-      return pack[key] || I18N.en[key] || "";
-    }
+    // Fallback generator for any remaining Indian language code so 100% of options work cleanly
+    const INDIAN_LANG_BASE = {
+      kok: "hi", mai: "hi", ne: "hi", doi: "hi", ks: "hi", brx: "hi",
+      sd: "ur", mni: "bn", sat: "bn"
+    };
 
-    function applyTranslations() {
-      document.documentElement.lang = activeLang;
-      document.documentElement.dir = RTL_LANGS.has(activeLang) ? "rtl" : "ltr";
-
-      document.querySelectorAll("[data-t]").forEach(el => {
-        const k = el.getAttribute("data-t");
-        const val = tText(k);
-        if (val) {
-          if (k === "heroHeading") {
-            el.innerHTML = val;
-          } else {
-            el.textContent = val;
-          }
-        }
-      });
-
-      renderFoodCategoryTabs();
-      renderIngredients();
+    function getPack(lang) {
+      if (UI_I18N[lang]) return { ...UI_I18N.en, ...UI_I18N[lang] };
+      const base = INDIAN_LANG_BASE[lang] || "en";
+      return { ...UI_I18N.en, ...(UI_I18N[base] || {}) };
     }
 
     function setAppLanguage(langCode) {
       activeLang = langCode || "en";
-      const topSel = document.getElementById("langTop");
-      const dashSel = document.getElementById("langDash");
-      if (topSel) topSel.value = activeLang;
-      if (dashSel) dashSel.value = activeLang;
-      applyTranslations();
+      document.getElementById("langTop").value = activeLang;
+      document.getElementById("langDash").value = activeLang;
+
+      const pack = getPack(activeLang);
+      document.querySelectorAll("[data-t]").forEach(el => {
+        const key = el.getAttribute("data-t");
+        if (pack[key] !== undefined) {
+          el.innerHTML = pack[key];
+        }
+      });
+
+      const feed = document.getElementById("aiFeed");
+      if (feed && feed.children.length === 0) {
+        feed.innerHTML = `<div class="bubble bot">${pack.aiGreeting}</div>`;
+      }
+
+      renderFoodCategoryTabs();
+      renderIngredients();
+      updateSportGuideline();
+      if (document.getElementById("viewPlan").classList.contains("active")) {
+        generateDietChart();
+      }
     }
 
     // =========================================================================
-    // 2. CATEGORIZED CLINICAL CONDITIONS
+    // 3. CATEGORIZED CLINICAL CONDITIONS
     // =========================================================================
     const CONDITION_GROUPS = {
       "Renal": [
@@ -1864,7 +1698,7 @@
     };
 
     // =========================================================================
-    // 3. 255+ SPORTS CATALOG
+    // 4. 255+ SPORTS CATALOG ACROSS ALL CATEGORIES
     // =========================================================================
     const SPORTS_CATALOG = {
       "Strength, Power & Throws (24)": [
@@ -1972,7 +1806,7 @@
     };
 
     // =========================================================================
-    // 4. UNIVERSAL FOOD DATABASE
+    // 5. EXPANDED UNIVERSAL FOOD DATABASE
     // =========================================================================
     const FOOD_CATEGORIES = [
       "Vegetables",
@@ -2111,7 +1945,7 @@
     ];
 
     // =========================================================================
-    // 5. INITIALIZATION & LOGO MOUNTING
+    // 6. INITIALIZATION & LOGO MOUNTING
     // =========================================================================
     function mountBrandLogos() {
       const tpl = document.getElementById("swasthLogoSvgTemplate");
@@ -2130,8 +1964,7 @@
       renderCategorizedConditions();
       populateSportsSelect("");
       updateSportGuideline();
-      renderFoodCategoryTabs();
-      renderIngredients();
+      setAppLanguage("en");
       initSupabase();
     });
 
@@ -2322,14 +2155,15 @@
     }
 
     // =========================================================================
-    // 6. CATEGORIZED KITCHEN TICK-BOX + BLOCKING RED CONTRAINDICATED FOODS
+    // 7. CATEGORIZED KITCHEN TICK-BOX & 3-TIER TRAFFIC LIGHT SCREENING
     // =========================================================================
     function renderFoodCategoryTabs() {
+      const pack = getPack(activeLang);
       const bar = document.getElementById("foodCatTabs");
       const allCats = ["ALL", ...FOOD_CATEGORIES];
       bar.innerHTML = allCats.map(c => `
         <button type="button" class="cat-filter-btn ${activeFoodCategory === c ? "active" : ""}" onclick="setFoodCat('${c}')">
-          ${c === "ALL" ? "🍽️ All Food Sections" : c}
+          ${c === "ALL" ? pack.allFoodCats : c}
         </button>
       `).join("");
     }
@@ -2388,6 +2222,7 @@
     }
 
     function renderIngredients() {
+      const pack = getPack(activeLang);
       const q = (document.getElementById("ingSearch").value || "").toLowerCase().trim();
       const mount = document.getElementById("categorizedIngredientsMount");
       const catsToShow = activeFoodCategory === "ALL" ? FOOD_CATEGORIES : [activeFoodCategory];
@@ -2401,24 +2236,24 @@
           <div class="food-section-block">
             <div class="food-section-title">
               <span>${cat}</span>
-              <span style="font-size:0.76rem;font-weight:700;color:#166534;">${items.length} items</span>
+              <span style="font-size:0.76rem;font-weight:700;color:#166534;">${items.length}</span>
             </div>
             <div class="ing-grid">
               ${items.map(item => {
                 const r = checkRisk(item);
-                const isContra = r.level === "contraindicated";
-                if (isContra && tickedIngredients.has(item.id)) {
+                const isBlocked = r.level === "contraindicated";
+                if (isBlocked && tickedIngredients.has(item.id)) {
                   tickedIngredients.delete(item.id);
                 }
-                const ticked = !isContra && tickedIngredients.has(item.id);
+                const ticked = !isBlocked && tickedIngredients.has(item.id);
 
-                let badgeHtml = `<span class="badge b-allowed">${tText("badgeAllowed")}</span>`;
-                if (isContra) badgeHtml = `<span class="badge b-contra">${tText("badgeContra")} • Locked</span>`;
-                else if (r.level === "limited") badgeHtml = `<span class="badge b-limited">${tText("badgeLimited")}</span>`;
+                let badgeHtml = `<span class="badge b-allowed">${pack.allowedBadge}</span>`;
+                if (isBlocked) badgeHtml = `<span class="badge b-contra">${pack.contraBadge}</span>`;
+                else if (r.level === "limited") badgeHtml = `<span class="badge b-limited">${pack.limitedBadge}</span>`;
 
                 return `
-                  <label class="ing-tile ${r.level} ${ticked ? "ticked" : ""}" aria-disabled="${isContra}">
-                    <input type="checkbox" ${ticked ? "checked" : ""} ${isContra ? "disabled" : ""} onchange="onTick('${item.id}')" onclick="if(${isContra}){ event.preventDefault(); notifyBlocked('${item.id}'); }" />
+                  <label class="ing-tile ${r.level} ${ticked ? "ticked" : ""}" ${isBlocked ? 'aria-disabled="true"' : ""}>
+                    <input type="checkbox" ${ticked ? "checked" : ""} ${isBlocked ? "disabled" : ""} onchange="onTick('${item.id}')" />
                     <div style="flex:1;">
                       <div style="font-weight:700;font-size:0.87rem;">${item.name}</div>
                       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
@@ -2426,7 +2261,7 @@
                         <small style="color:var(--muted);font-weight:700;">${item.prot}g P</small>
                       </div>
                       ${r.level === "limited" && r.portion ? `<span class="portion-tag">⚖️ ${r.portion}</span>` : ""}
-                      ${isContra ? `<span class="portion-tag" style="color:#991b1b;">🚫 Selection blocked</span>` : ""}
+                      ${isBlocked ? `<span class="blocked-tag">${pack.blockedNote}</span>` : ""}
                     </div>
                   </label>
                 `;
@@ -2439,26 +2274,19 @@
       mount.innerHTML = html || `<p style="color:var(--muted);padding:1rem;">No matching food items found.</p>`;
     }
 
-    function notifyBlocked(id) {
-      const item = INGREDIENTS.find(i => i.id === id);
-      if (!item) return;
-      const r = checkRisk(item);
-      const banner = document.getElementById("liveWarnBanner");
-      banner.style.display = "block";
-      banner.style.background = "#fee2e2";
-      banner.style.color = "#991b1b";
-      banner.textContent = `🚫 SELECTION BLOCKED — ${item.name} is Contraindicated for you: ${r.reason}`;
-    }
-
     function onTick(id) {
       const item = INGREDIENTS.find(i => i.id === id);
       if (!item) return;
       const r = checkRisk(item);
       const banner = document.getElementById("liveWarnBanner");
 
+      // Prevent ticking red/contraindicated items
       if (r.level === "contraindicated") {
         tickedIngredients.delete(id);
-        notifyBlocked(id);
+        banner.style.display = "block";
+        banner.style.background = "#fee2e2";
+        banner.style.color = "#991b1b";
+        banner.textContent = `🔴 ${item.name}: ${r.reason}`;
         renderIngredients();
         return;
       }
@@ -2471,10 +2299,10 @@
         banner.style.display = "block";
         if (r.level === "limited") {
           banner.style.background = "#fef3c7"; banner.style.color = "#92400e";
-          banner.textContent = `🟡 LIMITED PORTION ALLOWED (${item.name}): ${r.portion} — ${r.reason}`;
+          banner.textContent = `🟡 (${item.name}): ${r.portion} — ${r.reason}`;
         } else {
           banner.style.background = "#dcfce7"; banner.style.color = "#166534";
-          banner.textContent = `🟢 ALLOWED (${item.name}): ${r.reason}`;
+          banner.textContent = `🟢 (${item.name}): ${r.reason}`;
         }
       }
       renderIngredients();
@@ -2486,13 +2314,10 @@
       const cat = activeFoodCategory === "ALL" ? "Vegetables" : activeFoodCategory;
       const id = "cust_" + Date.now();
       const newItem = { id, cat, name: val, prot: 3.0, flags: {}, note: "Custom user item." };
-      const r = checkRisk(newItem);
-      if (r.level === "contraindicated") {
-        notifyBlocked(id);
-        return;
-      }
       INGREDIENTS.unshift(newItem);
-      tickedIngredients.add(id);
+      if (checkRisk(newItem).level !== "contraindicated") {
+        tickedIngredients.add(id);
+      }
       document.getElementById("customIng").value = "";
       renderIngredients();
     }
@@ -2504,87 +2329,50 @@
       renderIngredients();
     }
 
-    function buildFiveStepRecipe(allowedItems, limitedItems, sport) {
-      const safeNames = allowedItems.map(i => i.name.split(" (")[0]);
-      const cappedNames = limitedItems.map(l => `${l.it.name.split(" (")[0]} (${l.portion})`);
-      const allSafe = [...safeNames, ...cappedNames];
-
-      const proteins = [...allowedItems, ...limitedItems.map(l => l.it)]
-        .filter(i => ["Pulses & Lentils", "Dairy", "Eggs", "Fish & Seafood", "Meats & Poultry", "Nuts & Seeds"].includes(i.cat))
-        .map(i => i.name.split(" (")[0]);
-
-      const produce = [...allowedItems, ...limitedItems.map(l => l.it)]
-        .filter(i => ["Vegetables", "Fruits", "Grains & Millets"].includes(i.cat))
-        .map(i => i.name.split(" (")[0]);
-
-      const primaryBase = produce.slice(0, 2).join(" & ") || "your permitted base ingredient";
-      const primaryProtein = proteins.slice(0, 2).join(" / ") || "your permitted protein source";
-      const portionNote = limitedItems.length
-        ? `Measure strictly: ${limitedItems.map(l => `${l.it.name.split(" (")[0]} = ${l.portion}`).join(", ")}.`
-        : "Use standard balanced athletic portions.";
-
-      return [
-        `<li><strong>Step 1 — Wash &amp; Prep Safely:</strong> Rinse ${allSafe.slice(0, 4).join(", ")} thoroughly under running water; chop evenly and keep any contraindicated foods completely out of prep.</li>`,
-        `<li><strong>Step 2 — Measure Controlled Portions:</strong> ${portionNote} Keep oil/ghee minimal (1–2 tsp max) and avoid excess sodium unless directed for sweat replacement.</li>`,
-        `<li><strong>Step 3 — Cook ${primaryBase}:</strong> Steam, pressure-cook, or lightly sauté ${primaryBase} on medium heat with gentle spices (turmeric, cumin, ginger, herbs) until tender without over-browning.</li>`,
-        `<li><strong>Step 4 — Prepare ${primaryProtein}:</strong> Poach, grill, steam, or simmer ${primaryProtein} until thoroughly cooked through, locking in protein for ${sport} recovery.</li>`,
-        `<li><strong>Step 5 — Combine &amp; Serve Warm:</strong> Plate ${allSafe.join(", ")} together with lemon or fresh herbs to finish, and enjoy within your pre- or post-session nutrition window.</li>`
-      ].join("");
-    }
-
     function cookSafeDishes() {
-      const allowed = [], limited = [];
+      if (!tickedIngredients.size) return;
+      const allowed = [], limited = [], blocked = [];
       tickedIngredients.forEach(id => {
         const it = INGREDIENTS.find(i => i.id === id);
         if (!it) return;
         const r = checkRisk(it);
-        if (r.level === "contraindicated") {
-          tickedIngredients.delete(id);
-        } else if (r.level === "limited") {
-          limited.push({ it, portion: r.portion });
-        } else {
-          allowed.push(it);
-        }
+        if (r.level === "contraindicated") blocked.push({ it, reason: r.reason });
+        else if (r.level === "limited") limited.push({ it, portion: r.portion });
+        else allowed.push(it);
       });
 
       const alertBox = document.getElementById("recipeAlert");
-      if (!allowed.length && !limited.length) {
-        alertBox.innerHTML = `<div style="padding:12px;border-radius:10px;background:#fef3c7;color:#92400e;font-size:0.86rem;font-weight:700;">Please tick at least one Allowed (Green) or Limited Portion (Yellow) ingredient first. Contraindicated (Red) items cannot be selected.</div>`;
-        document.getElementById("recipeGrid").innerHTML = "";
-        document.getElementById("recipeCard").style.display = "block";
-        return;
-      }
+      let msgs = [];
+      if (blocked.length) msgs.push(`🔴 Blocked: ${blocked.map(b => `${b.it.name} (${b.reason})`).join("; ")}`);
+      if (limited.length) msgs.push(`🟡 Limited: ${limited.map(l => `${l.it.name} [${l.portion}]`).join("; ")}`);
+      if (!blocked.length && !limited.length) msgs.push(`🟢 ${allowed.length} safe ingredients selected.`);
 
-      const sport = document.getElementById("profSport").value || "Sport";
-      let msgs = [`🚫 Contraindicated (Red) foods are blocked from selection.`];
-      if (limited.length) msgs.push(`🟡 Portion-Controlled Items Included: ${limited.map(l => `${l.it.name} [${l.portion}]`).join("; ")}`);
-      if (allowed.length) msgs.push(`🟢 ${allowed.length} Unrestricted Safe Ingredient(s) Ready.`);
-
-      alertBox.innerHTML = `<div style="padding:12px;border-radius:10px;background:#dcfce7;color:#166534;font-size:0.86rem;font-weight:700;">${msgs.join(" • ")}</div>`;
+      alertBox.innerHTML = `<div style="padding:12px;border-radius:10px;background:${blocked.length ? "#fee2e2" : (limited.length ? "#fef3c7" : "#dcfce7")};color:${blocked.length ? "#991b1b" : (limited.length ? "#92400e" : "#166534")};font-size:0.86rem;font-weight:700;">${msgs.join(" | ")}</div>`;
 
       const usable = [
         ...allowed.map(s => s.name.split(" (")[0]),
         ...limited.map(l => `${l.it.name.split(" (")[0]} (${l.portion})`)
       ];
 
-      const stepsHtml = buildFiveStepRecipe(allowed, limited, sport);
-
-      document.getElementById("recipeGrid").innerHTML = `
+      document.getElementById("recipeGrid").innerHTML = usable.length ? `
         <div class="meal-photo-card">
           <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Safe Meal" />
           <div class="meal-photo-body">
-            <span class="badge b-allowed">Clinically Safe • 5-Step Method</span>
-            <h4 style="margin:8px 0 6px;color:#14532d;">🍲 Custom Kitchen Bowl for ${sport}</h4>
-            <p style="font-size:0.84rem;color:#334155;"><strong>Permitted Ingredients:</strong> ${usable.join(", ")}.</p>
-            <ol class="recipe-steps-list">${stepsHtml}</ol>
+            <span class="badge b-allowed">${getPack(activeLang).allowedBadge}</span>
+            <h4 style="margin:8px 0;color:#14532d;">🍲 ${document.getElementById("profSport").value}</h4>
+            <p style="font-size:0.86rem;color:#334155;"><strong>${usable.join(", ")}</strong></p>
           </div>
         </div>
-      `;
+      ` : "";
 
       document.getElementById("recipeCard").style.display = "block";
     }
 
+    // =========================================================================
+    // 8. DAILY AAHAR (MORNING, AFTERNOON, EVENING, NIGHT + QUANTITY + 5 STEPS)
+    // =========================================================================
     function generateDietChart() {
+      const pack = getPack(activeLang);
       const isCKD = activeConditions.has("Chronic Kidney Disease (CKD 3-5, non-dialysis)") || activeConditions.has("End Stage Renal Disease on Dialysis (HD / PD)");
       const diet = document.getElementById("profDiet").value;
       const sport = document.getElementById("profSport").value || "Sport";
@@ -2592,47 +2380,53 @@
       const isPesc = diet === "pescatarian";
       const isEgg = isNonVeg || diet === "eggetarian";
 
+      const steps = [pack.step1, pack.step2, pack.step3, pack.step4, pack.step5];
+
       const slots = [
         {
-          t: "🌅 Pre-Session Nutrition (90m prior)",
-          m: isCKD ? "1 Small Apple + Poha with Jeera" : "Rolled Oats + 1/2 Banana + Flax Seeds",
-          n: `Pre-session fuel calibrated for ${sport}.`,
+          slotLabel: pack.morningSlot,
+          dish: isCKD ? "Lauki & Poha Upma" : "Rolled Oats & Fruit Bowl",
+          qty: isCKD ? "1 bowl (140g cooked) + 1 small apple (100g)" : "40g rolled oats + 150ml milk/water + 100g fruit + 1 tsp seeds",
           img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80"
         },
         {
-          t: "💪 Post-Session Recovery (Within 1 hr)",
-          m: isNonVeg ? "75g Grilled Chicken Breast / Fish + Jowar Roti" : (isPesc ? "75g Steamed Rohu / Salmon + Jowar Roti" : (isEgg ? "4 Boiled Egg Whites + Vegetable Poha" : "50g Low-Fat Paneer / Tofu + Kadak Jowar Roti")),
-          n: `25–40g protein recovery window for ${sport}.`,
-          img: "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80"
-        },
-        {
-          t: "🍛 Balanced Lunch",
-          m: isCKD ? "2 Jowar Rotis + Lauki Sabzi + 1/2 Katori Thin Moong Dal" : "2 Jowar Rotis + Bhindi & Lauki Sabzi + Masoor Dal + Cucumber",
-          n: "Controlled potassium/glycemic plate.",
+          slotLabel: pack.afternoonSlot,
+          dish: isNonVeg ? "Jowar Roti + Grilled Chicken Breast + Bhindi" : (isPesc ? "Jowar Roti + Steamed Fish + Lauki Sabzi" : "Jowar Roti + Moong Dal + Lauki/Bhindi Sabzi"),
+          qty: isNonVeg ? "2 rotis (70g flour) + 75g chicken + 120g sabzi" : (isPesc ? "2 rotis (70g flour) + 75g fish + 120g sabzi" : "2 rotis (70g flour) + 120ml dal + 120g sabzi"),
           img: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=600&q=80"
         },
         {
-          t: "🌙 Light Dinner",
-          m: "Moong Dal & Bottle Gourd Khichdi + Roasted Makhana",
-          n: "Easy overnight digestion & muscle repair.",
+          slotLabel: pack.eveningSlot,
+          dish: isEgg ? "Boiled Egg Whites + Roasted Makhana" : "Low-Fat Paneer / Tofu + Roasted Makhana",
+          qty: isEgg ? "3–4 egg whites + 20g roasted makhana" : "50g paneer/tofu + 20g roasted makhana",
+          img: "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          slotLabel: pack.nightSlot,
+          dish: "Moong Dal & Bottle Gourd Khichdi",
+          qty: "1 bowl (150g cooked) + 50g curd (if allowed)",
           img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80"
         }
       ];
 
       document.getElementById("dietChartGrid").innerHTML = slots.map(s => `
         <div class="meal-photo-card">
-          <img src="${s.img}" alt="${s.t}" />
+          <img src="${s.img}" alt="${s.slotLabel}" />
           <div class="meal-photo-body">
-            <span class="badge b-allowed">${s.t}</span>
-            <h4 style="margin:8px 0;">${s.m}</h4>
-            <p style="font-size:0.84rem;color:var(--muted);">${s.n}</p>
+            <span class="badge b-allowed">${s.slotLabel}</span>
+            <h4 style="margin:8px 0 2px;color:#0f172a;">${s.dish} <span style="font-size:0.78rem;color:#0f766e;">(${sport})</span></h4>
+            <div class="qty-pill">⚖️ ${pack.qtyLabel}: ${s.qty}</div>
+            <div style="font-size:0.8rem;font-weight:800;color:#14532d;margin-top:4px;">${pack.stepsLabel}:</div>
+            <ol class="prep-steps-list">
+              ${steps.map(st => `<li>${st}</li>`).join("")}
+            </ol>
           </div>
         </div>
       `).join("");
     }
 
     // =========================================================================
-    // 7. SUPABASE AUTH WITH RELIABLE FALLBACK
+    // 9. SUPABASE AUTH WITH RELIABLE FALLBACK
     // =========================================================================
     function initSupabase() {
       const pill = document.getElementById("syncPill");
@@ -2827,6 +2621,11 @@
 
     function toggleAiChat(forceOpen) {
       const win = document.getElementById("aiWindow");
+      const feed = document.getElementById("aiFeed");
+      const pack = getPack(activeLang);
+      if (feed && feed.children.length === 0) {
+        feed.innerHTML = `<div class="bubble bot">${pack.aiGreeting}</div>`;
+      }
       if (typeof forceOpen === "boolean") win.style.display = forceOpen ? "flex" : "none";
       else win.style.display = win.style.display === "flex" ? "none" : "flex";
     }
@@ -2837,18 +2636,19 @@
       if (!q) return;
       input.value = "";
 
+      const pack = getPack(activeLang);
       const feed = document.getElementById("aiFeed");
       feed.innerHTML += `<div class="bubble user">${q.replace(/[<>]/g, "")}</div>`;
 
       const lower = q.toLowerCase();
       const found = INGREDIENTS.find(i => lower.includes(i.name.toLowerCase().split(" (")[0]) || lower.includes(i.id));
-      let reply = "Use the Check & Cook tab to inspect Vegetables, Fruits, Pulses, Nuts & Seeds, Grains, Dairy, Eggs, Fish & Meats with Green (Allowed), Yellow (Limited Portion), and Red (Contraindicated) ratings.";
+      let reply = pack.aiGreeting;
 
       if (found) {
         const r = checkRisk(found);
-        if (r.level === "contraindicated") reply = `🔴 Contraindicated (${found.name}): ${r.reason}`;
-        else if (r.level === "limited") reply = `🟡 Limited Portion Allowed (${found.name}): ${r.portion} — ${r.reason}`;
-        else reply = `🟢 Allowed (${found.name}): ${r.reason}`;
+        if (r.level === "contraindicated") reply = `${pack.contraBadge} (${found.name}): ${r.reason}`;
+        else if (r.level === "limited") reply = `${pack.limitedBadge} (${found.name}): ${r.portion} — ${r.reason}`;
+        else reply = `${pack.allowedBadge} (${found.name}): ${r.reason}`;
       }
 
       feed.innerHTML += `<div class="bubble bot">${reply}</div>`;

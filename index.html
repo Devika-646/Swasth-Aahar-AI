@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Swasth Aahar AI — Clinical & Sports Nutrition</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --emerald-950: #041f1c;
@@ -19,13 +20,14 @@
       --ink: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
+      --radius: 20px;
       --shadow: 0 20px 40px -15px rgba(4, 31, 28, 0.14);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: var(--cream); color: var(--ink); overflow-x: hidden; }
 
-    /* ================= LANDING & LARGE AUTH SCREEN ================= */
+    /* ================= LANDING & AUTH SCREEN ================= */
     .landing-shell {
       min-height: 100vh;
       background:
@@ -35,90 +37,75 @@
       color: white;
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow: hidden;
     }
 
     .top-navbar {
-      max-width: 1440px; width: 100%; margin: 0 auto; padding: 1.25rem 2rem 0.5rem;
-      display: flex; justify-content: flex-end; align-items: center;
+      max-width: 1340px; width: 100%; margin: 0 auto; padding: 1.35rem 2rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+      position: relative; z-index: 10;
     }
+    .brand-lockup { display: flex; align-items: center; gap: 14px; }
+    .brand-emblem {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: linear-gradient(135deg, #14b8a6, #f59e0b);
+      display: grid; place-items: center; font-size: 26px;
+      box-shadow: 0 10px 25px rgba(20, 184, 166, 0.4);
+    }
+    .brand-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand-sub { font-size: 0.8rem; color: #99f6e4; letter-spacing: 0.03em; }
 
     .lang-pill-box {
       display: flex; align-items: center; gap: 8px;
       background: rgba(255, 255, 255, 0.14);
       border: 1px solid rgba(255, 255, 255, 0.32);
-      padding: 8px 16px; border-radius: 999px;
+      padding: 7px 15px; border-radius: 999px;
       backdrop-filter: blur(12px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.22);
     }
     .lang-pill-box select {
       background: transparent; border: none; color: white; font-weight: 700;
-      font-size: 0.94rem; cursor: pointer; outline: none;
+      font-size: 0.92rem; cursor: pointer; outline: none; padding: 3px;
     }
     .lang-pill-box select option { color: #0f172a; background: white; }
 
-    /* SINGLE-LINE BIGGER & BROADER BRAND HEADER */
-    .brand-banner {
-      max-width: 1440px; width: 100%; margin: 0 auto;
-      padding: 0.4rem 2rem 1.25rem;
-      display: flex; align-items: center; gap: 20px;
-    }
-    .brand-emblem-lg {
-      width: 72px; height: 72px; border-radius: 22px; flex-shrink: 0;
-      background: linear-gradient(135deg, #14b8a6, #f59e0b);
-      display: grid; place-items: center; font-size: 38px;
-      box-shadow: 0 14px 32px rgba(20, 184, 166, 0.45);
-    }
-    .mega-brand-title {
-      font-size: clamp(2.3rem, 5.4vw, 5.15rem);
-      font-weight: 900;
-      line-height: 1.04;
-      letter-spacing: 0.015em;
-      white-space: nowrap;
-      background: linear-gradient(90deg, #ffffff 0%, #99f6e4 55%, #fbbf24 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    @media (max-width: 600px) {
-      .brand-banner { padding: 0.4rem 1.25rem 1rem; gap: 12px; }
-      .brand-emblem-lg { width: 52px; height: 52px; font-size: 26px; border-radius: 16px; }
-      .mega-brand-title { font-size: 1.85rem; }
-    }
-
     .hero-stage {
-      max-width: 1440px; width: 100%; margin: 0 auto auto; padding: 0.5rem 2rem 3.25rem;
-      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center;
+      max-width: 1340px; width: 100%; margin: auto; padding: 1rem 2rem 3rem;
+      display: grid; grid-template-columns: 1.18fr 0.82fr; gap: 2.75rem; align-items: start;
+      position: relative; z-index: 10;
     }
-    @media (max-width: 1060px) { .hero-stage { grid-template-columns: 1fr; padding: 0.75rem 1.25rem 2.5rem; } }
+    @media (max-width: 980px) { .hero-stage { grid-template-columns: 1fr; padding: 1rem 1.25rem 2.5rem; } }
 
+    .eyebrow-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(245,158,11,0.22), rgba(20,184,166,0.22));
+      border: 1px solid rgba(245,158,11,0.45);
+      color: #fde68a; font-size: 0.82rem; font-weight: 700; margin-bottom: 1rem;
+    }
     .display-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.1rem, 3.5vw, 3rem);
-      font-weight: 700; line-height: 1.1; margin-bottom: 0.85rem;
-      color: #f8fafc;
+      font-size: clamp(2.35rem, 4.5vw, 3.7rem);
+      font-weight: 700; line-height: 1.08; margin-bottom: 1rem;
     }
     .display-heading em {
       font-style: italic;
       background: linear-gradient(90deg, #5eead4, #fbbf24, #fb923c);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .hero-subtext {
-      color: #cbd5e1;
-      font-size: 1.02rem;
-      line-height: 1.65;
-      max-width: 620px;
-      margin-bottom: 1.5rem;
-    }
 
-    /* PHOTOGRAPHY MOSAIC (SPORTS, HEALTH, LIFE, FOOD) */
+    /* ================= PHOTOGRAPHY MOSAIC (SPORTS, HEALTH, LIFE, FOOD) ================= */
     .photo-mosaic {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      margin-bottom: 1.5rem;
+      margin: 1.5rem 0;
     }
     @media (max-width: 640px) { .photo-mosaic { grid-template-columns: repeat(2, 1fr); } }
     .photo-tile {
       position: relative;
-      height: 145px;
+      height: 150px;
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.22);
@@ -136,48 +123,42 @@
       padding: 24px 10px 8px;
       background: linear-gradient(to top, rgba(3,23,21,0.92), transparent);
       font-size: 0.76rem; font-weight: 700; color: #f8fafc;
+      letter-spacing: 0.02em;
     }
 
-    /* ORDERED LIST (<ol>) OF CORE FEATURES */
-    .feature-ol {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 20px;
-      padding: 1.3rem 1.5rem 1.3rem 2.6rem;
+    /* Core Feature Highlight Cards */
+    .feature-stack {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 1.25rem;
+    }
+    @media (max-width: 600px) { .feature-stack { grid-template-columns: 1fr; } }
+    .feature-pill-card {
+      background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 16px;
+      padding: 1rem 1.15rem;
       backdrop-filter: blur(14px);
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-      font-size: 0.96rem;
-      line-height: 1.5;
+      font-size: 0.88rem;
+      line-height: 1.45;
       color: #e2e8f0;
     }
-    .feature-ol li::marker {
-      color: #5eead4;
-      font-weight: 800;
-      font-size: 1.05rem;
-    }
-    .feature-ol strong { color: #ffffff; }
+    .feature-pill-card strong { color: #ffffff; }
 
-    /* LARGE LOGIN & REGISTRATION PANEL */
+    /* Auth Card */
     .auth-panel {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.99);
+      background: rgba(255, 255, 255, 0.98);
       color: var(--ink);
-      border-radius: 30px;
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255,255,255,0.6);
     }
     .auth-banner-img {
-      width: 100%; height: 170px; object-fit: cover; display: block;
+      width: 100%; height: 135px; object-fit: cover; display: block;
     }
-    .auth-body { padding: 2.4rem 2.6rem 2.65rem; }
-    .auth-body h2 { font-size: 1.9rem; font-weight: 900; margin-bottom: 6px; letter-spacing: -0.02em; }
-    .auth-body .form-group { margin-bottom: 1.25rem; }
-    .auth-body label { font-size: 0.94rem; margin-bottom: 7px; }
-    .auth-body input { padding: 15px 16px; font-size: 1rem; border-radius: 14px; }
-    .auth-body .btn { padding: 15px 22px; font-size: 1.04rem; border-radius: 14px; }
+    .auth-body { padding: 1.85rem 2.1rem 2.1rem; }
 
     /* ================= SIDEBAR + WORKSPACE DASHBOARD ================= */
     .workspace { display: none; min-height: 100vh; }
@@ -187,17 +168,11 @@
       display: flex; flex-direction: column; justify-content: space-between; z-index: 60;
       transition: transform 0.25s ease;
     }
-    .brand-lockup { display: flex; align-items: center; gap: 12px; }
-    .brand-emblem {
-      width: 44px; height: 44px; border-radius: 14px;
-      background: linear-gradient(135deg, #14b8a6, #f59e0b);
-      display: grid; place-items: center; font-size: 22px;
-    }
     .nav-stack { display: flex; flex-direction: column; gap: 8px; margin-top: 1.5rem; }
     .nav-item {
       display: flex; align-items: center; gap: 12px; padding: 13px 15px;
       border-radius: 14px; border: none; background: transparent; color: #94a3b8;
-      font-weight: 700; font-size: 0.92rem; cursor: pointer; text-align: left; transition: 0.2s;
+      font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: left; transition: 0.2s;
     }
     .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
     .nav-item.active {
@@ -213,7 +188,7 @@
     .sidebar-photo-card span {
       position: absolute; inset: auto 0 0 0; padding: 16px 10px 7px;
       background: linear-gradient(to top, rgba(4,31,28,0.92), transparent);
-      font-size: 0.75rem; font-weight: 700; color: #5eead4;
+      font-size: 0.74rem; font-weight: 700; color: #5eead4;
     }
 
     .content-area { margin-left: 280px; padding: 1.5rem 2.25rem 6rem; max-width: 1440px; }
@@ -282,6 +257,13 @@
     .btn-saffron { background: linear-gradient(135deg, #f97316, #ea580c); color: white; }
     .btn-ghost { background: #f8fafc; border: 1.5px solid var(--border); color: var(--ink); }
 
+    .rx-zone {
+      border: 2px dashed #0f766e; border-radius: 20px; padding: 2.2rem; text-align: center;
+      background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%); cursor: pointer; transition: 0.2s;
+    }
+    .rx-zone:hover { background: #ccfbf1; }
+    .rx-thumb { max-width: 260px; max-height: 190px; border-radius: 14px; margin: 14px auto; display: none; border: 1px solid var(--border); }
+
     .pill-flex { display: flex; flex-wrap: wrap; gap: 8px; }
     .cond-chip {
       padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--border);
@@ -347,9 +329,17 @@
 </head>
 <body>
 
-  <!-- ==================== 1. LANDING & LARGE AUTH ==================== -->
+  <!-- ==================== 1. LANDING & AUTH ==================== -->
   <div id="landingScreen" class="landing-shell">
     <header class="top-navbar">
+      <div class="brand-lockup">
+        <div class="brand-emblem">🥗</div>
+        <div>
+          <div class="brand-title" data-t="brandName">Swasth Aahar AI</div>
+          <div class="brand-sub" data-t="brandTagline">Right Diet, Healthy Life • Clinical & Sports Nutrition</div>
+        </div>
+      </div>
+
       <div class="lang-pill-box">
         <span>🌐</span>
         <select id="langTop" onchange="setAppLanguage(this.value)">
@@ -380,19 +370,14 @@
       </div>
     </header>
 
-    <!-- BIGGER & BROADER ONE-LINE TITLE -->
-    <div class="brand-banner">
-      <div class="brand-emblem-lg">🥗</div>
-      <h1 class="mega-brand-title" data-t="brandName">Swasth Aahar AI</h1>
-    </div>
-
     <section class="hero-stage">
       <div>
-        <h2 class="display-heading" data-t="heroHeading">
+        <div class="eyebrow-badge" data-t="eyebrow">✨ 22 Indian Languages • OCR Prescription Scanner • Clinical & Sports Nutrition</div>
+        <h1 class="display-heading" data-t="heroHeading">
           Nourish Your Body with <em>Clinical Precision</em> & Sports Science
-        </h2>
-        <p class="hero-subtext" data-t="heroSub">
-          Personalized clinical and sports nutrition engine designed to keep you strong, energized, and safe with tailored Indian meal planning across 22 languages.
+        </h1>
+        <p style="color:#cbd5e1;font-size:1rem;line-height:1.65;max-width:580px;" data-t="heroSub">
+          Personalized clinical and sports nutrition engine with prescription OCR scanning, drug-food interaction screening, and safe kitchen ingredient meal planning.
         </p>
 
         <!-- PHOTOGRAPHY GALLERY: SPORTS, HEALTH, ACTIVE LIFE & HEALTHY FOOD -->
@@ -407,7 +392,7 @@
           </div>
           <div class="photo-tile">
             <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Clinical Health" onerror="this.src='https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=600'" />
-            <div class="photo-caption" data-t="picHealth">🩺 Clinical Food Safety</div>
+            <div class="photo-caption" data-t="picHealth">🩺 Clinical Rx Safety</div>
           </div>
           <div class="photo-tile">
             <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" alt="Healthy Active Life" onerror="this.src='https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=600'" />
@@ -415,23 +400,30 @@
           </div>
         </div>
 
-        <!-- ORDERED LIST (<ol>) OF CORE FEATURES -->
-        <ol class="feature-ol">
-          <li data-t="feat1">⛔ <strong>Instant Safe / Blocked verdicts</strong> with the medical reason for every food</li>
-          <li data-t="feat2">🏅 <strong>297 sports</strong> with pre- and post-session nutrition</li>
-          <li data-t="feat3">🍲 <strong>Recipes only from safe ingredients</strong>, adapted to your condition</li>
-          <li data-t="feat4">☁️ <strong>Cloud profile</strong> that follows you to any phone or laptop</li>
-        </ol>
+        <!-- Core Feature Highlights -->
+        <div class="feature-stack">
+          <div class="feature-pill-card" data-t="feat1">
+            ⛔ <strong>Instant Safe / Blocked verdicts</strong> with the medical reason for every food
+          </div>
+          <div class="feature-pill-card" data-t="feat2">
+            🏅 <strong>297 sports</strong> with pre- and post-session nutrition
+          </div>
+          <div class="feature-pill-card" data-t="feat3">
+            🍲 <strong>Recipes only from safe ingredients</strong>, adapted to your condition
+          </div>
+          <div class="feature-pill-card" data-t="feat4">
+            ☁️ <strong>Cloud profile</strong> that follows you to any phone or laptop
+          </div>
+        </div>
       </div>
 
-      <!-- LARGE LOGIN / REGISTRATION PANEL -->
       <div class="auth-panel">
         <img class="auth-banner-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=80" alt="Healthy Nutrition Bowl" />
         <div class="auth-body">
-          <h2 data-t="authTitle">Secure Login / Registration</h2>
-          <p style="font-size:0.95rem;color:var(--muted);margin-bottom:16px;" data-t="authSub">Sign in or create your encrypted health & diet vault</p>
+          <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:6px;" data-t="authTitle">Secure Login / Registration</h2>
+          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:14px;" data-t="authSub">Sign in or create your encrypted health & diet vault</p>
 
-          <div id="syncPill" style="padding:11px 15px;border-radius:12px;font-size:0.86rem;font-weight:700;margin-bottom:18px;background:#fef3c7;color:#92400e;">
+          <div id="syncPill" style="padding:9px 14px;border-radius:12px;font-size:0.82rem;font-weight:700;margin-bottom:16px;background:#fef3c7;color:#92400e;">
             ⏳ Connecting to Supabase Cloud...
           </div>
 
@@ -448,11 +440,11 @@
             <input type="password" id="authPass" placeholder="••••••••" />
           </div>
 
-          <div style="display:flex;gap:14px;margin-top:1.5rem;">
+          <div style="display:flex;gap:12px;margin-top:1.25rem;">
             <button class="btn btn-emerald" style="flex:1;" onclick="loginUser()" data-t="btnLogin">Sign In</button>
             <button class="btn btn-saffron" style="flex:1;" onclick="registerUser()" data-t="btnRegister">Create Account</button>
           </div>
-          <p id="authFeedback" style="margin-top:14px;font-size:0.9rem;font-weight:700;"></p>
+          <p id="authFeedback" style="margin-top:12px;font-size:0.86rem;font-weight:700;"></p>
         </div>
       </div>
     </section>
@@ -463,15 +455,16 @@
     <aside class="sidebar" id="sidebar">
       <div>
         <div class="brand-lockup">
-          <div class="brand-emblem">🥗</div>
+          <div class="brand-emblem" style="width:42px;height:42px;font-size:20px;">🥗</div>
           <div>
-            <div style="font-weight:900;font-size:1.15rem;" data-t="brandName">Swasth Aahar AI</div>
+            <div style="font-weight:800;font-size:1.15rem;" data-t="brandName">Swasth Aahar AI</div>
             <div style="font-size:0.74rem;color:#5eead4;" data-t="brandSubShort">Clinical & Sports Nutrition</div>
           </div>
         </div>
 
         <nav class="nav-stack">
-          <button class="nav-item active" onclick="switchView('viewProfile', this)" data-t="navProf">👤 Health & Sport Profile</button>
+          <button class="nav-item active" onclick="switchView('viewRx', this)" data-t="navRx">📄 Upload Prescription & Summary</button>
+          <button class="nav-item" onclick="switchView('viewProfile', this)" data-t="navProf">👤 Health & Sport Profile</button>
           <button class="nav-item" onclick="switchView('viewKitchen', this)" data-t="navKit">☑️ Kitchen Tick-Box & Cook</button>
           <button class="nav-item" onclick="switchView('viewPlan', this)" data-t="navPlan">📋 Full-Day Diet Chart</button>
           <button class="nav-item" onclick="toggleAiChat(true)" data-t="navChat">🤖 Nutrition AI Assistant</button>
@@ -492,8 +485,8 @@
         <div style="display:flex;align-items:center;gap:12px;">
           <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')" data-t="btnMenu">☰ Menu</button>
           <div>
-            <h2 style="font-size:1.3rem;font-weight:800;" id="welcomeHeader">Welcome, Athlete</h2>
-            <span style="font-size:0.84rem;color:var(--muted);" data-t="dashSub">Personalized Clinical & Sports Nutrition Portal</span>
+            <h2 style="font-size:1.25rem;font-weight:800;" id="welcomeHeader">Welcome, Athlete</h2>
+            <span style="font-size:0.82rem;color:var(--muted);" data-t="dashSub">Personalized Clinical & Sports Nutrition Portal</span>
           </div>
         </div>
 
@@ -539,7 +532,7 @@
         </div>
         <div class="strip-card">
           <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80" alt="Clinical Care" />
-          <div data-t="picHealth">🩺 Clinical Food Safety</div>
+          <div data-t="picHealth">🩺 Clinical Rx Safety</div>
         </div>
         <div class="strip-card">
           <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Active Holistic Life" />
@@ -565,14 +558,52 @@
           <span style="font-size:0.8rem;color:var(--muted);" id="kpiProtNote">1.6 g/kg athletic target</span>
         </div>
         <div class="kpi-box">
-          <small data-t="kpiCondLbl">Active Clinical Conditions</small>
+          <small data-t="kpiCondLbl">Detected Clinical Flags</small>
           <h3 id="kpiConds">0</h3>
-          <span style="font-size:0.8rem;color:#ea580c;font-weight:700;" id="kpiCondSummary">None selected</span>
+          <span style="font-size:0.8rem;color:#ea580c;font-weight:700;" id="kpiRxSummary">No Rx issues flagged</span>
         </div>
       </div>
 
-      <!-- VIEW 1: PROFILE -->
-      <section id="viewProfile" class="panel-view active">
+      <!-- VIEW 1: UPLOAD PRESCRIPTION & HEALTH SUMMARY -->
+      <section id="viewRx" class="panel-view active">
+        <div class="card">
+          <h3 style="font-size:1.3rem;font-weight:800;margin-bottom:6px;" data-t="rxCardTitle">📄 Upload Doctor's Prescription & Health Issue Summary</h3>
+          <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1.25rem;" data-t="rxCardDesc">
+            Upload an image of your medical prescription or diagnostic report. Our OCR engine extracts your diagnoses and medications to generate an automated clinical health summary and block unsafe foods.
+          </p>
+
+          <div class="rx-zone" onclick="document.getElementById('rxFile').click()">
+            <div style="font-size:2.5rem;">📸</div>
+            <h4 style="margin:6px 0;" data-t="rxDropTitle">Click to Upload Prescription Photo (JPG / PNG / WebP)</h4>
+            <p style="font-size:0.82rem;color:var(--muted);" data-t="rxDropSub">100% private in-browser OCR — your medical image stays on your device</p>
+            <input type="file" id="rxFile" accept="image/*" style="display:none;" onchange="handleRxUpload(event)" />
+            <img id="rxPreview" class="rx-thumb" alt="Uploaded Prescription" />
+          </div>
+
+          <div id="ocrStatus" style="display:none;margin-top:12px;padding:12px;border-radius:12px;background:#f0fdfa;color:#0f766e;font-weight:700;"></div>
+
+          <div class="form-group" style="margin-top:1.25rem;">
+            <label data-t="rxTextLbl">Extracted Prescription Text (You can also type or edit directly)</label>
+            <textarea id="rxText" rows="4" data-ph="phRxText" placeholder="Example: Diagnosis: Stage 3 CKD, Type 2 Diabetes, Hypertension. Rx: Telmisartan 40mg, Metformin 500mg, Atorvastatin 10mg."></textarea>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-emerald" onclick="summarizePrescription()" data-t="btnAnalyzeRx">🔍 Read Prescription & Summarize Health Issues</button>
+            <button class="btn btn-ghost" onclick="fillDemoRx()" data-t="btnSampleRx">🧪 Load Sample Prescription</button>
+          </div>
+        </div>
+
+        <div id="healthSummaryCard" class="card" style="display:none;border-left:6px solid #0f766e;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <h3 style="font-size:1.25rem;font-weight:800;color:#0f766e;" data-t="rxSumTitle">🩺 Automated Health Issues & Medication Summary</h3>
+            <button class="btn btn-saffron" onclick="switchView('viewKitchen', document.querySelectorAll('.nav-item')[2])" data-t="btnNextKit">Next: Tick Kitchen Ingredients →</button>
+          </div>
+          <div id="healthSummaryBody" style="margin-top:1rem;"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: PROFILE -->
+      <section id="viewProfile" class="panel-view">
         <div class="card">
           <h3 style="font-size:1.3rem;font-weight:800;margin-bottom:1rem;" data-t="profTitle">👤 Athlete Biometrics & Clinical Conditions</h3>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
@@ -598,29 +629,26 @@
           </div>
 
           <div class="form-group" style="margin-top:0.5rem;">
-            <label data-t="lblConds">Active Clinical Conditions (Tap to Toggle)</label>
+            <label data-t="lblConds">Active Clinical Conditions (Auto-synced from Prescription or Tap to Toggle)</label>
             <div id="conditionPills" class="pill-flex"></div>
           </div>
 
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1rem;">
-            <button class="btn btn-emerald" onclick="saveProfile()" data-t="btnSaveProf">💾 Save Profile to Supabase Cloud</button>
-            <button class="btn btn-saffron" onclick="switchView('viewKitchen', document.querySelectorAll('.nav-item')[1])" data-t="btnNextKit">Next: Tick Kitchen Ingredients →</button>
-          </div>
-          <span id="saveMsg" style="display:inline-block;margin-top:10px;font-weight:700;color:#16a34a;"></span>
+          <button class="btn btn-emerald" style="margin-top:1rem;" onclick="saveProfile()" data-t="btnSaveProf">💾 Save Profile to Supabase Cloud</button>
+          <span id="saveMsg" style="margin-left:12px;font-weight:700;color:#16a34a;"></span>
         </div>
       </section>
 
-      <!-- VIEW 2: KITCHEN TICK-BOX -->
+      <!-- VIEW 3: KITCHEN TICK-BOX -->
       <section id="viewKitchen" class="panel-view">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
             <div>
               <h3 style="font-size:1.3rem;font-weight:800;" data-t="kitTitle">☑️ Tick Available Kitchen Ingredients</h3>
-              <p style="font-size:0.85rem;color:var(--muted);" data-t="kitSub">Instant verdicts with medical reasons: 🟢 Safe | 🟡 Limit | 🔴 Blocked</p>
+              <p style="font-size:0.85rem;color:var(--muted);" data-t="kitSub">Screened automatically from your prescription & profile: 🟢 Safe | 🟡 Limit | 🔴 Blocked</p>
             </div>
             <div style="display:flex;gap:8px;">
               <button class="btn btn-ghost" onclick="clearTicks()" data-t="btnClear">Clear Ticks</button>
-              <button class="btn btn-emerald" onclick="cookSafeDishes()" data-t="btnCook">🍳 Cook Safe Recipes</button>
+              <button class="btn btn-emerald" onclick="cookSafeDishes()" data-t="btnCook">🍳 Check & Cook Safe Dishes</button>
             </div>
           </div>
 
@@ -637,7 +665,7 @@
 
         <div id="recipeCard" class="card" style="display:none;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="font-weight:800;" data-t="recTitle">🍲 Recipes From Safe Ingredients Only</h3>
+            <h3 style="font-weight:800;" data-t="recTitle">🍲 Clinically Safe Dishes (From Your Ticked Ingredients)</h3>
             <button class="btn btn-ghost no-print" onclick="window.print()" data-t="btnPrint">🖨️ Print</button>
           </div>
           <div id="recipeAlert" style="margin:1rem 0;"></div>
@@ -645,13 +673,13 @@
         </div>
       </section>
 
-      <!-- VIEW 3: FULL DAY DIET CHART -->
+      <!-- VIEW 4: FULL DAY DIET CHART -->
       <section id="viewPlan" class="panel-view">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
             <div>
-              <h3 style="font-weight:800;" data-t="planTitle">📋 Full-Day Personalized Clinical & Sports Diet Chart</h3>
-              <p style="font-size:0.85rem;color:var(--muted);" data-t="planSub">Includes pre- and post-session nutrition adapted to your clinical condition.</p>
+              <h3 style="font-weight:800;" data-t="planTitle">📋 Full-Day Personalized Clinical Diet Chart</h3>
+              <p style="font-size:0.85rem;color:var(--muted);" data-t="planSub">Tailored to your prescription health summary, sport macros, and dietary rules.</p>
             </div>
             <div style="display:flex;gap:8px;">
               <button class="btn btn-emerald" onclick="generateDietChart()" data-t="btnRefresh">🔄 Refresh Plan</button>
@@ -673,7 +701,7 @@
   <div class="ai-window no-print" id="aiWindow">
     <div class="ai-head">
       <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:1.5rem;">🥗</span>
+        <span style="font-size:1.5rem;">🩺</span>
         <div>
           <strong style="display:block;font-size:0.96rem;" data-t="aiTitle">Swasth Aahar AI</strong>
           <span style="font-size:0.74rem;color:#99f6e4;" data-t="aiSub">Clinical & Sports Nutrition Assistant</span>
@@ -684,12 +712,12 @@
 
     <div class="ai-feed" id="aiFeed">
       <div class="bubble bot" id="aiWelcomeMsg">
-        Hello! I am your <strong>Swasth Aahar AI</strong> clinical & sports nutrition assistant. Ask me about safe/blocked foods, medical reasons, or pre- and post-session sports nutrition!
+        Hello! I am your <strong>Swasth Aahar AI</strong> clinical & sports nutrition assistant. Upload your prescription or ask me anything about your health summary, safe foods, medication interactions, or sports macros!
       </div>
     </div>
 
     <div class="ai-bar">
-      <input type="text" id="aiInput" data-ph="phChat" placeholder="Ask about safe foods or sports macros..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
+      <input type="text" id="aiInput" data-ph="phChat" placeholder="Ask about safe foods, Rx, or sports macros..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
       <button class="btn btn-emerald" style="padding:10px 14px;" onclick="askNutritionAi()">➤</button>
     </div>
   </div>
@@ -708,19 +736,22 @@
     let activeLang = "en";
     let activeConditions = new Set();
     let tickedIngredients = new Set();
+    let detectedMeds = [];
 
     // =========================================================================
-    // 2. MULTI-LANGUAGE DICTIONARY + LIVE TRANSLATION ENGINE
+    // 2. COMPLETE NATIVE MULTI-LANGUAGE DICTIONARY + LIVE TRANSLATION ENGINE
     // =========================================================================
     const UI_STRINGS = {
       en: {
         brandName: "Swasth Aahar AI",
+        brandTagline: "Right Diet, Healthy Life • Clinical & Sports Nutrition",
         brandSubShort: "Clinical & Sports Nutrition",
+        eyebrow: "✨ 22 Indian Languages • OCR Prescription Scanner • Clinical & Sports Nutrition",
         heroHeading: "Nourish Your Body with <em>Clinical Precision</em> & Sports Science",
-        heroSub: "Personalized clinical and sports nutrition engine designed to keep you strong, energized, and safe with tailored Indian meal planning across 22 languages.",
+        heroSub: "Personalized clinical and sports nutrition engine with prescription OCR scanning, drug-food interaction screening, and safe kitchen ingredient meal planning.",
         picSports: "🏅 Peak Sports Strength",
         picFood: "🥗 Wholesome Healthy Food",
-        picHealth: "🩺 Clinical Food Safety",
+        picHealth: "🩺 Clinical Rx Safety",
         picLife: "🌿 Mindful Active Life",
         sideQuote: "🌿 Right Diet • Healthy Life",
         feat1: "⛔ <strong>Instant Safe / Blocked verdicts</strong> with the medical reason for every food",
@@ -736,6 +767,7 @@
         lblPass: "Password (Minimum 6 characters)",
         btnLogin: "Sign In",
         btnRegister: "Create Account",
+        navRx: "📄 Upload Prescription & Summary",
         navProf: "👤 Health & Sport Profile",
         navKit: "☑️ Kitchen Tick-Box & Cook",
         navPlan: "📋 Full-Day Diet Chart",
@@ -746,7 +778,16 @@
         kpiBmiLbl: "Body Mass Index (BMI)",
         kpiCalLbl: "Daily Energy Target",
         kpiProtLbl: "Protein Requirement",
-        kpiCondLbl: "Active Clinical Conditions",
+        kpiCondLbl: "Detected Clinical Flags",
+        rxCardTitle: "📄 Upload Doctor's Prescription & Health Issue Summary",
+        rxCardDesc: "Upload an image of your medical prescription or diagnostic report. Our OCR engine extracts your diagnoses and medications to generate an automated clinical health summary and block unsafe foods.",
+        rxDropTitle: "Click to Upload Prescription Photo (JPG / PNG / WebP)",
+        rxDropSub: "100% private in-browser OCR — your medical image stays on your device",
+        rxTextLbl: "Extracted Prescription Text (You can also type or edit directly)",
+        phRxText: "Example: Diagnosis: Stage 3 CKD, Type 2 Diabetes, Hypertension. Rx: Telmisartan 40mg, Metformin 500mg, Atorvastatin 10mg.",
+        btnAnalyzeRx: "🔍 Read Prescription & Summarize Health Issues",
+        btnSampleRx: "🧪 Load Sample Prescription",
+        rxSumTitle: "🩺 Automated Health Issues & Medication Summary",
         btnNextKit: "Next: Tick Kitchen Ingredients →",
         profTitle: "👤 Athlete Biometrics & Clinical Conditions",
         lblNameOnly: "Full Name",
@@ -760,26 +801,26 @@
         optVegan: "Vegan",
         optJain: "Jain (No Root Vegetables)",
         lblSport: "Primary Sport (297 Disciplines)",
-        lblConds: "Active Clinical Conditions (Tap to Toggle)",
+        lblConds: "Active Clinical Conditions (Auto-synced from Prescription or Tap to Toggle)",
         btnSaveProf: "💾 Save Profile to Supabase Cloud",
         kitTitle: "☑️ Tick Available Kitchen Ingredients",
-        kitSub: "Instant verdicts with medical reasons: 🟢 Safe | 🟡 Limit | 🔴 Blocked",
+        kitSub: "Screened automatically from your prescription & profile: 🟢 Safe | 🟡 Limit | 🔴 Blocked",
         btnClear: "Clear Ticks",
-        btnCook: "🍳 Cook Safe Recipes",
+        btnCook: "🍳 Check & Cook Safe Dishes",
         phSearchIng: "🔍 Search ingredients (Potato, Aloo, Palak, Ragi, Paneer, Lauki)...",
         phCustomIng: "➕ Missing item? Type ingredient name...",
         btnAdd: "Add",
-        recTitle: "🍲 Recipes From Safe Ingredients Only",
+        recTitle: "🍲 Clinically Safe Dishes (From Your Ticked Ingredients)",
         btnPrint: "🖨️ Print",
-        planTitle: "📋 Full-Day Personalized Clinical & Sports Diet Chart",
-        planSub: "Includes pre- and post-session nutrition adapted to your clinical condition.",
+        planTitle: "📋 Full-Day Personalized Clinical Diet Chart",
+        planSub: "Tailored to your prescription health summary, sport macros, and dietary rules.",
         btnRefresh: "🔄 Refresh Plan",
         btnPrintPdf: "🖨️ Print / Save PDF",
         fabAi: "Ask Nutrition AI",
         aiTitle: "Swasth Aahar AI",
         aiSub: "Clinical & Sports Nutrition Assistant",
-        phChat: "Ask about safe foods or sports macros...",
-        aiWelcome: "Hello! I am your <strong>Swasth Aahar AI</strong> clinical & sports nutrition assistant. Ask me about safe/blocked foods, medical reasons, or pre- and post-session sports nutrition!",
+        phChat: "Ask about safe foods, Rx, or sports macros...",
+        aiWelcome: "Hello! I am your <strong>Swasth Aahar AI</strong> clinical & sports nutrition assistant. Upload your prescription or ask me anything about your health summary, safe foods, medication interactions, or sports macros!",
         safeTag: "✅ Safe", warnTag: "⚠️ Limit", dangerTag: "⛔ Blocked",
         errFields: "Please enter your full name, valid email, and a password of at least 6 characters.",
         errLoginFields: "Please enter your email and password.",
@@ -788,9 +829,11 @@
       },
       hi: {
         brandName: "स्वस्थ आहार AI",
+        brandTagline: "सही आहार, स्वस्थ जीवन • नैदानिक और खेल पोषण",
         brandSubShort: "नैदानिक और खेल पोषण",
+        eyebrow: "✨ 22 भारतीय भाषाएँ • OCR प्रिस्क्रिप्शन स्कैनर • नैदानिक और खेल पोषण",
         heroHeading: "<em>नैदानिक सटीकता</em> और खेल विज्ञान के साथ अपने शरीर को पोषित करें",
-        heroSub: "22 भाषाओं में अनुकूलित भारतीय भोजन योजना के साथ आपको मजबूत, ऊर्जावान और सुरक्षित रखने के लिए डिज़ाइन किया गया व्यक्तिगत नैदानिक और खेल पोषण इंजन।",
+        heroSub: "प्रिस्क्रिप्शन OCR स्कैनिंग, दवा-आहार जांच और सुरक्षित रसोई सामग्री भोजन योजना के साथ व्यक्तिगत नैदानिक और खेल पोषण इंजन।",
         picSports: "🏅 खेल शक्ति और प्रदर्शन",
         picFood: "🥗 पौष्टिक स्वस्थ भोजन",
         picHealth: "🩺 नैदानिक सुरक्षा",
@@ -809,6 +852,7 @@
         lblPass: "पासवर्ड (न्यूनतम 6 अक्षर)",
         btnLogin: "साइन इन करें",
         btnRegister: "खाता बनाएं",
+        navRx: "📄 प्रिस्क्रिप्शन अपलोड और सारांश",
         navProf: "👤 स्वास्थ्य और खेल प्रोफ़ाइल",
         navKit: "☑️ रसोई सामग्री चयन और व्यंजन",
         navPlan: "📋 पूरे दिन का डाइट चार्ट",
@@ -819,7 +863,16 @@
         kpiBmiLbl: "बॉडी मास इंडेक्स (BMI)",
         kpiCalLbl: "दैनिक कैलोरी लक्ष्य",
         kpiProtLbl: "प्रोटीन आवश्यकता",
-        kpiCondLbl: "सक्रिय स्वास्थ्य स्थितियाँ",
+        kpiCondLbl: "पहचानी गई स्वास्थ्य स्थितियाँ",
+        rxCardTitle: "📄 डॉक्टर का प्रिस्क्रिप्शन अपलोड करें और स्वास्थ्य सारांश देखें",
+        rxCardDesc: "अपने मेडिकल प्रिस्क्रिप्शन या रिपोर्ट की फोटो अपलोड करें। हमारा OCR इंजन आपकी बीमारियों और दवाओं को पढ़कर स्वास्थ्य सारांश बनाता है और असुरक्षित भोजन को रोकता है।",
+        rxDropTitle: "प्रिस्क्रिप्शन फोटो अपलोड करने के लिए क्लिक करें (JPG / PNG / WebP)",
+        rxDropSub: "100% निजी ब्राउज़र OCR — आपकी मेडिकल इमेज आपके डिवाइस पर ही सुरक्षित रहती है",
+        rxTextLbl: "स्कैन किया गया प्रिस्क्रिप्शन टेक्स्ट (आप सीधे टाइप या संपादित भी कर सकते हैं)",
+        phRxText: "उदाहरण: निदान: स्टेज 3 CKD, टाइप 2 मधुमेह, उच्च रक्तचाप। दवाएं: Telmisartan 40mg, Metformin 500mg.",
+        btnAnalyzeRx: "🔍 प्रिस्क्रिप्शन पढ़ें और स्वास्थ्य समस्याओं का सारांश दें",
+        btnSampleRx: "🧪 नमूना प्रिस्क्रिप्शन लोड करें",
+        rxSumTitle: "🩺 स्वचालित स्वास्थ्य समस्याएं और दवा सारांश",
         btnNextKit: "अगला: रसोई की सामग्री चुनें →",
         profTitle: "👤 एथलीट बायोमेट्रिक्स और नैदानिक स्थितियाँ",
         lblNameOnly: "पूरा नाम",
@@ -833,26 +886,26 @@
         optVegan: "वीगन (Vegan)",
         optJain: "जैन (बिना जड़ वाली सब्जियाँ)",
         lblSport: "मुख्य खेल (297 खेल)",
-        lblConds: "सक्रिय स्वास्थ्य स्थितियाँ (बदलने के लिए टैप करें)",
+        lblConds: "सक्रिय स्वास्थ्य स्थितियाँ (प्रिस्क्रिप्शन से ऑटो-सिंक या बदलने के लिए टैप करें)",
         btnSaveProf: "💾 प्रोफ़ाइल क्लाउड में सहेजें",
         kitTitle: "☑️ रसोई में उपलब्ध सामग्री पर टिक करें",
-        kitSub: "चिकित्सा कारणों के साथ तत्काल निर्णय: 🟢 सुरक्षित | 🟡 सीमित | 🔴 प्रतिबंधित",
+        kitSub: "आपके प्रिस्क्रिप्शन और प्रोफ़ाइल के अनुसार जाँचा गया: 🟢 सुरक्षित | 🟡 सीमित | 🔴 प्रतिबंधित",
         btnClear: "टिक हटाएं",
-        btnCook: "🍳 सुरक्षित व्यंजन बनाएं",
+        btnCook: "🍳 सुरक्षित व्यंजन जांचें और बनाएं",
         phSearchIng: "🔍 सामग्री खोजें (आलू, पालक, रागी, पनीर, लौकी)...",
         phCustomIng: "➕ कोई सामग्री नहीं मिल रही? यहाँ टाइप करें...",
         btnAdd: "जोड़ें",
-        recTitle: "🍲 केवल सुरक्षित सामग्री से बने व्यंजन",
+        recTitle: "🍲 चिकित्सकीय रूप से सुरक्षित व्यंजन (आपकी चुनी गई सामग्री से)",
         btnPrint: "🖨️ प्रिंट करें",
-        planTitle: "📋 पूरे दिन का व्यक्तिगत नैदानिक और खेल डाइट चार्ट",
-        planSub: "आपकी नैदानिक स्थिति के अनुकूल सत्र से पहले और बाद का पोषण शामिल है।",
+        planTitle: "📋 पूरे दिन का व्यक्तिगत नैदानिक डाइट चार्ट",
+        planSub: "आपके प्रिस्क्रिप्शन स्वास्थ्य सारांश, खेल मैक्रोज़ और आहार नियमों के अनुसार तैयार।",
         btnRefresh: "🔄 योजना रीफ़्रेश करें",
         btnPrintPdf: "🖨️ प्रिंट / PDF सहेजें",
         fabAi: "पोषण AI से पूछें",
         aiTitle: "स्वस्थ आहार AI",
         aiSub: "नैदानिक और खेल पोषण सहायक",
-        phChat: "सुरक्षित भोजन या खेल पोषण के बारे में पूछें...",
-        aiWelcome: "नमस्ते! मैं आपका <strong>स्वस्थ आहार AI</strong> नैदानिक और खेल पोषण सहायक हूँ। सुरक्षित/प्रतिबंधित भोजन, चिकित्सा कारणों या खेल पोषण के बारे में पूछें!",
+        phChat: "सुरक्षित भोजन, दवाओं या खेल पोषण के बारे में पूछें...",
+        aiWelcome: "नमस्ते! मैं आपका <strong>स्वस्थ आहार AI</strong> नैदानिक और खेल पोषण सहायक हूँ। अपना प्रिस्क्रिप्शन अपलोड करें या अपने स्वास्थ्य सारांश, सुरक्षित भोजन, दवाओं के प्रभाव या खेल पोषण के बारे में कुछ भी पूछें!",
         safeTag: "✅ सुरक्षित", warnTag: "⚠️ सीमित", dangerTag: "⛔ प्रतिबंधित",
         errFields: "कृपया पूरा नाम, सही ईमेल और कम से कम 6 अक्षरों का पासवर्ड दर्ज करें।",
         errLoginFields: "कृपया अपना ईमेल और पासवर्ड दर्ज करें।",
@@ -1065,7 +1118,107 @@
     }
 
     // =========================================================================
-    // 4. PROFILE, INGREDIENTS, RECIPES & NUTRITION AI CHATBOT
+    // 4. PRESCRIPTION OCR & HEALTH SUMMARY
+    // =========================================================================
+    async function handleRxUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const prev = document.getElementById("rxPreview");
+      prev.src = URL.createObjectURL(file);
+      prev.style.display = "block";
+
+      const st = document.getElementById("ocrStatus");
+      st.style.display = "block";
+      st.textContent = await translateDynamicText("⏳ Scanning prescription image with OCR...");
+
+      try {
+        const res = await Tesseract.recognize(file, "eng");
+        document.getElementById("rxText").value = res.data.text.trim();
+        st.textContent = await translateDynamicText("✅ Prescription scanned successfully! Generating health summary...");
+        summarizePrescription();
+      } catch (e) {
+        st.textContent = await translateDynamicText("⚠️ Could not read handwriting clearly. Please type or edit the text below.");
+      }
+    }
+
+    function fillDemoRx() {
+      document.getElementById("rxText").value =
+        "Diagnosis: Stage 3 Chronic Kidney Disease (CKD), Type 2 Diabetes Mellitus, Hypertension (High BP). " +
+        "Rx: Telmisartan 40mg OD, Metformin 500mg BD, Atorvastatin 10mg HS. Advice: Low potassium & low sodium renal diabetic diet.";
+      summarizePrescription();
+    }
+
+    async function summarizePrescription() {
+      const text = (document.getElementById("rxText").value || "").toLowerCase();
+      if (!text.trim()) return;
+
+      const issues = [];
+      detectedMeds = [];
+
+      const rules = [
+        { keys: ["ckd", "kidney", "renal", "creatinine"], cond: "CKD (Chronic Kidney Disease)", sum: "Reduced kidney filtration — strict Potassium, Phosphorus & Sodium control required.", act: "Block Potato, Spinach, Tomato, Banana & Coconut Water." },
+        { keys: ["dialysis", "hemodialysis"], cond: "Dialysis (Hemodialysis)", sum: "Active dialysis — requires 1.2g/kg high-biological protein with fluid & potassium restriction.", act: "Prioritize Egg Whites & controlled Paneer; avoid high-potassium produce." },
+        { keys: ["diabetes", "diabetic", "hba1c", "sugar", "metformin", "insulin"], cond: "Type 2 Diabetes", sum: "Elevated blood glucose profile — requires low-glycemic complex carbohydrates.", act: "Prefer Jowar, Bajra, Ragi & high-fiber vegetables over white rice/sugar." },
+        { keys: ["hypertension", "high bp", "blood pressure", "htn", "telmisartan", "amlodipine", "losartan"], cond: "Hypertension (High BP)", sum: "Elevated blood pressure — requires low-sodium DASH nutrition (<1,500mg Na/day).", act: "Avoid pickles, papad, salted snacks & excess table salt." },
+        { keys: ["fatty liver", "nafld", "sgpt", "sgot"], cond: "Fatty Liver (NAFLD)", sum: "Hepatic fat accumulation — requires zero added sugar and zero deep-fried trans fats.", act: "Include Lauki, Oats & lean protein." },
+        { keys: ["cholesterol", "lipid", "ldl", "atorvastatin", "rosuvastatin", "heart"], cond: "Heart Disease / High Cholesterol", sum: "Cardiovascular lipid risk — restrict saturated fat and dietary cholesterol.", act: "Use egg whites instead of yolks and low-fat dairy." },
+        { keys: ["thyroid", "hypothyroid", "tsh", "levothyroxine"], cond: "Hypothyroidism", sum: "Thyroid hormone replacement — meal timing around tablet is critical.", act: "Take thyroid tablet on empty stomach 45 mins before tea/coffee or soy." }
+      ];
+
+      rules.forEach(r => {
+        if (r.keys.some(k => text.includes(k))) {
+          activeConditions.add(r.cond);
+          issues.push(r);
+        }
+      });
+
+      if (text.includes("telmisartan") || text.includes("losartan")) detectedMeds.push("Telmisartan / Losartan (ARB): Risk of high potassium — avoid potassium salt substitutes.");
+      if (text.includes("metformin")) detectedMeds.push("Metformin: Take with meals to prevent stomach upset; monitor Vitamin B12.");
+      if (text.includes("warfarin")) detectedMeds.push("Warfarin: Keep Vitamin K intake (Spinach/Broccoli) strictly consistent.");
+      if (text.includes("atorvastatin")) detectedMeds.push("Atorvastatin: Avoid grapefruit/pomelo juice.");
+
+      renderConditionPills();
+      refreshKPIs();
+      renderIngredients();
+      saveProfile(true);
+
+      const body = document.getElementById("healthSummaryBody");
+      if (!issues.length) {
+        body.innerHTML = `<div style="padding:12px;background:#f8fafc;border-radius:12px;">${await translateDynamicText("No chronic disease keywords found. Profile set to Healthy Athletic Nutrition.")}</div>`;
+      } else {
+        const cardsHtml = await Promise.all(issues.map(async i => {
+          const tCond = await translateDynamicText("Health Issue Detected: " + i.cond);
+          const tSum = await translateDynamicText("Summary: " + i.sum);
+          const tAct = await translateDynamicText("Mandatory Diet Action: " + i.act);
+          return `
+            <div style="padding:14px;border-radius:14px;background:#f0fdfa;border:1px solid #99f6e4;">
+              <strong style="color:#0f766e;font-size:1rem;">🩺 ${tCond}</strong>
+              <p style="font-size:0.88rem;margin:4px 0;">${tSum}</p>
+              <p style="font-size:0.85rem;color:#065f46;"><strong>✅ ${tAct}</strong></p>
+            </div>
+          `;
+        }));
+        const medItems = await Promise.all(detectedMeds.map(async m => `<li>${await translateDynamicText(m)}</li>`));
+        const medHeader = await translateDynamicText("Medicine–Food Interaction Warnings:");
+
+        body.innerHTML = `
+          <div style="display:grid;gap:12px;">
+            ${cardsHtml.join("")}
+            ${medItems.length ? `
+              <div style="padding:14px;border-radius:14px;background:#fffbeb;border:1px solid #fde68a;">
+                <strong style="color:#92400e;">💊 ${medHeader}</strong>
+                <ul style="margin:6px 0 0 18px;font-size:0.86rem;">${medItems.join("")}</ul>
+              </div>
+            ` : ""}
+          </div>
+        `;
+      }
+      document.getElementById("healthSummaryCard").style.display = "block";
+    }
+
+    // =========================================================================
+    // 5. PROFILE, INGREDIENTS, RECIPES & NUTRITION AI CHATBOT
     // =========================================================================
     function renderConditionPills() {
       document.getElementById("conditionPills").innerHTML = CONDITIONS.map(c =>
@@ -1100,9 +1253,9 @@
       document.getElementById("kpiProt").textContent = Math.round(w * mult) + " g";
       document.getElementById("kpiProtNote").textContent = await translateDynamicText(mult + " g/kg clinical target");
       document.getElementById("kpiConds").textContent = activeConditions.size;
-      document.getElementById("kpiCondSummary").textContent = activeConditions.size
+      document.getElementById("kpiRxSummary").textContent = activeConditions.size
         ? Array.from(activeConditions).slice(0, 2).join(", ")
-        : await translateDynamicText("None selected");
+        : await translateDynamicText("No Rx issues flagged");
     }
 
     async function saveProfile(silent = false) {
@@ -1114,6 +1267,7 @@
         height: Number(document.getElementById("profHeight").value) || 168,
         diet: document.getElementById("profDiet").value,
         sport: document.getElementById("profSport").value,
+        rxText: document.getElementById("rxText").value,
         conditions: Array.from(activeConditions)
       };
       localStorage.setItem("sa_pr_" + currentUser.email, JSON.stringify(pr));
@@ -1142,6 +1296,7 @@
         document.getElementById("profHeight").value = pr.height || 168;
         document.getElementById("profDiet").value = pr.diet || "veg";
         document.getElementById("profSport").value = pr.sport || "Powerlifting";
+        document.getElementById("rxText").value = pr.rxText || "";
         activeConditions = new Set(pr.conditions || []);
         renderConditionPills();
       } else {
@@ -1197,10 +1352,10 @@
         const r = checkRisk(item);
         if (r.level === "danger") {
           banner.style.display = "block"; banner.style.background = "#fee2e2"; banner.style.color = "#991b1b";
-          banner.textContent = await translateDynamicText(`⛔ BLOCKED (${item.name}): ${r.reason}`);
+          banner.textContent = await translateDynamicText(`⛔ WARNING (${item.name}): ${r.reason} — Automatically excluded from dishes!`);
         } else if (r.level === "warn") {
           banner.style.display = "block"; banner.style.background = "#fef3c7"; banner.style.color = "#92400e";
-          banner.textContent = await translateDynamicText(`⚠️ LIMIT (${item.name}): ${r.reason}`);
+          banner.textContent = await translateDynamicText(`⚠️ PORTION CAUTION (${item.name}): ${r.reason}`);
         } else {
           banner.style.display = "none";
         }
@@ -1237,8 +1392,8 @@
       });
 
       const alertText = blocked.length
-        ? await translateDynamicText(`⛔ Blocked Ingredients: ${blocked.map(b => `${b.it.name} — ${b.reason}`).join("; ")}`)
-        : await translateDynamicText(`✅ All ${safe.length} selected ingredients are safe!`);
+        ? await translateDynamicText(`⛔ Blocked from Recipes: ${blocked.map(b => `${b.it.name} (${b.reason})`).join("; ")}`)
+        : await translateDynamicText(`✅ All ${safe.length} ticked ingredients passed clinical screening!`);
 
       document.getElementById("recipeAlert").innerHTML = blocked.length
         ? `<div style="padding:12px;border-radius:12px;background:#fee2e2;color:#991b1b;font-size:0.86rem;font-weight:700;">${alertText}</div>`
@@ -1249,8 +1404,8 @@
       if (names.length) {
         cards.push({
           title: await translateDynamicText("🍲 Safe Clinical Bowl: " + names.slice(0, 4).join(" + ")),
-          desc: await translateDynamicText(`Prepared strictly from your safe ingredients (${names.join(", ")}) adapted for ${document.getElementById("profSport").value}.`),
-          tag: await translateDynamicText("100% Safe Ingredients"),
+          desc: await translateDynamicText(`Prepared strictly from your permitted ticked items (${names.join(", ")}) using low-sodium, low-oil cooking tailored for ${document.getElementById("profSport").value}.`),
+          tag: await translateDynamicText("100% Clinically Safe"),
           img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
         });
       }
@@ -1274,15 +1429,15 @@
       const sport = document.getElementById("profSport").value || "Sport";
       const slots = [
         {
-          t: "🌅 7:00 AM • Pre-Session Nutrition",
+          t: "🌅 7:00 AM • Pre-Training",
           m: isCKD ? "1 Small Apple + Jeera Water" : "1 Banana + 5 Soaked Almonds",
-          n: `Pre-session fuel for ${sport}.`,
+          n: "Clean pre-workout energy.",
           img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80"
         },
         {
-          t: "🍳 9:00 AM • Post-Session Recovery",
+          t: "🍳 9:00 AM • Post-Training Breakfast",
           m: "Vegetable Oats Poha + Sprouted Moong",
-          n: `Post-session recovery window for ${sport}.`,
+          n: `Muscle repair window for ${sport}.`,
           img: "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80"
         },
         {
@@ -1345,12 +1500,16 @@
       const lower = q.toLowerCase();
       const condList = Array.from(activeConditions);
       const isCKD = activeConditions.has("CKD (Chronic Kidney Disease)") || activeConditions.has("Dialysis (Hemodialysis)");
-      let rawReply = `Nutrition AI: ${condList.length ? `Keeping your ${condList.join(", ")} in mind, ` : ""}select safe ingredients in the Kitchen Tick-Box tab to generate recipes.`;
+      let rawReply = `Nutrition AI Guidance: ${condList.length ? `Keeping your ${condList.join(", ")} in mind, ` : ""}choose fresh home-cooked meals (Jowar, Lauki, Moong Dal, Makhana) and verify ingredients in the Kitchen Tick-Box tab.`;
 
       if (lower.includes("potato") || lower.includes("aloo") || lower.includes("आलू") || lower.includes("बटाटा")) {
         rawReply = isCKD
-          ? "⛔ Blocked (Potato): Your profile flags CKD/Dialysis. Potatoes contain ~421mg potassium per 100g, risking hyperkalemia. Choose Bottle Gourd (Lauki) or Cucumber instead."
-          : "✅ Safe: Potatoes are permitted in moderation for your profile.";
+          ? "⛔ Avoid Potato: Your profile flags CKD/Dialysis. Potatoes contain ~421mg potassium per 100g, risking hyperkalemia. Choose Bottle Gourd (Lauki) or Cucumber instead."
+          : "✅ Potatoes are permitted in moderation for your profile.";
+      } else if (lower.includes("prescription") || lower.includes("summary") || lower.includes("health")) {
+        rawReply = condList.length
+          ? `🩺 From your prescription summary, your active clinical flags are: ${condList.join(", ")}. ${detectedMeds.length ? "Medication alerts: " + detectedMeds.join(" ") : ""}`
+          : "📋 No chronic conditions are currently flagged in your prescription summary.";
       } else if (lower.includes("protein") || lower.includes("sport")) {
         const w = Number(document.getElementById("profWeight").value) || 68;
         const g = Math.round(w * (isCKD ? 0.8 : 1.6));

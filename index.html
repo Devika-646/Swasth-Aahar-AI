@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Swasth Aahar AI — स्वस्थ आहार | Clinical & Sports Nutrition</title>
+  <title>Swasth Aahar AI — Clinical & Sports Nutrition</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: var(--cream); color: var(--ink); overflow-x: hidden; }
 
-    /* ================= DECORATIVE LANDING / AUTH SCREEN ================= */
+    /* ================= LANDING & AUTH SCREEN ================= */
     .landing-shell {
       min-height: 100vh;
       background:
@@ -40,13 +40,6 @@
       position: relative;
       overflow: hidden;
     }
-
-    .mandala-ring {
-      position: absolute; width: 640px; height: 640px; border-radius: 50%;
-      border: 1px dashed rgba(245, 158, 11, 0.2); top: -180px; right: -160px;
-      pointer-events: none; animation: spinSlow 90s linear infinite;
-    }
-    @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     .top-navbar {
       max-width: 1340px; width: 100%; margin: 0 auto; padding: 1.35rem 2rem;
@@ -102,7 +95,7 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    /* ================= CURATED PHOTO GALLERY MOSAIC (SPORTS, HEALTH, LIFE, FOOD) ================= */
+    /* ================= PHOTOGRAPHY MOSAIC (SPORTS, HEALTH, LIFE, FOOD) ================= */
     .photo-mosaic {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -112,7 +105,7 @@
     @media (max-width: 640px) { .photo-mosaic { grid-template-columns: repeat(2, 1fr); } }
     .photo-tile {
       position: relative;
-      height: 145px;
+      height: 150px;
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.22);
@@ -133,26 +126,27 @@
       letter-spacing: 0.02em;
     }
 
-    /* Step-by-Step Guide Cards */
-    .steps-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 1.25rem;
+    /* Core Feature Highlight Cards */
+    .feature-stack {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 1.25rem;
     }
-    @media (max-width: 600px) { .steps-grid { grid-template-columns: 1fr; } }
-    .step-glass {
+    @media (max-width: 600px) { .feature-stack { grid-template-columns: 1fr; } }
+    .feature-pill-card {
       background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.03));
       border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 18px; padding: 1.05rem 1.2rem;
+      border-radius: 16px;
+      padding: 1rem 1.15rem;
       backdrop-filter: blur(14px);
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: #e2e8f0;
     }
-    .step-num {
-      display: inline-block; padding: 3px 10px; border-radius: 999px;
-      background: rgba(94, 234, 212, 0.2); color: #5eead4;
-      font-size: 0.72rem; font-weight: 800; margin-bottom: 5px;
-    }
-    .step-glass h4 { font-size: 0.94rem; color: white; margin-bottom: 3px; }
-    .step-glass p { font-size: 0.79rem; color: #cbd5e1; line-height: 1.42; }
+    .feature-pill-card strong { color: #ffffff; }
 
-    /* Auth Card with Top Wellness Banner Image */
+    /* Auth Card */
     .auth-panel {
       background: rgba(255, 255, 255, 0.98);
       color: var(--ink);
@@ -213,7 +207,6 @@
     .menu-toggle { display: none; background: #041f1c; color: white; border: none; padding: 9px 14px; border-radius: 10px; font-weight: 700; }
     @media (max-width: 920px) { .menu-toggle { display: inline-block; } }
 
-    /* Dashboard Inspirational Visual Strip */
     .wellness-banner-strip {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem;
     }
@@ -294,7 +287,6 @@
     .b-warn { background: #fef3c7; color: #92400e; }
     .b-danger { background: #fee2e2; color: #991b1b; }
 
-    /* Meal Card with Photo Header */
     .meal-photo-card {
       border: 1px solid var(--border); border-radius: 18px; overflow: hidden; background: white;
       box-shadow: 0 6px 18px rgba(15,23,42,0.05);
@@ -302,8 +294,8 @@
     .meal-photo-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
     .meal-photo-body { padding: 1.15rem; }
 
-    /* ================= VAIDYA AI CHATBOT ================= */
-    .vaidya-fab {
+    /* ================= NUTRITION AI CHATBOT ================= */
+    .ai-fab {
       position: fixed; bottom: 24px; right: 24px; z-index: 90;
       background: linear-gradient(135deg, #0f766e, #f97316);
       color: white; border: none; border-radius: 999px; padding: 15px 22px;
@@ -311,36 +303,34 @@
       box-shadow: 0 14px 30px rgba(15, 118, 110, 0.45);
       display: flex; align-items: center; gap: 10px;
     }
-    .vaidya-window {
+    .ai-window {
       position: fixed; bottom: 88px; right: 24px; width: 380px; max-width: calc(100vw - 32px);
       height: 510px; max-height: 74vh; background: white; border-radius: 24px;
       box-shadow: 0 25px 55px -12px rgba(0,0,0,0.38); border: 1px solid var(--border);
       display: none; flex-direction: column; overflow: hidden; z-index: 95;
     }
-    .vaidya-head {
+    .ai-head {
       background: linear-gradient(135deg, #041f1c, #0f766e); color: white;
       padding: 15px 18px; display: flex; justify-content: space-between; align-items: center;
     }
-    .vaidya-feed {
+    .ai-feed {
       flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f8fafc;
     }
     .bubble { max-width: 85%; padding: 11px 14px; border-radius: 15px; font-size: 0.88rem; line-height: 1.45; }
     .bubble.bot { background: white; border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
     .bubble.user { background: #0f766e; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-    .vaidya-bar { padding: 10px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: white; }
+    .ai-bar { padding: 10px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: white; }
 
     @media print {
-      .sidebar, .dash-topbar, .wellness-banner-strip, .vaidya-fab, .vaidya-window, .no-print { display: none !important; }
+      .sidebar, .dash-topbar, .wellness-banner-strip, .ai-fab, .ai-window, .no-print { display: none !important; }
       .content-area { margin: 0; padding: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==================== 1. DECORATIVE LANDING & AUTH ==================== -->
+  <!-- ==================== 1. LANDING & AUTH ==================== -->
   <div id="landingScreen" class="landing-shell">
-    <div class="mandala-ring"></div>
-
     <header class="top-navbar">
       <div class="brand-lockup">
         <div class="brand-emblem">🥗</div>
@@ -350,7 +340,6 @@
         </div>
       </div>
 
-      <!-- FULL-PORTAL 22 INDIAN LANGUAGES SWITCHER -->
       <div class="lang-pill-box">
         <span>🌐</span>
         <select id="langTop" onchange="setAppLanguage(this.value)">
@@ -383,55 +372,47 @@
 
     <section class="hero-stage">
       <div>
-        <div class="eyebrow-badge" data-t="eyebrow">✨ 22 Indian Languages • OCR Prescription Scanner • Vaidya AI</div>
+        <div class="eyebrow-badge" data-t="eyebrow">✨ 22 Indian Languages • OCR Prescription Scanner • Clinical & Sports Nutrition</div>
         <h1 class="display-heading" data-t="heroHeading">
-          Nourish Your Body with <em>Clinical Precision</em> & Ayurvedic Wisdom
+          Nourish Your Body with <em>Clinical Precision</em> & Sports Science
         </h1>
         <p style="color:#cbd5e1;font-size:1rem;line-height:1.65;max-width:580px;" data-t="heroSub">
-          Follow 4 simple steps in your own language: register your account, upload your prescription for an instant health summary, tick available kitchen items, and chat with Vaidya AI.
+          Personalized clinical and sports nutrition engine with prescription OCR scanning, drug-food interaction screening, and safe kitchen ingredient meal planning.
         </p>
 
-        <!-- CURATED PHOTOGRAPHY GALLERY: SPORTS, HEALTH, ACTIVE LIFE & HEALTHY FOOD -->
+        <!-- PHOTOGRAPHY GALLERY: SPORTS, HEALTH, ACTIVE LIFE & HEALTHY FOOD -->
         <div class="photo-mosaic">
           <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80" alt="Strength & Powerlifting Sports" onerror="this.src='https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=600'" />
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80" alt="Sports Performance" onerror="this.src='https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=600'" />
             <div class="photo-caption" data-t="picSports">🏅 Peak Sports Strength</div>
           </div>
           <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Vibrant Healthy Plant Nutrition" onerror="this.src='https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600'" />
-            <div class="photo-caption" data-t="picFood">🥗 Wholesome Pathya Food</div>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Healthy Nutrition" onerror="this.src='https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600'" />
+            <div class="photo-caption" data-t="picFood">🥗 Wholesome Healthy Food</div>
           </div>
           <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Clinical Health & Diagnostics" onerror="this.src='https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=600'" />
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Clinical Health" onerror="this.src='https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=600'" />
             <div class="photo-caption" data-t="picHealth">🩺 Clinical Rx Safety</div>
           </div>
           <div class="photo-tile">
-            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" alt="Balanced Vitality & Yoga Life" onerror="this.src='https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=600'" />
+            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80" alt="Healthy Active Life" onerror="this.src='https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=600'" />
             <div class="photo-caption" data-t="picLife">🌿 Mindful Active Life</div>
           </div>
         </div>
 
-        <!-- Step-by-Step Procedure Cards -->
-        <div class="steps-grid">
-          <div class="step-glass">
-            <span class="step-num" data-t="step1Tag">STEP 1</span>
-            <h4 data-t="step1Title">Create Cloud Account</h4>
-            <p data-t="step1Desc">Enter your full name, email, and 6+ character password to unlock your encrypted profile.</p>
+        <!-- Core Feature Highlights -->
+        <div class="feature-stack">
+          <div class="feature-pill-card" data-t="feat1">
+            ⛔ <strong>Instant Safe / Blocked verdicts</strong> with the medical reason for every food
           </div>
-          <div class="step-glass">
-            <span class="step-num" data-t="step2Tag">STEP 2</span>
-            <h4 data-t="step2Title">Upload Prescription (OCR)</h4>
-            <p data-t="step2Desc">Scan your doctor's prescription to automatically summarize health issues & drug alerts.</p>
+          <div class="feature-pill-card" data-t="feat2">
+            🏅 <strong>297 sports</strong> with pre- and post-session nutrition
           </div>
-          <div class="step-glass">
-            <span class="step-num" data-t="step3Tag">STEP 3</span>
-            <h4 data-t="step3Title">Tick Kitchen Ingredients</h4>
-            <p data-t="step3Desc">Select items at home; harmful foods for your condition are blocked automatically.</p>
+          <div class="feature-pill-card" data-t="feat3">
+            🍲 <strong>Recipes only from safe ingredients</strong>, adapted to your condition
           </div>
-          <div class="step-glass">
-            <span class="step-num" data-t="step4Tag">STEP 4</span>
-            <h4 data-t="step4Title">Ask Vaidya AI & Print Plan</h4>
-            <p data-t="step4Desc">Get a full-day diet chart and ask Vaidya AI any health or sport nutrition question.</p>
+          <div class="feature-pill-card" data-t="feat4">
+            ☁️ <strong>Cloud profile</strong> that follows you to any phone or laptop
           </div>
         </div>
       </div>
@@ -439,7 +420,7 @@
       <div class="auth-panel">
         <img class="auth-banner-img" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=900&q=80" alt="Healthy Nutrition Bowl" />
         <div class="auth-body">
-          <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:6px;" data-t="authTitle">Member Login & Registration</h2>
+          <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:6px;" data-t="authTitle">Secure Login / Registration</h2>
           <p style="font-size:0.85rem;color:var(--muted);margin-bottom:14px;" data-t="authSub">Sign in or create your encrypted health & diet vault</p>
 
           <div id="syncPill" style="padding:9px 14px;border-radius:12px;font-size:0.82rem;font-weight:700;margin-bottom:16px;background:#fef3c7;color:#92400e;">
@@ -482,25 +463,24 @@
         </div>
 
         <nav class="nav-stack">
-          <button class="nav-item active" onclick="switchView('viewRx', this)" data-t="navRx">📄 1. Upload Prescription & Summary</button>
-          <button class="nav-item" onclick="switchView('viewProfile', this)" data-t="navProf">👤 2. Health & Sport Profile</button>
-          <button class="nav-item" onclick="switchView('viewKitchen', this)" data-t="navKit">☑️ 3. Kitchen Tick-Box & Cook</button>
-          <button class="nav-item" onclick="switchView('viewPlan', this)" data-t="navPlan">📋 4. Full-Day Diet Chart</button>
-          <button class="nav-item" onclick="toggleVaidya(true)" data-t="navChat">🤖 5. Chat with Vaidya AI</button>
+          <button class="nav-item active" onclick="switchView('viewRx', this)" data-t="navRx">📄 Upload Prescription & Summary</button>
+          <button class="nav-item" onclick="switchView('viewProfile', this)" data-t="navProf">👤 Health & Sport Profile</button>
+          <button class="nav-item" onclick="switchView('viewKitchen', this)" data-t="navKit">☑️ Kitchen Tick-Box & Cook</button>
+          <button class="nav-item" onclick="switchView('viewPlan', this)" data-t="navPlan">📋 Full-Day Diet Chart</button>
+          <button class="nav-item" onclick="toggleAiChat(true)" data-t="navChat">🤖 Nutrition AI Assistant</button>
         </nav>
       </div>
 
       <div>
         <div class="sidebar-photo-card">
           <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=500&q=80" alt="Fresh Produce" />
-          <span data-t="sideQuote">🌿 Food is Medicine • आहार ही औषधि</span>
+          <span data-t="sideQuote">🌿 Right Diet • Healthy Life</span>
         </div>
         <button class="btn btn-ghost" style="width:100%;background:rgba(255,255,255,0.08);color:white;border-color:rgba(255,255,255,0.2);" onclick="logoutUser()" data-t="btnLogout">🚪 Sign Out</button>
       </div>
     </aside>
 
     <main class="content-area">
-      <!-- Top Header -->
       <div class="dash-topbar no-print">
         <div style="display:flex;align-items:center;gap:12px;">
           <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')" data-t="btnMenu">☰ Menu</button>
@@ -540,7 +520,7 @@
         </div>
       </div>
 
-      <!-- Inspirational Sports, Health, Life & Food Visual Strip -->
+      <!-- Visual Strip -->
       <div class="wellness-banner-strip no-print">
         <div class="strip-card">
           <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Athletic Training" />
@@ -548,7 +528,7 @@
         </div>
         <div class="strip-card">
           <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="Healthy Balanced Bowl" />
-          <div data-t="picFood">🥗 Wholesome Pathya Food</div>
+          <div data-t="picFood">🥗 Wholesome Healthy Food</div>
         </div>
         <div class="strip-card">
           <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80" alt="Clinical Care" />
@@ -642,7 +622,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label data-t="lblSport">Primary Sport (250+ Disciplines)</label>
+              <label data-t="lblSport">Primary Sport (297 Disciplines)</label>
               <input list="sportsList" id="profSport" value="Powerlifting" />
               <datalist id="sportsList"></datalist>
             </div>
@@ -698,7 +678,7 @@
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
             <div>
-              <h3 style="font-weight:800;" data-t="planTitle">📋 Full-Day Personalized Pathya Diet Chart</h3>
+              <h3 style="font-weight:800;" data-t="planTitle">📋 Full-Day Personalized Clinical Diet Chart</h3>
               <p style="font-size:0.85rem;color:var(--muted);" data-t="planSub">Tailored to your prescription health summary, sport macros, and dietary rules.</p>
             </div>
             <div style="display:flex;gap:8px;">
@@ -712,33 +692,33 @@
     </main>
   </div>
 
-  <!-- ==================== 3. VAIDYA AI CHATBOT ==================== -->
-  <button class="vaidya-fab no-print" onclick="toggleVaidya()">
+  <!-- ==================== 3. NUTRITION AI CHATBOT ==================== -->
+  <button class="ai-fab no-print" onclick="toggleAiChat()">
     <span>🤖</span>
-    <span data-t="fabVaidya">Ask Vaidya AI</span>
+    <span data-t="fabAi">Ask Nutrition AI</span>
   </button>
 
-  <div class="vaidya-window no-print" id="vaidyaWindow">
-    <div class="vaidya-head">
+  <div class="ai-window no-print" id="aiWindow">
+    <div class="ai-head">
       <div style="display:flex;align-items:center;gap:10px;">
         <span style="font-size:1.5rem;">🩺</span>
         <div>
-          <strong style="display:block;font-size:0.96rem;" data-t="vaidyaTitle">Vaidya AI (वैद्य AI)</strong>
-          <span style="font-size:0.74rem;color:#99f6e4;" data-t="vaidyaSub">Clinical & Sports Nutrition Assistant</span>
+          <strong style="display:block;font-size:0.96rem;" data-t="aiTitle">Swasth Aahar AI</strong>
+          <span style="font-size:0.74rem;color:#99f6e4;" data-t="aiSub">Clinical & Sports Nutrition Assistant</span>
         </div>
       </div>
-      <button onclick="toggleVaidya(false)" style="background:transparent;border:none;color:white;font-size:1.2rem;cursor:pointer;">✕</button>
+      <button onclick="toggleAiChat(false)" style="background:transparent;border:none;color:white;font-size:1.2rem;cursor:pointer;">✕</button>
     </div>
 
-    <div class="vaidya-feed" id="vaidyaFeed">
-      <div class="bubble bot" id="vaidyaWelcomeMsg">
-        Namaste! I am <strong>Vaidya AI</strong> 🌿. Upload your prescription or ask me anything about your health summary, safe foods, medication interactions, or sports macros!
+    <div class="ai-feed" id="aiFeed">
+      <div class="bubble bot" id="aiWelcomeMsg">
+        Hello! I am your <strong>Swasth Aahar AI</strong> clinical & sports nutrition assistant. Upload your prescription or ask me anything about your health summary, safe foods, medication interactions, or sports macros!
       </div>
     </div>
 
-    <div class="vaidya-bar">
-      <input type="text" id="vaidyaInput" data-ph="phChat" placeholder="Ask Vaidya AI..." onkeypress="if(event.key==='Enter') askVaidya()" />
-      <button class="btn btn-emerald" style="padding:10px 14px;" onclick="askVaidya()">➤</button>
+    <div class="ai-bar">
+      <input type="text" id="aiInput" data-ph="phChat" placeholder="Ask about safe foods, Rx, or sports macros..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
+      <button class="btn btn-emerald" style="padding:10px 14px;" onclick="askNutritionAi()">➤</button>
     </div>
   </div>
 
@@ -766,19 +746,19 @@
         brandName: "Swasth Aahar AI",
         brandTagline: "Right Diet, Healthy Life • Clinical & Sports Nutrition",
         brandSubShort: "Clinical & Sports Nutrition",
-        eyebrow: "✨ 22 Indian Languages • OCR Prescription Scanner • Vaidya AI",
-        heroHeading: "Nourish Your Body with <em>Clinical Precision</em> & Ayurvedic Wisdom",
-        heroSub: "Follow 4 simple steps in your own language: register your account, upload your prescription for an instant health summary, tick available kitchen items, and chat with Vaidya AI.",
+        eyebrow: "✨ 22 Indian Languages • OCR Prescription Scanner • Clinical & Sports Nutrition",
+        heroHeading: "Nourish Your Body with <em>Clinical Precision</em> & Sports Science",
+        heroSub: "Personalized clinical and sports nutrition engine with prescription OCR scanning, drug-food interaction screening, and safe kitchen ingredient meal planning.",
         picSports: "🏅 Peak Sports Strength",
-        picFood: "🥗 Wholesome Pathya Food",
+        picFood: "🥗 Wholesome Healthy Food",
         picHealth: "🩺 Clinical Rx Safety",
         picLife: "🌿 Mindful Active Life",
-        sideQuote: "🌿 Food is Medicine • आहार ही औषधि",
-        step1Tag: "STEP 1", step1Title: "Create Cloud Account", step1Desc: "Enter your full name, email, and 6+ character password to unlock your encrypted profile.",
-        step2Tag: "STEP 2", step2Title: "Upload Prescription (OCR)", step2Desc: "Scan your doctor's prescription to automatically summarize health issues & drug alerts.",
-        step3Tag: "STEP 3", step3Title: "Tick Kitchen Ingredients", step3Desc: "Select items at home; harmful foods for your condition are blocked automatically.",
-        step4Tag: "STEP 4", step4Title: "Ask Vaidya AI & Print Plan", step4Desc: "Get a full-day diet chart and ask Vaidya AI any health or sport nutrition question.",
-        authTitle: "Member Login & Registration",
+        sideQuote: "🌿 Right Diet • Healthy Life",
+        feat1: "⛔ <strong>Instant Safe / Blocked verdicts</strong> with the medical reason for every food",
+        feat2: "🏅 <strong>297 sports</strong> with pre- and post-session nutrition",
+        feat3: "🍲 <strong>Recipes only from safe ingredients</strong>, adapted to your condition",
+        feat4: "☁️ <strong>Cloud profile</strong> that follows you to any phone or laptop",
+        authTitle: "Secure Login / Registration",
         authSub: "Sign in or create your encrypted health & diet vault",
         lblFullName: "Full Name (Required for Registration)",
         phFullName: "e.g., Devika Ashwin Desai",
@@ -787,11 +767,11 @@
         lblPass: "Password (Minimum 6 characters)",
         btnLogin: "Sign In",
         btnRegister: "Create Account",
-        navRx: "📄 1. Upload Prescription & Summary",
-        navProf: "👤 2. Health & Sport Profile",
-        navKit: "☑️ 3. Kitchen Tick-Box & Cook",
-        navPlan: "📋 4. Full-Day Diet Chart",
-        navChat: "🤖 5. Chat with Vaidya AI",
+        navRx: "📄 Upload Prescription & Summary",
+        navProf: "👤 Health & Sport Profile",
+        navKit: "☑️ Kitchen Tick-Box & Cook",
+        navPlan: "📋 Full-Day Diet Chart",
+        navChat: "🤖 Nutrition AI Assistant",
         btnLogout: "🚪 Sign Out",
         btnMenu: "☰ Menu",
         dashSub: "Personalized Clinical & Sports Nutrition Portal",
@@ -820,7 +800,7 @@
         optNonVeg: "Non-Vegetarian",
         optVegan: "Vegan",
         optJain: "Jain (No Root Vegetables)",
-        lblSport: "Primary Sport (250+ Disciplines)",
+        lblSport: "Primary Sport (297 Disciplines)",
         lblConds: "Active Clinical Conditions (Auto-synced from Prescription or Tap to Toggle)",
         btnSaveProf: "💾 Save Profile to Supabase Cloud",
         kitTitle: "☑️ Tick Available Kitchen Ingredients",
@@ -832,15 +812,15 @@
         btnAdd: "Add",
         recTitle: "🍲 Clinically Safe Dishes (From Your Ticked Ingredients)",
         btnPrint: "🖨️ Print",
-        planTitle: "📋 Full-Day Personalized Pathya Diet Chart",
+        planTitle: "📋 Full-Day Personalized Clinical Diet Chart",
         planSub: "Tailored to your prescription health summary, sport macros, and dietary rules.",
         btnRefresh: "🔄 Refresh Plan",
         btnPrintPdf: "🖨️ Print / Save PDF",
-        fabVaidya: "Ask Vaidya AI",
-        vaidyaTitle: "Vaidya AI (वैद्य AI)",
-        vaidyaSub: "Clinical & Sports Nutrition Assistant",
-        phChat: "Ask Vaidya AI...",
-        vaidyaWelcome: "Namaste! I am <strong>Vaidya AI</strong> 🌿. Upload your prescription or ask me anything about your health summary, safe foods, medication interactions, or sports macros!",
+        fabAi: "Ask Nutrition AI",
+        aiTitle: "Swasth Aahar AI",
+        aiSub: "Clinical & Sports Nutrition Assistant",
+        phChat: "Ask about safe foods, Rx, or sports macros...",
+        aiWelcome: "Hello! I am your <strong>Swasth Aahar AI</strong> clinical & sports nutrition assistant. Upload your prescription or ask me anything about your health summary, safe foods, medication interactions, or sports macros!",
         safeTag: "✅ Safe", warnTag: "⚠️ Limit", dangerTag: "⛔ Blocked",
         errFields: "Please enter your full name, valid email, and a password of at least 6 characters.",
         errLoginFields: "Please enter your email and password.",
@@ -851,19 +831,19 @@
         brandName: "स्वस्थ आहार AI",
         brandTagline: "सही आहार, स्वस्थ जीवन • नैदानिक और खेल पोषण",
         brandSubShort: "नैदानिक और खेल पोषण",
-        eyebrow: "✨ 22 भारतीय भाषाएँ • OCR प्रिस्क्रिप्शन स्कैनर • वैद्य AI",
-        heroHeading: "<em>नैदानिक सटीकता</em> और आयुर्वेदिक ज्ञान के साथ अपने शरीर को पोषित करें",
-        heroSub: "अपनी भाषा में 4 सरल चरणों का पालन करें: खाता बनाएं, स्वास्थ्य सारांश के लिए प्रिस्क्रिप्शन अपलोड करें, रसोई की सामग्री चुनें, और वैद्य AI से बात करें।",
+        eyebrow: "✨ 22 भारतीय भाषाएँ • OCR प्रिस्क्रिप्शन स्कैनर • नैदानिक और खेल पोषण",
+        heroHeading: "<em>नैदानिक सटीकता</em> और खेल विज्ञान के साथ अपने शरीर को पोषित करें",
+        heroSub: "प्रिस्क्रिप्शन OCR स्कैनिंग, दवा-आहार जांच और सुरक्षित रसोई सामग्री भोजन योजना के साथ व्यक्तिगत नैदानिक और खेल पोषण इंजन।",
         picSports: "🏅 खेल शक्ति और प्रदर्शन",
-        picFood: "🥗 पौष्टिक पथ्य भोजन",
+        picFood: "🥗 पौष्टिक स्वस्थ भोजन",
         picHealth: "🩺 नैदानिक सुरक्षा",
         picLife: "🌿 स्वस्थ सक्रिय जीवन",
-        sideQuote: "🌿 आहार ही औषधि है",
-        step1Tag: "चरण 1", step1Title: "क्लाउड खाता बनाएं", step1Desc: "अपना एन्क्रिप्टेड प्रोफ़ाइल खोलने के लिए पूरा नाम, ईमेल और 6+ अक्षरों का पासवर्ड दर्ज करें।",
-        step2Tag: "चरण 2", step2Title: "प्रिस्क्रिप्शन अपलोड करें (OCR)", step2Desc: "स्वास्थ्य समस्याओं और दवाओं के अलर्ट का सारांश पाने के लिए डॉक्टर का पर्चा स्कैन करें।",
-        step3Tag: "चरण 3", step3Title: "रसोई की सामग्री चुनें", step3Desc: "घर में उपलब्ध सामग्री पर टिक करें; आपकी बीमारी के लिए हानिकारक भोजन अपने आप ब्लॉक हो जाएगा।",
-        step4Tag: "चरण 4", step4Title: "वैद्य AI से पूछें और चार्ट प्रिंट करें", step4Desc: "पूरे दिन का डाइट चार्ट प्राप्त करें और वैद्य AI से कोई भी स्वास्थ्य या खेल पोषण प्रश्न पूछें।",
-        authTitle: "सदस्य लॉगिन और पंजीकरण",
+        sideQuote: "🌿 सही आहार • स्वस्थ जीवन",
+        feat1: "⛔ प्रत्येक भोजन के चिकित्सा कारण के साथ <strong>तत्काल सुरक्षित / प्रतिबंधित निर्णय</strong>",
+        feat2: "🏅 सत्र से पहले और बाद के पोषण के साथ <strong>297 खेल</strong>",
+        feat3: "🍲 <strong>केवल सुरक्षित सामग्री से बने व्यंजन</strong>, आपकी स्थिति के अनुकूल",
+        feat4: "☁️ <strong>क्लाउड प्रोफ़ाइल</strong> जो किसी भी फ़ोन या लैपटॉप पर आपके साथ रहती है",
+        authTitle: "सुरक्षित लॉगिन / पंजीकरण",
         authSub: "साइन इन करें या अपना एन्क्रिप्टेड स्वास्थ्य और आहार वॉल्ट बनाएं",
         lblFullName: "पूरा नाम (पंजीकरण के लिए आवश्यक)",
         phFullName: "उदा., देविका अश्विन देसाई",
@@ -872,11 +852,11 @@
         lblPass: "पासवर्ड (न्यूनतम 6 अक्षर)",
         btnLogin: "साइन इन करें",
         btnRegister: "खाता बनाएं",
-        navRx: "📄 1. प्रिस्क्रिप्शन अपलोड और सारांश",
-        navProf: "👤 2. स्वास्थ्य और खेल प्रोफ़ाइल",
-        navKit: "☑️ 3. रसोई सामग्री चयन और व्यंजन",
-        navPlan: "📋 4. पूरे दिन का डाइट चार्ट",
-        navChat: "🤖 5. वैद्य AI से बात करें",
+        navRx: "📄 प्रिस्क्रिप्शन अपलोड और सारांश",
+        navProf: "👤 स्वास्थ्य और खेल प्रोफ़ाइल",
+        navKit: "☑️ रसोई सामग्री चयन और व्यंजन",
+        navPlan: "📋 पूरे दिन का डाइट चार्ट",
+        navChat: "🤖 पोषण AI सहायक",
         btnLogout: "🚪 साइन आउट",
         btnMenu: "☰ मेनू",
         dashSub: "व्यक्तिगत नैदानिक और खेल पोषण पोर्टल",
@@ -905,7 +885,7 @@
         optNonVeg: "मांसाहारी (Non-Vegetarian)",
         optVegan: "वीगन (Vegan)",
         optJain: "जैन (बिना जड़ वाली सब्जियाँ)",
-        lblSport: "मुख्य खेल (250+ खेल)",
+        lblSport: "मुख्य खेल (297 खेल)",
         lblConds: "सक्रिय स्वास्थ्य स्थितियाँ (प्रिस्क्रिप्शन से ऑटो-सिंक या बदलने के लिए टैप करें)",
         btnSaveProf: "💾 प्रोफ़ाइल क्लाउड में सहेजें",
         kitTitle: "☑️ रसोई में उपलब्ध सामग्री पर टिक करें",
@@ -917,15 +897,15 @@
         btnAdd: "जोड़ें",
         recTitle: "🍲 चिकित्सकीय रूप से सुरक्षित व्यंजन (आपकी चुनी गई सामग्री से)",
         btnPrint: "🖨️ प्रिंट करें",
-        planTitle: "📋 पूरे दिन का व्यक्तिगत पथ्य डाइट चार्ट",
+        planTitle: "📋 पूरे दिन का व्यक्तिगत नैदानिक डाइट चार्ट",
         planSub: "आपके प्रिस्क्रिप्शन स्वास्थ्य सारांश, खेल मैक्रोज़ और आहार नियमों के अनुसार तैयार।",
         btnRefresh: "🔄 योजना रीफ़्रेश करें",
         btnPrintPdf: "🖨️ प्रिंट / PDF सहेजें",
-        fabVaidya: "वैद्य AI से पूछें",
-        vaidyaTitle: "वैद्य AI (Vaidya AI)",
-        vaidyaSub: "नैदानिक और खेल पोषण सहायक",
-        phChat: "वैद्य AI से कुछ भी पूछें...",
-        vaidyaWelcome: "नमस्ते! मैं <strong>वैद्य AI</strong> हूँ 🌿। अपना प्रिस्क्रिप्शन अपलोड करें या अपने स्वास्थ्य सारांश, सुरक्षित भोजन, दवाओं के प्रभाव या खेल पोषण के बारे में कुछ भी पूछें!",
+        fabAi: "पोषण AI से पूछें",
+        aiTitle: "स्वस्थ आहार AI",
+        aiSub: "नैदानिक और खेल पोषण सहायक",
+        phChat: "सुरक्षित भोजन, दवाओं या खेल पोषण के बारे में पूछें...",
+        aiWelcome: "नमस्ते! मैं आपका <strong>स्वस्थ आहार AI</strong> नैदानिक और खेल पोषण सहायक हूँ। अपना प्रिस्क्रिप्शन अपलोड करें या अपने स्वास्थ्य सारांश, सुरक्षित भोजन, दवाओं के प्रभाव या खेल पोषण के बारे में कुछ भी पूछें!",
         safeTag: "✅ सुरक्षित", warnTag: "⚠️ सीमित", dangerTag: "⛔ प्रतिबंधित",
         errFields: "कृपया पूरा नाम, सही ईमेल और कम से कम 6 अक्षरों का पासवर्ड दर्ज करें।",
         errLoginFields: "कृपया अपना ईमेल और पासवर्ड दर्ज करें।",
@@ -991,8 +971,8 @@
         if (dict[key]) el.setAttribute("placeholder", dict[key]);
       });
 
-      const welcomeEl = document.getElementById("vaidyaWelcomeMsg");
-      if (welcomeEl && dict.vaidyaWelcome) welcomeEl.innerHTML = dict.vaidyaWelcome;
+      const welcomeEl = document.getElementById("aiWelcomeMsg");
+      if (welcomeEl && dict.aiWelcome) welcomeEl.innerHTML = dict.aiWelcome;
 
       renderIngredients();
       initSupabase();
@@ -1059,7 +1039,7 @@
       }
       if (!sbClient) sbClient = window.supabase.createClient(SB.url, SB.key);
       pill.style.background = "#dcfce7"; pill.style.color = "#166534";
-      pill.textContent = await translateDynamicText("☁️ Cloud sync ON: Connected to Supabase PostgreSQL + RLS");
+      pill.textContent = await translateDynamicText("☁️ Cloud sync ON: your profile follows you to any phone or laptop.");
       sbClient.auth.getSession().then(({ data }) => {
         if (data?.session) { currentUser = data.session.user; launchDashboard(); }
       });
@@ -1238,7 +1218,7 @@
     }
 
     // =========================================================================
-    // 5. PROFILE, INGREDIENTS, RECIPES & VAIDYA AI CHATBOT
+    // 5. PROFILE, INGREDIENTS, RECIPES & NUTRITION AI CHATBOT
     // =========================================================================
     function renderConditionPills() {
       document.getElementById("conditionPills").innerHTML = CONDITIONS.map(c =>
@@ -1326,7 +1306,7 @@
 
     function checkRisk(item) {
       const diet = document.getElementById("profDiet").value;
-      if (diet === "jain" && ["potato", "onion", "carrot"].includes(item.id)) return { level: "danger", reason: "Apathya for Jain diet (root vegetable)." };
+      if (diet === "jain" && ["potato", "onion", "carrot"].includes(item.id)) return { level: "danger", reason: "Excluded for Jain diet (root vegetable)." };
       if ((diet === "veg" || diet === "jain" || diet === "vegan") && ["chicken", "egg_white"].includes(item.id)) return { level: "danger", reason: "Excluded by vegetarian preference." };
       if (diet === "vegan" && ["paneer", "curd"].includes(item.id)) return { level: "danger", reason: "Dairy excluded for Vegan profile." };
 
@@ -1336,7 +1316,7 @@
         if (f === "danger") { level = "danger"; notes.push(`${c}: ${item.note}`); }
         else if (f === "warn" && level !== "danger") { level = "warn"; notes.push(`${c}: ${item.note}`); }
       });
-      return { level, reason: notes.join(" | ") || "Safe (Pathya) for your profile" };
+      return { level, reason: notes.join(" | ") || "Safe for your profile" };
     }
 
     function renderIngredients() {
@@ -1423,8 +1403,8 @@
       const cards = [];
       if (names.length) {
         cards.push({
-          title: await translateDynamicText("🍲 Personalized Pathya Bowl: " + names.slice(0, 4).join(" + ")),
-          desc: await translateDynamicText(`Prepared strictly from your permitted ticked items (${names.join(", ")}) using low-sodium, low-oil steaming/sautéing tailored for ${document.getElementById("profSport").value}.`),
+          title: await translateDynamicText("🍲 Safe Clinical Bowl: " + names.slice(0, 4).join(" + ")),
+          desc: await translateDynamicText(`Prepared strictly from your permitted ticked items (${names.join(", ")}) using low-sodium, low-oil cooking tailored for ${document.getElementById("profSport").value}.`),
           tag: await translateDynamicText("100% Clinically Safe"),
           img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80"
         });
@@ -1502,25 +1482,25 @@
       if (id === "viewPlan") generateDietChart();
     }
 
-    function toggleVaidya(forceOpen) {
-      const win = document.getElementById("vaidyaWindow");
+    function toggleAiChat(forceOpen) {
+      const win = document.getElementById("aiWindow");
       if (typeof forceOpen === "boolean") win.style.display = forceOpen ? "flex" : "none";
       else win.style.display = win.style.display === "flex" ? "none" : "flex";
     }
 
-    async function askVaidya() {
-      const input = document.getElementById("vaidyaInput");
+    async function askNutritionAi() {
+      const input = document.getElementById("aiInput");
       const q = input.value.trim();
       if (!q) return;
       input.value = "";
 
-      const feed = document.getElementById("vaidyaFeed");
+      const feed = document.getElementById("aiFeed");
       feed.innerHTML += `<div class="bubble user">${q.replace(/[<>]/g, "")}</div>`;
 
       const lower = q.toLowerCase();
       const condList = Array.from(activeConditions);
       const isCKD = activeConditions.has("CKD (Chronic Kidney Disease)") || activeConditions.has("Dialysis (Hemodialysis)");
-      let rawReply = `🌿 Vaidya AI Guidance: ${condList.length ? `Keeping your ${condList.join(", ")} in mind, ` : ""}choose fresh home-cooked Pathya meals (Jowar, Lauki, Moong Dal, Makhana) and verify ingredients in Tab 3.`;
+      let rawReply = `Nutrition AI Guidance: ${condList.length ? `Keeping your ${condList.join(", ")} in mind, ` : ""}choose fresh home-cooked meals (Jowar, Lauki, Moong Dal, Makhana) and verify ingredients in the Kitchen Tick-Box tab.`;
 
       if (lower.includes("potato") || lower.includes("aloo") || lower.includes("आलू") || lower.includes("बटाटा")) {
         rawReply = isCKD

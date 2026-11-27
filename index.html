@@ -48,10 +48,20 @@
       display: flex; align-items: center; gap: 14px;
     }
     .brand-emblem-lg {
-      width: 52px; height: 52px; border-radius: 15px; flex-shrink: 0;
-      background: linear-gradient(135deg, #14b8a6, #f59e0b);
-      display: grid; place-items: center; font-size: 28px;
-      box-shadow: 0 10px 25px rgba(20, 184, 166, 0.4);
+      width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, #ecfdf5, #fff7ed);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      display: grid; place-items: center;
+      box-shadow: 0 10px 25px rgba(20, 184, 166, 0.35);
+      padding: 4px;
+    }
+    .brand-emblem-sm {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, #ecfdf5, #fff7ed);
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
+      display: grid; place-items: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+      padding: 3px;
     }
     .brand-title-lg {
       font-size: 1.65rem; font-weight: 900; color: #ffffff; letter-spacing: -0.01em;
@@ -498,11 +508,40 @@
 </head>
 <body>
 
+  <!-- REUSABLE LOGO TEMPLATE -->
+  <template id="swasthLogoSvgTemplate">
+    <svg viewBox="0 0 64 64" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Left Leaf (Greens) -->
+      <path d="M15 24C11 16 17 9 25 12C25 19 21 24 15 24Z" fill="#16a34a" stroke="#14532d" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M16 23L23 14" stroke="#dcfce7" stroke-width="1.2" stroke-linecap="round"/>
+      <!-- Center-Left Fruit (Orange / Apple) -->
+      <circle cx="27" cy="21" r="6.5" fill="#f97316" stroke="#9a3412" stroke-width="1.5"/>
+      <path d="M27 14.5C27.5 11.5 30 10.5 31.5 11" stroke="#15803d" stroke-width="1.6" stroke-linecap="round"/>
+      <!-- Center-Right Fruit (Golden Mango / Peach) -->
+      <circle cx="38" cy="21.5" r="6.2" fill="#f59e0b" stroke="#92400e" stroke-width="1.5"/>
+      <path d="M38 15.3C39 12.5 41.5 11.5 43 12" stroke="#15803d" stroke-width="1.6" stroke-linecap="round"/>
+      <!-- Right Leaf (Mint / Herb) -->
+      <path d="M49 24C53 16 47 9 39 12C39 19 43 24 49 24Z" fill="#10b981" stroke="#065f46" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M48 23L41 14" stroke="#d1fae5" stroke-width="1.2" stroke-linecap="round"/>
+      <!-- Small Veggie Sprout / Tomato Accent inside Rim -->
+      <circle cx="21" cy="28" r="4.5" fill="#ef4444" stroke="#991b1b" stroke-width="1.3"/>
+      <circle cx="43" cy="28" r="4.5" fill="#22c55e" stroke="#166534" stroke-width="1.3"/>
+      <!-- Bowl Body -->
+      <path d="M8 29H56C54.5 43.5 44.5 52 32 52C19.5 52 9.5 43.5 8 29Z" fill="#0f766e" stroke="#042f2e" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Inner Bowl Highlight -->
+      <path d="M13 33H51C49.5 42.5 41.5 48.5 32 48.5C22.5 48.5 14.5 42.5 13 33Z" fill="#115e59"/>
+      <!-- Heart Right in the Middle of the Bowl -->
+      <path d="M32 44.5C32 44.5 23.5 39.2 23.5 33.8C23.5 31.3 25.5 29.5 28 29.5C29.8 29.5 31.3 30.5 32 32C32.7 30.5 34.2 29.5 36 29.5C38.5 29.5 40.5 31.3 40.5 33.8C40.5 39.2 32 44.5 32 44.5Z" fill="#fb7185" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+      <!-- Bowl Base -->
+      <path d="M22 52H42L44 56H20L22 52Z" fill="#0d9488" stroke="#042f2e" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+  </template>
+
   <!-- ==================== 1. LANDING & AUTH ==================== -->
   <div id="landingScreen" class="landing-shell">
     <header class="top-navbar">
       <div class="brand-header-row">
-        <div class="brand-emblem-lg">🥗</div>
+        <div class="brand-emblem-lg" id="landingLogoSlot"></div>
         <div>
           <div class="brand-title-lg" data-t="brandName">Swasth Aahar AI</div>
           <div class="brand-tagline-sm" data-t="brandTagline">Right Diet, Healthy Life • Clinical &amp; Sports Nutrition</div>
@@ -621,8 +660,8 @@
   <div id="appDashboard" class="workspace">
     <!-- TOP GREEN BANNER -->
     <header class="app-top-strip no-print">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:1.5rem;">🥗</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="brand-emblem-sm" id="dashLogoSlot"></div>
         <div>
           <strong style="font-size:1.05rem;">Swasth Aahar AI - स्वस्थ आहार</strong>
           <div style="font-size:0.75rem;color:#bbf7d0;">सही आहार, स्वस्थ जीवन — Smart food choices for every health condition &amp; 255+ sports</div>
@@ -807,7 +846,7 @@
   <div class="ai-window no-print" id="aiWindow">
     <div class="ai-head">
       <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:1.4rem;">🥗</span>
+        <div class="brand-emblem-sm" id="aiLogoSlot" style="width:36px;height:36px;border-radius:10px;"></div>
         <div>
           <strong style="display:block;font-size:0.95rem;">Swasth Aahar AI</strong>
           <span style="font-size:0.73rem;color:#bbf7d0;">Clinical &amp; Sports Nutrition Assistant</span>
@@ -1005,8 +1044,7 @@
     };
 
     // =========================================================================
-    // 4. EXPANDED UNIVERSAL FOOD DATABASE (ALL VEGETABLES, FRUITS, NUTS, SEEDS,
-    //    PULSES, GRAINS, DAIRY, MULTIPLE EGGS, ALL FISH & ALL MEATS)
+    // 4. EXPANDED UNIVERSAL FOOD DATABASE
     // =========================================================================
     const FOOD_CATEGORIES = [
       "Vegetables",
@@ -1021,7 +1059,6 @@
     ];
 
     const INGREDIENTS = [
-      // VEGETABLES (29)
       { id: "lauki", cat: "Vegetables", name: "Bottle Gourd (Lauki)", prot: 0.6, flags: {}, note: "Low potassium, hydrating & safe across all clinical conditions." },
       { id: "bhindi", cat: "Vegetables", name: "Okra (Bhindi)", prot: 1.9, flags: {}, note: "Soluble fiber supports glycemic & cholesterol control." },
       { id: "cucumber", cat: "Vegetables", name: "Cucumber (Kheera)", prot: 0.7, flags: {}, note: "Low potassium & refreshing hydration." },
@@ -1052,7 +1089,6 @@
       { id: "tomato", cat: "Vegetables", name: "Tomato (Tamatar)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 small deseeded (GERD)", note: "High potassium load in renal disease; acidic in GERD." },
       { id: "onion", cat: "Vegetables", name: "Onion (Pyaz)", prot: 1.1, flags: { "GERD / Acid reflux": "limited" }, portion: "Max 1 tbsp well-cooked", note: "Can trigger reflux if eaten raw." },
 
-      // FRUITS (24)
       { id: "apple", cat: "Fruits", name: "Apple (Seb)", prot: 0.3, flags: {}, note: "Low potassium, pectin-rich fruit safe across conditions." },
       { id: "pear", cat: "Fruits", name: "Pear (Nashpati)", prot: 0.4, flags: {}, note: "Low potassium & gentle soluble fiber." },
       { id: "berries", cat: "Fruits", name: "Strawberries / Blueberries / Berries", prot: 0.7, flags: {}, note: "Low potassium, low GI & rich in antioxidants." },
@@ -1074,7 +1110,6 @@
       { id: "orange", cat: "Fruits", name: "Orange / Sweet Lime (Mosambi)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 fruit after meal (GERD)", note: "High potassium citrus fruit." },
       { id: "dates_figs", cat: "Fruits", name: "Dates (Khajoor) & Dried Figs (Anjeer)", prot: 2.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1–2 pieces pre-training (Diabetes)", note: "Concentrated potassium & sugars." },
 
-      // PULSES & LENTILS (11)
       { id: "moong_dal", cat: "Pulses & Lentils", name: "Yellow Moong Dal", prot: 24.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori thin dal (20g raw)", note: "Lightest pulse; portion-controlled in pre-dialysis CKD." },
       { id: "green_moong", cat: "Pulses & Lentils", name: "Whole Green Moong / Sprouts", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup steamed sprouts", note: "High bioavailable plant protein." },
       { id: "masoor_dal", cat: "Pulses & Lentils", name: "Red Lentils (Masoor Dal)", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori cooked", note: "Good plant protein & iron." },
@@ -1086,7 +1121,6 @@
       { id: "lobia", cat: "Pulses & Lentils", name: "Black-Eyed Peas (Lobia)", prot: 24.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup boiled", note: "Rich in folate & iron." },
       { id: "soya_chunks", cat: "Pulses & Lentils", name: "Soya Chunks / Tofu / Edamame", prot: 52.0, flags: { "Soy allergy": "contraindicated", "Hypothyroidism": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 30g dry soya / 60g tofu", note: "Contraindicated in Soy Allergy." },
 
-      // NUTS & SEEDS (14)
       { id: "flax_seeds", cat: "Nuts & Seeds", name: "Flax Seeds (Alsi)", prot: 18.3, flags: {}, note: "Rich in plant Omega-3 ALA; supports heart & cholesterol." },
       { id: "chia_seeds", cat: "Nuts & Seeds", name: "Chia Seeds", prot: 16.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tsp soaked", note: "High fiber & Omega-3; moderate phosphorus." },
       { id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High zinc & magnesium for strength athletes; high phosphorus in CKD." },
@@ -1100,7 +1134,6 @@
       { id: "peanuts", cat: "Nuts & Seeds", name: "Peanuts / Groundnuts (Moongphali)", prot: 25.8, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Contraindicated in Peanut Allergy & CKD." },
       { id: "hazelnuts_brazil", cat: "Nuts & Seeds", name: "Hazelnuts, Brazil Nuts & Pine Nuts", prot: 14.5, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 nuts", note: "Brazil nuts supply selenium for thyroid; blocked in Nut Allergy." },
 
-      // GRAINS & MILLETS (11)
       { id: "jowar", cat: "Grains & Millets", name: "Jowar (Sorghum)", prot: 10.4, flags: {}, note: "Gluten-free millet ideal for steady athletic energy." },
       { id: "ragi", cat: "Grains & Millets", name: "Ragi (Finger Millet)", prot: 7.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 small roti (35g flour) / day", note: "High calcium & potassium; portion-controlled in CKD/stones." },
       { id: "bajra", cat: "Grains & Millets", name: "Bajra (Pearl Millet)", prot: 11.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 roti", note: "Iron & zinc rich gluten-free millet." },
@@ -1112,14 +1145,12 @@
       { id: "wheat", cat: "Grains & Millets", name: "Whole Wheat Atta", prot: 12.1, flags: { "Coeliac disease": "contraindicated" }, note: "Contains gluten — strictly contraindicated in Coeliac disease." },
       { id: "makhana", cat: "Grains & Millets", name: "Fox Nuts (Makhana)", prot: 9.7, flags: {}, note: "Low sodium, low potassium crunchy snack." },
 
-      // DAIRY (6)
       { id: "paneer", cat: "Dairy", name: "Paneer (Low-Fat Cottage Cheese)", prot: 18.3, flags: { "Lactose intolerance": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Fatty Liver (NAFLD / MASLD)": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 50g low-fat paneer", note: "Use low-fat paneer in controlled portion." },
       { id: "curd", cat: "Dairy", name: "Curd / Dahi (Probiotic)", prot: 3.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g (1 small cup) / day", note: "Limit to 100g/day in CKD." },
       { id: "greek_yogurt", cat: "Dairy", name: "Greek Yogurt / Hung Curd", prot: 10.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g", note: "Concentrated protein & probiotics." },
       { id: "milk_toned", cat: "Dairy", name: "Double-Toned / Skim Milk", prot: 3.2, flags: { "Lactose intolerance": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 100ml / day in CKD", note: "Contraindicated in Lactose Intolerance." },
       { id: "buttermilk", cat: "Dairy", name: "Chaas / Spiced Buttermilk", prot: 1.5, flags: { "Lactose intolerance": "limited", "Hypertension": "limited" }, portion: "1 glass (without added salt in Hypertension)", note: "Refreshing electrolyte drink." },
 
-      // EGGS — ALL TYPES (7)
       { id: "egg_white", cat: "Eggs", name: "Chicken Egg Whites", prot: 10.9, flags: { "Egg allergy": "contraindicated" }, note: "Pure high-biological-value protein with negligible phosphorus — ideal even in CKD." },
       { id: "whole_egg", cat: "Eggs", name: "Whole Chicken Egg (with Yolk)", prot: 12.6, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Contraindicated in Egg Allergy; yolk portion-controlled in CKD/Dyslipidaemia." },
       { id: "desi_egg", cat: "Eggs", name: "Country / Brown Egg (Desi Anda)", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Rich in carotenoids; same yolk limits apply." },
@@ -1128,7 +1159,6 @@
       { id: "duck_egg", cat: "Eggs", name: "Duck Egg", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Very high cholesterol (~619mg/egg) & phosphorus — contraindicated in cardiac/renal care." },
       { id: "turkey_goose_egg", cat: "Eggs", name: "Turkey / Goose Egg", prot: 13.9, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Large calorie & cholesterol load; blocked in Egg Allergy & Dyslipidaemia." },
 
-      // FISH & SEAFOOD — ALL TYPES (11)
       { id: "rohu_katla", cat: "Fish & Seafood", name: "Rohu & Katla (Freshwater Carp)", prot: 22.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g steamed/grilled", note: "Lean Indian freshwater fish." },
       { id: "pomfret", cat: "Fish & Seafood", name: "Pomfret (White / Black Paplet)", prot: 19.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g grilled/steamed", note: "Low mercury, digestible marine fish." },
       { id: "surmai", cat: "Fish & Seafood", name: "Kingfish / Seer Fish (Surmai)", prot: 21.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Firm high-protein steak fish." },
@@ -1140,7 +1170,6 @@
       { id: "crab_lobster", cat: "Fish & Seafood", name: "Crab (Kekda) & Lobster", prot: 19.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Hypertension": "limited" }, portion: "Max 60g (Hypertension)", note: "Contraindicated in Shellfish Allergy & Gout; naturally higher sodium." },
       { id: "squid_mussels", cat: "Fish & Seafood", name: "Squid (Calamari), Clams & Mussels", prot: 18.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g", note: "Contraindicated in Shellfish Allergy & Gout." },
 
-      // MEATS & POULTRY — ALL TYPES (10)
       { id: "chicken_breast", cat: "Meats & Poultry", name: "Chicken Breast (Skinless)", prot: 31.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g boiled/grilled", note: "Leanest athletic protein; portion-controlled in CKD & Gout." },
       { id: "chicken_thigh", cat: "Meats & Poultry", name: "Chicken Thigh / Drumstick (Skinless)", prot: 26.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g skinless", note: "Higher iron & zinc than breast; remove skin to cut saturated fat." },
       { id: "country_chicken", cat: "Meats & Poultry", name: "Country Chicken (Nati Kozhi / Desi Chicken)", prot: 27.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Leaner muscle fibers; portion-controlled in CKD & Gout." },
@@ -1154,9 +1183,22 @@
     ];
 
     // =========================================================================
-    // 5. INITIALIZATION & PROFILE UI BUILDERS
+    // 5. INITIALIZATION & LOGO MOUNTING
     // =========================================================================
+    function mountBrandLogos() {
+      const tpl = document.getElementById("swasthLogoSvgTemplate");
+      if (!tpl) return;
+      ["landingLogoSlot", "dashLogoSlot", "aiLogoSlot"].forEach(id => {
+        const target = document.getElementById(id);
+        if (target) {
+          target.innerHTML = "";
+          target.appendChild(tpl.content.cloneNode(true));
+        }
+      });
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
+      mountBrandLogos();
       renderCategorizedConditions();
       populateSportsSelect("");
       updateSportGuideline();

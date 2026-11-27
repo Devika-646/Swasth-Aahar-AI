@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Swasth Aahar AI — Right Diet, Healthy Life</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -241,7 +242,7 @@
     }
     @media (max-width: 640px) { .prof-row-4 { grid-template-columns: 1fr 1fr; } }
 
-    .p-input, .p-select {
+    .p-input, .p-select, .p-textarea {
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid #cbd5e1;
@@ -250,14 +251,56 @@
       color: #0f172a;
       background: #ffffff;
     }
-    .p-input:focus, .p-select:focus { outline: none; border-color: #15803d; }
+    .p-input:focus, .p-select:focus, .p-textarea:focus { outline: none; border-color: #15803d; }
 
     .p-label {
       display: block;
       font-size: 0.84rem;
       font-weight: 700;
       color: #1e293b;
-      margin: 12px 0 6px;
+      margin: 14px 0 6px;
+    }
+
+    /* PRESCRIPTION BOX INSIDE PROFILE */
+    .rx-profile-box {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1.5px dashed #16a34a;
+      border-radius: 12px;
+      background: #f0fdf4;
+    }
+    .rx-upload-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    @media (max-width: 640px) { .rx-upload-grid { grid-template-columns: 1fr; } }
+    .rx-file-trigger {
+      border: 1.5px dashed #15803d;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      transition: 0.18s;
+    }
+    .rx-file-trigger:hover { background: #dcfce7; }
+    .rx-summary-card {
+      display: none;
+      margin-top: 10px;
+      background: #ffffff;
+      border: 1.5px solid #86efac;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.83rem;
+      color: #0f172a;
+      line-height: 1.55;
     }
 
     .cond-group-heading {
@@ -319,7 +362,7 @@
 
     /* ================= 3. CATEGORIZED KITCHEN TICK-BOX VIEW ================= */
     .wide-workspace-card {
-      max-width: 1180px;
+      max-width: 1240px;
       margin: 0 auto 3rem;
       background: #ffffff;
       border: 1.5px solid #cbd5e1;
@@ -368,7 +411,7 @@
     }
 
     .food-section-block {
-      margin-bottom: 1.65rem;
+      margin-bottom: 1.75rem;
     }
     .food-section-title {
       font-size: 1.02rem;
@@ -624,7 +667,7 @@
       <button type="button" class="top-tab-btn" onclick="logoutUser()">Logout</button>
     </nav>
 
-    <!-- VIEW A: CENTERED PROFILE CARD -->
+    <!-- VIEW A: CENTERED PROFILE CARD (WITH PRESCRIPTION UPLOAD & SUMMARY) -->
     <section id="viewProfile" class="panel-view active">
       <div class="profile-center-card">
         <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:12px;">Your Profile</h3>
@@ -657,6 +700,30 @@
           <option value="all">All Food Categories</option>
         </select>
 
+        <!-- ADD PRESCRIPTION & AUTO-SUMMARY SECTION -->
+        <div class="rx-profile-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+            <strong style="font-size:0.88rem;color:#14532d;">📄 Add Prescription &amp; Auto-Extract Clinical Summary</strong>
+            <span style="font-size:0.74rem;font-weight:700;color:#15803d;">Optional • Auto-fills conditions &amp; food restrictions</span>
+          </div>
+
+          <div class="rx-upload-grid">
+            <div class="rx-file-trigger" onclick="document.getElementById('rxImageInput').click()">
+              <input type="file" id="rxImageInput" accept="image/*" style="display:none;" onchange="handlePrescriptionUpload(event)" />
+              <span style="font-size:1.5rem;">📸</span>
+              <strong style="font-size:0.82rem;color:#15803d;">Upload Prescription Photo</strong>
+              <span style="font-size:0.72rem;color:var(--muted);">JPG / PNG • Auto-reads medicines</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <textarea id="rxTextInput" class="p-textarea" rows="3" placeholder="Or type/paste prescription details (e.g., Telmisartan 40mg, Metformin 500mg, Warfarin 5mg, Atorvastatin 10mg, CKD Stage 3)..."></textarea>
+              <button type="button" class="btn btn-emerald" style="padding:8px 12px;font-size:0.82rem;" onclick="summarizePrescription()">📋 Extract &amp; Summarize Prescription</button>
+            </div>
+          </div>
+
+          <div id="rxSummaryOutput" class="rx-summary-card"></div>
+        </div>
+
         <label class="p-label">Clinical conditions / surgical history (select all that apply)</label>
         <div id="categorizedConditionsMount"></div>
 
@@ -677,7 +744,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div>
             <h3 style="font-size:1.25rem;font-weight:800;">☑️ Check Kitchen Ingredients &amp; Cook</h3>
-            <p style="font-size:0.84rem;color:var(--muted);">Tick what you have across Vegetables, Fruits, Pulses, Seeds, Grains, Dairy, Eggs &amp; Meats</p>
+            <p style="font-size:0.84rem;color:var(--muted);">Tick what you have across Vegetables, Fruits, Pulses, Nuts &amp; Seeds, Grains, Dairy, Eggs, Fish &amp; Meats</p>
           </div>
           <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-ghost" onclick="clearTicks()">Clear Ticks</button>
@@ -694,7 +761,7 @@
         <div id="liveWarnBanner" style="display:none;margin-bottom:12px;padding:11px 15px;border-radius:10px;font-weight:700;font-size:0.86rem;"></div>
 
         <div style="display:grid;grid-template-columns:1.2fr 1fr auto;gap:10px;margin-bottom:1rem;">
-          <input type="text" id="ingSearch" class="p-input" placeholder="🔍 Search any food (Potato, Apple, Moong Dal, Chia Seeds, Egg, Chicken, Paneer)..." oninput="renderIngredients()" />
+          <input type="text" id="ingSearch" class="p-input" placeholder="🔍 Search any vegetable, fruit, nut, seed, fish, egg, chicken, lamb, meat..." oninput="renderIngredients()" />
           <input type="text" id="customIng" class="p-input" placeholder="➕ Add custom item you have..." />
           <button type="button" class="btn btn-ghost" onclick="addCustomIng()">Add</button>
         </div>
@@ -719,7 +786,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
           <div>
             <h3 style="font-weight:800;">📅 Daily Aahar — Personalized Clinical &amp; Sports Diet Plan</h3>
-            <p style="font-size:0.84rem;color:var(--muted);">Tailored to your selected clinical conditions, diet type, and sport.</p>
+            <p style="font-size:0.84rem;color:var(--muted);">Tailored to your selected clinical conditions, prescription, diet type, and sport.</p>
           </div>
           <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-emerald" onclick="generateDietChart()">🔄 Refresh Plan</button>
@@ -751,7 +818,7 @@
 
     <div class="ai-feed" id="aiFeed">
       <div class="bubble bot">
-        Hello! Ask me whether any vegetable, fruit, pulse, seed, egg, or meat is <strong>Allowed</strong>, <strong>Limited Portion</strong>, or <strong>Contraindicated</strong> for your profile, or ask about pre/post-session nutrition for any of the 255+ sports!
+        Hello! Ask me whether any vegetable, fruit, pulse, nut, seed, fish, egg, chicken, lamb, or meat is <strong>Allowed</strong>, <strong>Limited Portion</strong>, or <strong>Contraindicated</strong> for your profile, or ask about any of the 255+ sports!
       </div>
     </div>
 
@@ -776,6 +843,7 @@
     let activeConditions = new Set();
     let tickedIngredients = new Set();
     let activeFoodCategory = "ALL";
+    let rxDrugFlags = new Set();
 
     // =========================================================================
     // 2. CATEGORIZED CLINICAL CONDITIONS
@@ -937,7 +1005,8 @@
     };
 
     // =========================================================================
-    // 4. UNIVERSAL CATEGORIZED FOOD DATABASE (FIXED & SYNTAX-CLEAN)
+    // 4. EXPANDED UNIVERSAL FOOD DATABASE (ALL VEGETABLES, FRUITS, NUTS, SEEDS,
+    //    PULSES, GRAINS, DAIRY, MULTIPLE EGGS, ALL FISH & ALL MEATS)
     // =========================================================================
     const FOOD_CATEGORIES = [
       "Vegetables",
@@ -947,59 +1016,141 @@
       "Grains & Millets",
       "Dairy",
       "Eggs",
-      "Meats & Seafood"
+      "Fish & Seafood",
+      "Meats & Poultry"
     ];
 
     const INGREDIENTS = [
-      { id: "lauki", cat: "Vegetables", name: "Bottle Gourd (Lauki)", prot: 0.6, flags: {}, note: "Low potassium, hydrating & safe for all clinical profiles." },
-      { id: "bhindi", cat: "Vegetables", name: "Okra (Bhindi)", prot: 1.9, flags: {}, note: "Rich in soluble fiber; supports blood sugar & gut health." },
-      { id: "cucumber", cat: "Vegetables", name: "Cucumber (Kheera)", prot: 0.7, flags: {}, note: "Low potassium & refreshing." },
-      { id: "carrot", cat: "Vegetables", name: "Carrot (Gajar)", prot: 0.9, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 medium raw or lightly cooked", note: "Moderate natural sugars; keep portion moderate in diabetes." },
-      { id: "cauliflower", cat: "Vegetables", name: "Cauliflower (Gobhi)", prot: 1.9, flags: { "Hypothyroidism": "limited" }, portion: "Max 1/2 cup well-cooked", note: "Always cook thoroughly in hypothyroidism." },
-      { id: "cabbage", cat: "Vegetables", name: "Cabbage (Patta Gobhi)", prot: 1.3, flags: { "Hypothyroidism": "limited", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "limited" }, portion: "Max 1/2 cup cooked consistently", note: "Keep Vitamin-K intake consistent on Warfarin." },
+      // VEGETABLES (29)
+      { id: "lauki", cat: "Vegetables", name: "Bottle Gourd (Lauki)", prot: 0.6, flags: {}, note: "Low potassium, hydrating & safe across all clinical conditions." },
+      { id: "bhindi", cat: "Vegetables", name: "Okra (Bhindi)", prot: 1.9, flags: {}, note: "Soluble fiber supports glycemic & cholesterol control." },
+      { id: "cucumber", cat: "Vegetables", name: "Cucumber (Kheera)", prot: 0.7, flags: {}, note: "Low potassium & refreshing hydration." },
+      { id: "turai", cat: "Vegetables", name: "Ridge Gourd (Turai)", prot: 0.5, flags: {}, note: "Light, low-potassium vegetable ideal for renal & GI health." },
+      { id: "parwal", cat: "Vegetables", name: "Pointed Gourd (Parwal)", prot: 2.0, flags: {}, note: "Gentle on digestion and safe in CKD/Diabetes." },
+      { id: "tinda", cat: "Vegetables", name: "Apple Gourd (Tinda)", prot: 1.4, flags: {}, note: "Low potassium & low calorie." },
+      { id: "ash_gourd", cat: "Vegetables", name: "Ash Gourd (Petha)", prot: 0.4, flags: {}, note: "Cooling, alkaline & low potassium." },
+      { id: "snake_gourd", cat: "Vegetables", name: "Snake Gourd (Chichinda)", prot: 0.5, flags: {}, note: "Low glycemic & safe in renal care." },
+      { id: "karela", cat: "Vegetables", name: "Bitter Gourd (Karela)", prot: 1.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup cooked", note: "Supports blood glucose; moderate potassium in CKD." },
+      { id: "capsicum", cat: "Vegetables", name: "Bell Pepper / Capsicum (Shimla Mirch)", prot: 1.0, flags: {}, note: "Rich in Vitamin C with low potassium." },
+      { id: "french_beans", cat: "Vegetables", name: "French Beans", prot: 1.8, flags: {}, note: "Low potassium fiber source." },
+      { id: "brinjal", cat: "Vegetables", name: "Eggplant / Brinjal (Baingan)", prot: 1.4, flags: { "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1/2 cup cooked", note: "Low potassium; moderate oxalates." },
+      { id: "pumpkin", cat: "Vegetables", name: "Yellow Pumpkin (Kaddu)", prot: 1.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup cooked", note: "Moderate potassium; portion-controlled in CKD." },
+      { id: "drumstick", cat: "Vegetables", name: "Drumstick (Moringa Pods)", prot: 2.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 3–4 pieces in sambar/curry", note: "Rich in iron & calcium; moderate potassium." },
+      { id: "green_peas", cat: "Vegetables", name: "Green Peas (Matar)", prot: 5.4, flags: { "Hyperuricaemia / Gout": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/3 cup", note: "Moderate purines & phosphorus." },
+      { id: "mushroom", cat: "Vegetables", name: "Button / Oyster Mushrooms", prot: 3.1, flags: { "Hyperuricaemia / Gout": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup cooked", note: "Moderate purines & potassium." },
+      { id: "broccoli", cat: "Vegetables", name: "Broccoli", prot: 2.8, flags: { "Hypothyroidism": "limited", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "limited" }, portion: "Max 1/2 cup steamed", note: "Cook thoroughly in hypothyroidism; keep Vitamin K steady on Warfarin." },
+      { id: "zucchini", cat: "Vegetables", name: "Zucchini", prot: 1.2, flags: {}, note: "Low carb, low potassium athletic vegetable." },
+      { id: "carrot", cat: "Vegetables", name: "Carrot (Gajar)", prot: 0.9, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 medium", note: "Moderate natural sugars." },
+      { id: "radish", cat: "Vegetables", name: "Radish (Mooli)", prot: 0.7, flags: {}, note: "Low potassium & supports liver detoxification." },
+      { id: "beetroot", cat: "Vegetables", name: "Beetroot (Chukandar)", prot: 1.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated" }, note: "High potassium & oxalates — blocked in CKD/stones; boosts nitric oxide for healthy athletes." },
+      { id: "cauliflower", cat: "Vegetables", name: "Cauliflower (Gobhi)", prot: 1.9, flags: { "Hypothyroidism": "limited" }, portion: "Max 1/2 cup well-cooked", note: "Low potassium; always cook in hypothyroidism." },
+      { id: "cabbage", cat: "Vegetables", name: "Cabbage (Patta Gobhi)", prot: 1.3, flags: { "Hypothyroidism": "limited", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "limited" }, portion: "Max 1/2 cup cooked", note: "Low potassium; keep Vitamin-K intake steady on Warfarin." },
       { id: "potato", cat: "Vegetables", name: "Potato (Aloo)", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 50g boiled & cooled (Diabetes only)", note: "High potassium (421mg/100g) — contraindicated in CKD/Dialysis." },
-      { id: "spinach", cat: "Vegetables", name: "Spinach (Palak)", prot: 2.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup cooked once a week (Gout)", note: "Very high potassium, oxalates & Vitamin K." },
-      { id: "tomato", cat: "Vegetables", name: "Tomato (Tamatar)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 small deseeded tomato (GERD)", note: "High potassium load in renal disease; acidic in GERD." },
+      { id: "sweet_potato", cat: "Vegetables", name: "Sweet Potato (Shakarkandi)", prot: 1.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 60g boiled pre-workout (Diabetes)", note: "High potassium — contraindicated in renal disease." },
+      { id: "spinach", cat: "Vegetables", name: "Spinach (Palak)", prot: 2.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup cooked once/week (Gout)", note: "Very high potassium, oxalates & Vitamin K." },
+      { id: "methi", cat: "Vegetables", name: "Fenugreek Leaves (Methi)", prot: 4.4, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated" }, note: "High potassium & Vitamin K; excellent for diabetes when renal function is normal." },
+      { id: "tomato", cat: "Vegetables", name: "Tomato (Tamatar)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 small deseeded (GERD)", note: "High potassium load in renal disease; acidic in GERD." },
       { id: "onion", cat: "Vegetables", name: "Onion (Pyaz)", prot: 1.1, flags: { "GERD / Acid reflux": "limited" }, portion: "Max 1 tbsp well-cooked", note: "Can trigger reflux if eaten raw." },
 
+      // FRUITS (24)
       { id: "apple", cat: "Fruits", name: "Apple (Seb)", prot: 0.3, flags: {}, note: "Low potassium, pectin-rich fruit safe across conditions." },
-      { id: "papaya", cat: "Fruits", name: "Papaya", prot: 0.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small bowl (100g)", note: "Aids digestion; moderate potassium." },
-      { id: "guava", cat: "Fruits", name: "Guava (Amrood)", prot: 2.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small guava without seeds", note: "Low glycemic index; great for diabetes & immunity." },
-      { id: "berries", cat: "Fruits", name: "Berries / Jamun / Strawberry", prot: 0.7, flags: {}, note: "Low potassium & high antioxidants." },
+      { id: "pear", cat: "Fruits", name: "Pear (Nashpati)", prot: 0.4, flags: {}, note: "Low potassium & gentle soluble fiber." },
+      { id: "berries", cat: "Fruits", name: "Strawberries / Blueberries / Berries", prot: 0.7, flags: {}, note: "Low potassium, low GI & rich in antioxidants." },
+      { id: "jamun", cat: "Fruits", name: "Java Plum (Jamun)", prot: 0.7, flags: {}, note: "Ideal low-GI fruit for blood sugar & athletes." },
+      { id: "watermelon", cat: "Fruits", name: "Watermelon (Tarbooz)", prot: 0.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1 small bowl (100g)", note: "Hydrating citrulline source; control fluid/portion in CKD & Diabetes." },
+      { id: "muskmelon", cat: "Fruits", name: "Muskmelon (Kharbooja)", prot: 0.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "High potassium melon — contraindicated in CKD/Dialysis." },
+      { id: "papaya", cat: "Fruits", name: "Papaya", prot: 0.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small bowl (100g)", note: "Digestive enzymes; moderate potassium." },
+      { id: "guava", cat: "Fruits", name: "Guava (Amrood)", prot: 2.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small guava without seeds", note: "High Vitamin C & low glycemic index." },
+      { id: "pomegranate", cat: "Fruits", name: "Pomegranate (Anar)", prot: 1.7, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/3 cup arils", note: "Boosts hemoglobin & recovery; moderate potassium." },
+      { id: "pineapple", cat: "Fruits", name: "Pineapple (Ananas)", prot: 0.5, flags: { "GERD / Acid reflux": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 2 thin slices", note: "Low potassium; bromelain aids protein digestion." },
+      { id: "peach_plum", cat: "Fruits", name: "Peach / Plum (Aadoo / Aloo Bukhara)", prot: 0.9, flags: {}, note: "Low-potassium stone fruits." },
+      { id: "grapes", cat: "Fruits", name: "Grapes (Angoor)", prot: 0.7, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 10–12 grapes", note: "Moderate potassium & natural sugars." },
+      { id: "kiwi", cat: "Fruits", name: "Kiwi", prot: 1.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High potassium fruit." },
+      { id: "mango", cat: "Fruits", name: "Mango (Aam)", prot: 0.8, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 small slices", note: "Higher glycemic load; enjoy in small portion." },
+      { id: "chikoo", cat: "Fruits", name: "Sapota (Chikoo)", prot: 0.4, flags: { "Diabetes Mellitus Type 2": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, note: "High glycemic sugar load — avoid in Diabetes." },
+      { id: "sitaphal", cat: "Fruits", name: "Custard Apple (Sitaphal)", prot: 1.7, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 1/2 small fruit", note: "High potassium & natural sugars." },
+      { id: "avocado", cat: "Fruits", name: "Avocado", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "Very high potassium (485mg/100g) — contraindicated in CKD/Dialysis." },
       { id: "banana", cat: "Fruits", name: "Banana (Kela)", prot: 1.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 small banana pre-workout (Diabetes)", note: "High potassium (358mg/100g) — blocked in CKD/Dialysis." },
       { id: "orange", cat: "Fruits", name: "Orange / Sweet Lime (Mosambi)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 fruit after meal (GERD)", note: "High potassium citrus fruit." },
+      { id: "dates_figs", cat: "Fruits", name: "Dates (Khajoor) & Dried Figs (Anjeer)", prot: 2.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1–2 pieces pre-training (Diabetes)", note: "Concentrated potassium & sugars." },
 
+      // PULSES & LENTILS (11)
       { id: "moong_dal", cat: "Pulses & Lentils", name: "Yellow Moong Dal", prot: 24.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori thin dal (20g raw)", note: "Lightest pulse; portion-controlled in pre-dialysis CKD." },
-      { id: "masoor_dal", cat: "Pulses & Lentils", name: "Red Lentils (Masoor Dal)", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori cooked", note: "Good plant protein; control portion in CKD." },
-      { id: "chana_dal", cat: "Pulses & Lentils", name: "Bengal Gram (Chana Dal / Chickpeas)", prot: 20.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Moderate purine & phosphorus content." },
-      { id: "rajma", cat: "Pulses & Lentils", name: "Kidney Beans (Rajma)", prot: 22.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup well-soaked & boiled (Gout)", note: "Very high potassium & phosphorus in renal disease." },
-      { id: "soya_chunks", cat: "Pulses & Lentils", name: "Soya Chunks / Tofu", prot: 52.0, flags: { "Soy allergy": "contraindicated", "Hypothyroidism": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 30g dry soya / 60g tofu", note: "Contraindicated in Soy Allergy." },
+      { id: "green_moong", cat: "Pulses & Lentils", name: "Whole Green Moong / Sprouts", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup steamed sprouts", note: "High bioavailable plant protein." },
+      { id: "masoor_dal", cat: "Pulses & Lentils", name: "Red Lentils (Masoor Dal)", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori cooked", note: "Good plant protein & iron." },
+      { id: "toor_dal", cat: "Pulses & Lentils", name: "Pigeon Pea (Toor / Arhar Dal)", prot: 22.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori", note: "Staple protein; control portion in CKD." },
+      { id: "chana_dal", cat: "Pulses & Lentils", name: "Bengal Gram (Chana Dal)", prot: 20.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Low GI; moderate purine & phosphorus." },
+      { id: "kabuli_chana", cat: "Pulses & Lentils", name: "Chickpeas (Kabuli Chana) & Kala Chana", prot: 19.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Excellent athletic fiber & protein." },
+      { id: "rajma", cat: "Pulses & Lentils", name: "Kidney Beans (Rajma)", prot: 22.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup well-soaked (Gout)", note: "Very high potassium & phosphorus in renal disease." },
+      { id: "urad_dal", cat: "Pulses & Lentils", name: "Black Gram (Urad Dal)", prot: 25.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/3 cup", note: "High phosphorus & potassium." },
+      { id: "lobia", cat: "Pulses & Lentils", name: "Black-Eyed Peas (Lobia)", prot: 24.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup boiled", note: "Rich in folate & iron." },
+      { id: "soya_chunks", cat: "Pulses & Lentils", name: "Soya Chunks / Tofu / Edamame", prot: 52.0, flags: { "Soy allergy": "contraindicated", "Hypothyroidism": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 30g dry soya / 60g tofu", note: "Contraindicated in Soy Allergy." },
 
+      // NUTS & SEEDS (14)
       { id: "flax_seeds", cat: "Nuts & Seeds", name: "Flax Seeds (Alsi)", prot: 18.3, flags: {}, note: "Rich in plant Omega-3 ALA; supports heart & cholesterol." },
       { id: "chia_seeds", cat: "Nuts & Seeds", name: "Chia Seeds", prot: 16.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tsp soaked", note: "High fiber & Omega-3; moderate phosphorus." },
-      { id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High zinc & magnesium for athletes; high phosphorus in CKD." },
-      { id: "sunflower_seeds", cat: "Nuts & Seeds", name: "Sunflower Seeds", prot: 20.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp unsalted", note: "Rich in Vitamin E." },
+      { id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High zinc & magnesium for strength athletes; high phosphorus in CKD." },
+      { id: "sunflower_seeds", cat: "Nuts & Seeds", name: "Sunflower Seeds", prot: 20.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp unsalted", note: "Rich in Vitamin E & selenium." },
+      { id: "sesame_seeds", cat: "Nuts & Seeds", name: "Sesame Seeds (Til)", prot: 17.7, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 tsp", note: "High calcium & oxalates." },
+      { id: "watermelon_seeds", cat: "Nuts & Seeds", name: "Watermelon Seeds (Magaz)", prot: 28.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp", note: "Protein-dense seed." },
       { id: "almonds", cat: "Nuts & Seeds", name: "Almonds (Badam)", prot: 21.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 4 soaked peeled almonds (Kidney stones)", note: "Contraindicated in Tree Nut Allergy & high-phosphorus CKD." },
-      { id: "walnuts", cat: "Nuts & Seeds", name: "Walnuts (Akhrot)", prot: 15.2, flags: { "Tree nut / Peanut allergy": "contraindicated" }, note: "Contraindicated in Tree Nut Allergy." },
+      { id: "walnuts", cat: "Nuts & Seeds", name: "Walnuts (Akhrot)", prot: 15.2, flags: { "Tree nut / Peanut allergy": "contraindicated" }, note: "Brain & heart Omega-3 nut; blocked in Nut Allergy." },
+      { id: "cashews", cat: "Nuts & Seeds", name: "Cashews (Kaju)", prot: 18.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 4–5 whole cashews", note: "Contraindicated in Nut Allergy & CKD." },
+      { id: "pistachios", cat: "Nuts & Seeds", name: "Pistachios (Pista)", prot: 20.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High potassium & phosphorus; blocked in Nut Allergy." },
+      { id: "peanuts", cat: "Nuts & Seeds", name: "Peanuts / Groundnuts (Moongphali)", prot: 25.8, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Contraindicated in Peanut Allergy & CKD." },
+      { id: "hazelnuts_brazil", cat: "Nuts & Seeds", name: "Hazelnuts, Brazil Nuts & Pine Nuts", prot: 14.5, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 nuts", note: "Brazil nuts supply selenium for thyroid; blocked in Nut Allergy." },
 
+      // GRAINS & MILLETS (11)
       { id: "jowar", cat: "Grains & Millets", name: "Jowar (Sorghum)", prot: 10.4, flags: {}, note: "Gluten-free millet ideal for steady athletic energy." },
       { id: "ragi", cat: "Grains & Millets", name: "Ragi (Finger Millet)", prot: 7.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 small roti (35g flour) / day", note: "High calcium & potassium; portion-controlled in CKD/stones." },
+      { id: "bajra", cat: "Grains & Millets", name: "Bajra (Pearl Millet)", prot: 11.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 roti", note: "Iron & zinc rich gluten-free millet." },
+      { id: "foxtail_millet", cat: "Grains & Millets", name: "Foxtail / Little / Barnyard Millet", prot: 12.3, flags: {}, note: "Low-GI ancient millets safe across diabetes & celiac." },
       { id: "oats", cat: "Grains & Millets", name: "Rolled Oats", prot: 13.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1/3 cup dry (30g)", note: "Beta-glucan fiber lowers LDL cholesterol." },
       { id: "poha", cat: "Grains & Millets", name: "Poha (Flattened Rice)", prot: 6.6, flags: {}, note: "Light, easily digestible pre-training carbohydrate." },
+      { id: "white_rice", cat: "Grains & Millets", name: "Steamed White Rice", prot: 6.8, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 katori cooked with dal/veggies", note: "Low potassium & phosphorus (renal-friendly); portion-control in diabetes." },
+      { id: "brown_rice", cat: "Grains & Millets", name: "Brown Rice / Red Rice", prot: 7.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "High potassium & phosphorus — contraindicated in CKD." },
       { id: "wheat", cat: "Grains & Millets", name: "Whole Wheat Atta", prot: 12.1, flags: { "Coeliac disease": "contraindicated" }, note: "Contains gluten — strictly contraindicated in Coeliac disease." },
       { id: "makhana", cat: "Grains & Millets", name: "Fox Nuts (Makhana)", prot: 9.7, flags: {}, note: "Low sodium, low potassium crunchy snack." },
 
-      { id: "paneer", cat: "Dairy", name: "Paneer (Cottage Cheese)", prot: 18.3, flags: { "Lactose intolerance": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Fatty Liver (NAFLD / MASLD)": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 50g low-fat paneer", note: "Use low-fat paneer in controlled portion." },
+      // DAIRY (6)
+      { id: "paneer", cat: "Dairy", name: "Paneer (Low-Fat Cottage Cheese)", prot: 18.3, flags: { "Lactose intolerance": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Fatty Liver (NAFLD / MASLD)": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 50g low-fat paneer", note: "Use low-fat paneer in controlled portion." },
       { id: "curd", cat: "Dairy", name: "Curd / Dahi (Probiotic)", prot: 3.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g (1 small cup) / day", note: "Limit to 100g/day in CKD." },
+      { id: "greek_yogurt", cat: "Dairy", name: "Greek Yogurt / Hung Curd", prot: 10.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g", note: "Concentrated protein & probiotics." },
       { id: "milk_toned", cat: "Dairy", name: "Double-Toned / Skim Milk", prot: 3.2, flags: { "Lactose intolerance": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 100ml / day in CKD", note: "Contraindicated in Lactose Intolerance." },
+      { id: "buttermilk", cat: "Dairy", name: "Chaas / Spiced Buttermilk", prot: 1.5, flags: { "Lactose intolerance": "limited", "Hypertension": "limited" }, portion: "1 glass (without added salt in Hypertension)", note: "Refreshing electrolyte drink." },
 
-      { id: "egg_white", cat: "Eggs", name: "Egg Whites", prot: 10.9, flags: { "Egg allergy": "contraindicated" }, note: "Pure high-biological-value protein with negligible phosphorus." },
-      { id: "whole_egg", cat: "Eggs", name: "Whole Egg (with Yolk)", prot: 12.6, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Contraindicated in Egg Allergy; yolk portion-controlled in CKD/Dyslipidaemia." },
+      // EGGS — ALL TYPES (7)
+      { id: "egg_white", cat: "Eggs", name: "Chicken Egg Whites", prot: 10.9, flags: { "Egg allergy": "contraindicated" }, note: "Pure high-biological-value protein with negligible phosphorus — ideal even in CKD." },
+      { id: "whole_egg", cat: "Eggs", name: "Whole Chicken Egg (with Yolk)", prot: 12.6, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Contraindicated in Egg Allergy; yolk portion-controlled in CKD/Dyslipidaemia." },
+      { id: "desi_egg", cat: "Eggs", name: "Country / Brown Egg (Desi Anda)", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Rich in carotenoids; same yolk limits apply." },
+      { id: "omega3_egg", cat: "Eggs", name: "Omega-3 Enriched Egg", prot: 12.8, flags: { "Egg allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1–2 eggs / day", note: "Higher DHA/EPA content." },
+      { id: "quail_egg", cat: "Eggs", name: "Quail Eggs (Bater Anda)", prot: 13.1, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 3–4 quail eggs (= 1 chicken egg)", note: "Dense B12 & iron; contraindicated in Egg Allergy." },
+      { id: "duck_egg", cat: "Eggs", name: "Duck Egg", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Very high cholesterol (~619mg/egg) & phosphorus — contraindicated in cardiac/renal care." },
+      { id: "turkey_goose_egg", cat: "Eggs", name: "Turkey / Goose Egg", prot: 13.9, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Large calorie & cholesterol load; blocked in Egg Allergy & Dyslipidaemia." },
 
-      { id: "chicken_breast", cat: "Meats & Seafood", name: "Chicken Breast (Skinless)", prot: 31.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g boiled/grilled", note: "Lean athletic protein; portion-controlled in CKD & Gout." },
-      { id: "rohu_fish", cat: "Meats & Seafood", name: "Freshwater Fish (Rohu / Katla / Salmon)", prot: 22.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g steamed/grilled", note: "Rich in Omega-3 fatty acids." },
-      { id: "prawns", cat: "Meats & Seafood", name: "Prawns / Shrimp / Shellfish", prot: 24.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g steamed (Dyslipidaemia)", note: "Contraindicated in Shellfish Allergy & Gout." },
-      { id: "mutton", cat: "Meats & Seafood", name: "Red Meat (Mutton / Lamb)", prot: 25.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High saturated fat, purines & phosphorus — contraindicated in cardiac, gout & renal care." }
+      // FISH & SEAFOOD — ALL TYPES (11)
+      { id: "rohu_katla", cat: "Fish & Seafood", name: "Rohu & Katla (Freshwater Carp)", prot: 22.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g steamed/grilled", note: "Lean Indian freshwater fish." },
+      { id: "pomfret", cat: "Fish & Seafood", name: "Pomfret (White / Black Paplet)", prot: 19.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g grilled/steamed", note: "Low mercury, digestible marine fish." },
+      { id: "surmai", cat: "Fish & Seafood", name: "Kingfish / Seer Fish (Surmai)", prot: 21.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Firm high-protein steak fish." },
+      { id: "salmon_rawas", cat: "Fish & Seafood", name: "Salmon / Indian Salmon (Rawas)", prot: 22.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Top source of anti-inflammatory Omega-3 EPA/DHA." },
+      { id: "mackerel_sardine", cat: "Fish & Seafood", name: "Mackerel (Bangda) & Sardines (Mathi)", prot: 20.5, flags: { "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 60g (CKD)", note: "High purines — contraindicated in Gout; rich in Omega-3." },
+      { id: "tuna", cat: "Fish & Seafood", name: "Tuna (Chura)", prot: 25.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Very lean protein." },
+      { id: "tilapia_basa", cat: "Fish & Seafood", name: "Tilapia / Basa Fillet", prot: 20.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 75g", note: "Mild white fish; portion-controlled in pre-dialysis CKD." },
+      { id: "prawns", cat: "Fish & Seafood", name: "Prawns / Shrimp (Jhinga)", prot: 24.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g steamed (Dyslipidaemia)", note: "Contraindicated in Shellfish Allergy & Gout." },
+      { id: "crab_lobster", cat: "Fish & Seafood", name: "Crab (Kekda) & Lobster", prot: 19.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Hypertension": "limited" }, portion: "Max 60g (Hypertension)", note: "Contraindicated in Shellfish Allergy & Gout; naturally higher sodium." },
+      { id: "squid_mussels", cat: "Fish & Seafood", name: "Squid (Calamari), Clams & Mussels", prot: 18.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g", note: "Contraindicated in Shellfish Allergy & Gout." },
+
+      // MEATS & POULTRY — ALL TYPES (10)
+      { id: "chicken_breast", cat: "Meats & Poultry", name: "Chicken Breast (Skinless)", prot: 31.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g boiled/grilled", note: "Leanest athletic protein; portion-controlled in CKD & Gout." },
+      { id: "chicken_thigh", cat: "Meats & Poultry", name: "Chicken Thigh / Drumstick (Skinless)", prot: 26.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g skinless", note: "Higher iron & zinc than breast; remove skin to cut saturated fat." },
+      { id: "country_chicken", cat: "Meats & Poultry", name: "Country Chicken (Nati Kozhi / Desi Chicken)", prot: 27.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Leaner muscle fibers; portion-controlled in CKD & Gout." },
+      { id: "turkey_breast", cat: "Meats & Poultry", name: "Turkey Breast (Skinless)", prot: 29.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Ultra-lean poultry protein." },
+      { id: "quail_meat", cat: "Meats & Poultry", name: "Quail Meat (Bater)", prot: 25.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Rich in heme iron & B-vitamins." },
+      { id: "duck_meat", cat: "Meats & Poultry", name: "Duck Meat", prot: 23.5, flags: { "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Coronary Artery Disease / Post-MI": "contraindicated", "Fatty Liver (NAFLD / MASLD)": "contraindicated", "Hyperuricaemia / Gout": "contraindicated" }, note: "High saturated fat & purines — contraindicated in cardiac, fatty liver & gout." },
+      { id: "lamb_lean", cat: "Meats & Poultry", name: "Lamb (Lean Loin / Leg Cut)", prot: 25.6, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g trimmed lean lamb once/week (Dyslipidaemia)", note: "High heme iron & creatine for strength athletes; contraindicated in CAD, Gout & CKD." },
+      { id: "mutton_goat", cat: "Meats & Poultry", name: "Goat Meat / Mutton (Chevon)", prot: 25.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g lean curry cut (Dyslipidaemia)", note: "Lower fat than lamb, but high purines & phosphorus — blocked in Gout, CAD & CKD." },
+      { id: "pork_lean", cat: "Meats & Poultry", name: "Pork (Lean Tenderloin)", prot: 26.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g lean cut", note: "Automatically blocked if Halal diet is selected; restricted in CAD/Gout/CKD." },
+      { id: "organ_meat", cat: "Meats & Poultry", name: "Liver / Organ Meats (Chicken / Lamb Liver)", prot: 26.5, flags: { "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Fatty Liver (NAFLD / MASLD)": "contraindicated" }, note: "Extreme purine, cholesterol & phosphorus load — strictly contraindicated in Gout, Cardiac & Renal care." }
     ];
 
     // =========================================================================
@@ -1013,6 +1164,92 @@
       renderIngredients();
       initSupabase();
     });
+
+    // =========================================================================
+    // PRESCRIPTION UPLOAD (OCR) & SUMMARY ENGINE
+    // =========================================================================
+    async function handlePrescriptionUpload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const out = document.getElementById("rxSummaryOutput");
+      out.style.display = "block";
+      out.innerHTML = "⏳ <strong>Scanning prescription image...</strong> Extracting medications and clinical notes.";
+
+      try {
+        const res = await Tesseract.recognize(file, "eng");
+        const text = (res?.data?.text || "").trim();
+        document.getElementById("rxTextInput").value = text;
+        summarizePrescription();
+      } catch (err) {
+        out.innerHTML = "⚠️ Could not read image clearly. Please type or paste the prescription text in the box on the right and click <strong>Extract &amp; Summarize</strong>.";
+      }
+    }
+
+    function summarizePrescription() {
+      const raw = (document.getElementById("rxTextInput").value || "").trim();
+      const out = document.getElementById("rxSummaryOutput");
+      if (!raw) {
+        out.style.display = "block";
+        out.innerHTML = "⚠️ Please upload a prescription photo or enter prescription text first.";
+        return;
+      }
+
+      const lower = raw.toLowerCase();
+      rxDrugFlags.clear();
+      const detectedMeds = [];
+      const detectedConds = [];
+      const foodRules = [];
+
+      if (lower.includes("telmisartan") || lower.includes("losartan") || lower.includes("ramipril") || lower.includes("enalapril") || lower.includes("spironolactone")) {
+        rxDrugFlags.add("high_potassium_rx");
+        detectedMeds.push("ACE Inhibitor / ARB / K-Sparing Antihypertensive");
+        detectedConds.push("Hypertension");
+        foodRules.push("🔴 High-potassium foods (Banana, Potato, Spinach, Avocado, Tomato) flagged as Contraindicated.");
+      }
+      if (lower.includes("warfarin") || lower.includes("acenocoumarol") || lower.includes("acitrom")) {
+        rxDrugFlags.add("vitamin_k_rx");
+        detectedMeds.push("Oral Anticoagulant (Warfarin/Acitrom)");
+        detectedConds.push("Atrial Fibrillation / Anticoagulant (warfarin) therapy");
+        foodRules.push("🔴 High Vitamin-K greens (Spinach, Methi) blocked; Broccoli/Cabbage portion-capped.");
+      }
+      if (lower.includes("metformin") || lower.includes("glimepiride") || lower.includes("sitagliptin") || lower.includes("insulin") || lower.includes("diabetes")) {
+        detectedMeds.push("Antidiabetic Therapy");
+        detectedConds.push("Diabetes Mellitus Type 2");
+        foodRules.push("🟡 High-GI carbs (White Rice, Potato, Mango, Banana) placed under strict glycemic portion control.");
+      }
+      if (lower.includes("atorvastatin") || lower.includes("rosuvastatin") || lower.includes("cholesterol") || lower.includes("dyslipid")) {
+        detectedMeds.push("Statin Lipid-Lowering Therapy");
+        detectedConds.push("Dyslipidaemia / Hypercholesterolaemia");
+        foodRules.push("🔴 Saturated fat & high-cholesterol items (Duck, Organ Meats, Full-Fat Dairy) restricted.");
+      }
+      if (lower.includes("levothyroxine") || lower.includes("thyronorm") || lower.includes("eltroxin") || lower.includes("hypothyroid")) {
+        detectedMeds.push("Levothyroxine (Thyroid Hormone)");
+        detectedConds.push("Hypothyroidism");
+        foodRules.push("⏰ Take thyroid medication on an empty stomach 45 min before breakfast; keep 4-hour gap from Soya/Calcium/Iron.");
+      }
+      if (lower.includes("allopurinol") || lower.includes("febuxostat") || lower.includes("gout") || lower.includes("uric")) {
+        detectedMeds.push("Urate-Lowering Therapy");
+        detectedConds.push("Hyperuricaemia / Gout");
+        foodRules.push("🔴 High-purine foods (Red Meat, Lamb, Mutton, Organ Meats, Shellfish, Sardines) blocked.");
+      }
+      if (lower.includes("ckd") || lower.includes("kidney") || lower.includes("creatinine") || lower.includes("dialysis") || lower.includes("renal")) {
+        detectedConds.push("Chronic Kidney Disease (CKD 3-5, non-dialysis)");
+        foodRules.push("🔴 Strict renal potassium, phosphorus & protein caps activated.");
+      }
+
+      detectedConds.forEach(c => activeConditions.add(c));
+      renderCategorizedConditions();
+      updateSportGuideline();
+      renderIngredients();
+
+      out.style.display = "block";
+      out.innerHTML = `
+        <div style="font-weight:800;color:#14532d;margin-bottom:4px;">📋 Prescription Clinical Summary</div>
+        <div><strong>Detected Medications / Regimen:</strong> ${detectedMeds.length ? detectedMeds.join(", ") : "General prescription notes recorded"}</div>
+        <div style="margin-top:3px;"><strong>Auto-Linked Conditions:</strong> ${detectedConds.length ? detectedConds.join(", ") : "None auto-matched (you can tick conditions below)"}</div>
+        <div style="margin-top:4px;"><strong>Active Diet &amp; Safety Rules:</strong><br/>${foodRules.length ? foodRules.join("<br/>") : "• Standard balanced clinical & sports screening active."}</div>
+      `;
+    }
 
     function renderCategorizedConditions() {
       const mount = document.getElementById("categorizedConditionsMount");
@@ -1136,23 +1373,33 @@
     function checkRisk(item) {
       const diet = document.getElementById("profDiet").value;
 
-      if (diet === "jain" && ["potato", "onion", "carrot"].includes(item.id)) {
+      if (diet === "jain" && ["potato", "sweet_potato", "onion", "carrot", "radish", "beetroot"].includes(item.id)) {
         return { level: "contraindicated", portion: "", reason: "Contraindicated in Jain diet (root vegetable)." };
       }
-      if (diet === "satvik" && (["onion"].includes(item.id) || item.cat === "Eggs" || item.cat === "Meats & Seafood")) {
+      if (diet === "satvik" && (["onion", "mushroom"].includes(item.id) || item.cat === "Eggs" || item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
         return { level: "contraindicated", portion: "", reason: "Contraindicated in Satvik diet." };
       }
-      if (diet === "veg" && (item.cat === "Eggs" || item.cat === "Meats & Seafood")) {
+      if (diet === "veg" && (item.cat === "Eggs" || item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
         return { level: "contraindicated", portion: "", reason: "Excluded in Vegetarian diet." };
       }
-      if (diet === "eggetarian" && item.cat === "Meats & Seafood") {
-        return { level: "contraindicated", portion: "", reason: "Meat/Seafood excluded in Eggetarian diet." };
+      if (diet === "eggetarian" && (item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
+        return { level: "contraindicated", portion: "", reason: "Fish & Meat excluded in Eggetarian diet." };
       }
-      if (diet === "pescatarian" && (item.id === "chicken_breast" || item.id === "mutton")) {
+      if (diet === "pescatarian" && item.cat === "Meats & Poultry") {
         return { level: "contraindicated", portion: "", reason: "Poultry & Red Meat excluded in Pescatarian diet." };
       }
-      if (diet === "vegan" && (item.cat === "Dairy" || item.cat === "Eggs" || item.cat === "Meats & Seafood")) {
+      if (diet === "halal" && item.id === "pork_lean") {
+        return { level: "contraindicated", portion: "", reason: "Excluded in Halal diet." };
+      }
+      if (diet === "vegan" && (item.cat === "Dairy" || item.cat === "Eggs" || item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
         return { level: "contraindicated", portion: "", reason: "Animal products excluded in Vegan diet." };
+      }
+
+      if (rxDrugFlags.has("high_potassium_rx") && ["potato", "sweet_potato", "banana", "spinach", "tomato", "avocado"].includes(item.id)) {
+        return { level: "contraindicated", portion: "", reason: "Prescription Alert: High potassium conflicts with ACE/ARB medication." };
+      }
+      if (rxDrugFlags.has("vitamin_k_rx") && ["spinach", "methi"].includes(item.id)) {
+        return { level: "contraindicated", portion: "", reason: "Prescription Alert: High Vitamin K conflicts with Warfarin." };
       }
 
       let level = "allowed", notes = [], portion = "";
@@ -1302,6 +1549,7 @@
       const diet = document.getElementById("profDiet").value;
       const sport = document.getElementById("profSport").value || "Sport";
       const isNonVeg = diet === "nonveg" || diet === "halal" || diet === "all";
+      const isPesc = diet === "pescatarian";
       const isEgg = isNonVeg || diet === "eggetarian";
 
       const slots = [
@@ -1313,7 +1561,7 @@
         },
         {
           t: "💪 Post-Session Recovery (Within 1 hr)",
-          m: isNonVeg ? "75g Grilled Chicken Breast + Jowar Roti" : (isEgg ? "4 Boiled Egg Whites + Vegetable Poha" : "50g Low-Fat Paneer / Tofu + Kadak Jowar Roti"),
+          m: isNonVeg ? "75g Grilled Chicken Breast / Fish + Jowar Roti" : (isPesc ? "75g Steamed Rohu / Salmon + Jowar Roti" : (isEgg ? "4 Boiled Egg Whites + Vegetable Poha" : "50g Low-Fat Paneer / Tofu + Kadak Jowar Roti")),
           n: `25–40g protein recovery window for ${sport}.`,
           img: "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80"
         },
@@ -1344,7 +1592,7 @@
     }
 
     // =========================================================================
-    // 7. SUPABASE AUTH WITH RELIABLE FALLBACK (NEVER BLOCKS USER)
+    // 7. SUPABASE AUTH WITH RELIABLE FALLBACK
     // =========================================================================
     function initSupabase() {
       const pill = document.getElementById("syncPill");
@@ -1437,7 +1685,6 @@
         } catch (e) {}
       }
 
-      // Check local vault or allow seamless sign-in for first-time device login
       const h = await sha256(pass);
       const savedUser = JSON.parse(localStorage.getItem("sa_u_" + email) || "null");
       if (savedUser && savedUser.h !== h) {
@@ -1483,6 +1730,7 @@
         height: Number(document.getElementById("profHeight").value) || 168,
         diet: document.getElementById("profDiet").value,
         sport: document.getElementById("profSport").value,
+        rxText: document.getElementById("rxTextInput").value,
         conditions: Array.from(activeConditions)
       };
       localStorage.setItem("sa_pr_" + currentUser.email, JSON.stringify(pr));
@@ -1494,7 +1742,7 @@
       updateSportGuideline();
       if (!silent) {
         const toast = document.getElementById("saveToast");
-        toast.textContent = "✅ Profile saved successfully!";
+        toast.textContent = "✅ Profile & Prescription saved successfully!";
         setTimeout(() => toast.textContent = "", 3000);
       }
     }
@@ -1518,6 +1766,10 @@
         if (pr.height) document.getElementById("profHeight").value = pr.height;
         document.getElementById("profDiet").value = pr.diet || "veg";
         if (pr.sport) document.getElementById("profSport").value = pr.sport;
+        if (pr.rxText) {
+          document.getElementById("rxTextInput").value = pr.rxText;
+          summarizePrescription();
+        }
         activeConditions = new Set(pr.conditions || []);
         renderCategorizedConditions();
       } else {
@@ -1550,7 +1802,7 @@
 
       const lower = q.toLowerCase();
       const found = INGREDIENTS.find(i => lower.includes(i.name.toLowerCase().split(" (")[0]) || lower.includes(i.id));
-      let reply = "Use the Check & Cook tab to inspect Vegetables, Fruits, Pulses, Seeds, Grains, Dairy, Eggs & Meats with Green (Allowed), Yellow (Limited Portion), and Red (Contraindicated) ratings.";
+      let reply = "Use the Check & Cook tab to inspect Vegetables, Fruits, Pulses, Nuts & Seeds, Grains, Dairy, Eggs, Fish & Meats with Green (Allowed), Yellow (Limited Portion), and Red (Contraindicated) ratings.";
 
       if (found) {
         const r = checkRisk(found);

@@ -70,16 +70,20 @@
       font-size: 0.8rem; color: #5eead4; font-weight: 600;
     }
 
+    .lang-controls-wrap {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+
     .lang-pill-box {
       display: flex; align-items: center; gap: 8px;
       background: rgba(255, 255, 255, 0.14);
       border: 1px solid rgba(255, 255, 255, 0.32);
-      padding: 9px 18px; border-radius: 999px;
+      padding: 8px 15px; border-radius: 999px;
       backdrop-filter: blur(12px);
     }
     .lang-pill-box select {
       background: transparent; border: none; color: white; font-weight: 700;
-      font-size: 0.92rem; cursor: pointer; outline: none;
+      font-size: 0.88rem; cursor: pointer; outline: none;
     }
     .lang-pill-box select option { color: #0f172a; background: white; }
 
@@ -496,14 +500,14 @@
       font-weight: 800;
     }
     .prep-steps-list {
-      margin: 8px 0 0;
+      margin: 6px 0 0;
       padding-left: 18px;
       font-size: 0.8rem;
       color: #334155;
       line-height: 1.48;
     }
     .prep-steps-list li {
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     /* AI CHATBOT */
@@ -572,33 +576,43 @@
         </div>
       </div>
 
-      <div class="lang-pill-box">
-        <span>🌐</span>
-        <select id="langTop" onchange="setAppLanguage(this.value)">
-          <option value="en">English (Default)</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-          <option value="mr">मराठी (Marathi)</option>
-          <option value="kn">ಕನ್ನಡ (Kannada)</option>
-          <option value="ta">தமிழ் (Tamil)</option>
-          <option value="te">తెలుగు (Telugu)</option>
-          <option value="bn">বাংলা (Bengali)</option>
-          <option value="gu">ગુજરાતી (Gujarati)</option>
-          <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-          <option value="ml">മലയാളം (Malayalam)</option>
-          <option value="or">ଓଡ଼ିଆ (Odia)</option>
-          <option value="as">অসমীয়া (Assamese)</option>
-          <option value="ur">اردو (Urdu)</option>
-          <option value="sa">संस्कृतम् (Sanskrit)</option>
-          <option value="kok">कोंकणी (Konkani)</option>
-          <option value="mai">मैथिली (Maithili)</option>
-          <option value="ne">नेपाली (Nepali)</option>
-          <option value="sd">سنڌي (Sindhi)</option>
-          <option value="doi">डोगरी (Dogri)</option>
-          <option value="ks">कॉशुर (Kashmiri)</option>
-          <option value="mni">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
-          <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
-          <option value="brx">बड़ो (Bodo)</option>
-        </select>
+      <div class="lang-controls-wrap">
+        <div class="lang-pill-box">
+          <span>🌐</span>
+          <select id="langTop" onchange="setAppLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            <option value="as">অসমীয়া (Assamese)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="sa">संस्कृतम् (Sanskrit)</option>
+            <option value="kok">कोंकणी (Konkani)</option>
+            <option value="mai">मैथिली (Maithili)</option>
+            <option value="ne">नेपाली (Nepali)</option>
+            <option value="sd">سنڌي (Sindhi)</option>
+            <option value="doi">डोगरी (Dogri)</option>
+            <option value="ks">कॉशुर (Kashmiri)</option>
+            <option value="mni">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
+            <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
+            <option value="brx">बड़ो (Bodo)</option>
+          </select>
+        </div>
+
+        <div class="lang-pill-box">
+          <span>🔤</span>
+          <select id="langModeTop" onchange="setLanguageMode(this.value)">
+            <option value="only" data-t="modeOnly">Only Selected Language</option>
+            <option value="bilingual" data-t="modeBilingual">Selected Language + English</option>
+          </select>
+        </div>
       </div>
     </header>
 
@@ -654,16 +668,16 @@
           <p style="font-size:0.9rem;color:var(--muted);margin-bottom:14px;" data-t="authSub">Sign in or create your encrypted health &amp; diet vault</p>
 
           <div id="syncPill" style="padding:10px 14px;border-radius:10px;font-size:0.84rem;font-weight:700;margin-bottom:16px;background:#fef3c7;color:#92400e;">
-            ⏳ Connecting to Supabase Cloud...
+            ⏳ Connecting...
           </div>
 
           <div class="form-group">
             <label data-t="lblFullName">Full Name (Required for Registration)</label>
-            <input type="text" id="authName" placeholder="e.g., Devika Ashwin Desai" />
+            <input type="text" id="authName" data-ph="phFullName" placeholder="e.g., Devika Ashwin Desai" />
           </div>
           <div class="form-group">
             <label data-t="lblEmail">Email Address</label>
-            <input type="email" id="authEmail" placeholder="athlete@example.com" />
+            <input type="email" id="authEmail" data-ph="phEmail" placeholder="athlete@example.com" />
           </div>
           <div class="form-group">
             <label data-t="lblPass">Password (Minimum 6 characters)</label>
@@ -687,38 +701,48 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <div class="brand-emblem-sm" id="dashLogoSlot"></div>
         <div>
-          <strong style="font-size:1.05rem;" data-t="dashBrand">Swasth Aahar AI - स्वस्थ आहार</strong>
-          <div style="font-size:0.75rem;color:#bbf7d0;" data-t="dashSub">सही आहार, स्वस्थ जीवन — Smart food choices for every health condition &amp; 255+ sports</div>
+          <strong style="font-size:1.05rem;" data-t="dashBrand">Swasth Aahar AI</strong>
+          <div style="font-size:0.75rem;color:#bbf7d0;" data-t="dashSub">Smart food choices for every health condition &amp; 255+ sports</div>
         </div>
       </div>
 
-      <div class="lang-pill-box" style="background:rgba(255,255,255,0.16);padding:6px 14px;">
-        <span>🌐</span>
-        <select id="langDash" onchange="setAppLanguage(this.value)">
-          <option value="en">English (Default)</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-          <option value="mr">मराठी (Marathi)</option>
-          <option value="kn">ಕನ್ನಡ (Kannada)</option>
-          <option value="ta">தமிழ் (Tamil)</option>
-          <option value="te">తెలుగు (Telugu)</option>
-          <option value="bn">বাংলা (Bengali)</option>
-          <option value="gu">ગુજરાતી (Gujarati)</option>
-          <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-          <option value="ml">മലയാളം (Malayalam)</option>
-          <option value="or">ଓଡ଼ିଆ (Odia)</option>
-          <option value="as">অসমীয়া (Assamese)</option>
-          <option value="ur">اردو (Urdu)</option>
-          <option value="sa">संस्कृतम् (Sanskrit)</option>
-          <option value="kok">कोंकणी (Konkani)</option>
-          <option value="mai">मैथिली (Maithili)</option>
-          <option value="ne">नेपाली (Nepali)</option>
-          <option value="sd">سنڌي (Sindhi)</option>
-          <option value="doi">डोगरी (Dogri)</option>
-          <option value="ks">कॉशुर (Kashmiri)</option>
-          <option value="mni">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
-          <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
-          <option value="brx">बड़ो (Bodo)</option>
-        </select>
+      <div class="lang-controls-wrap">
+        <div class="lang-pill-box" style="background:rgba(255,255,255,0.16);padding:6px 14px;">
+          <span>🌐</span>
+          <select id="langDash" onchange="setAppLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            <option value="as">অসমীয়া (Assamese)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="sa">संस्कृतम् (Sanskrit)</option>
+            <option value="kok">कोंकणी (Konkani)</option>
+            <option value="mai">मैथिली (Maithili)</option>
+            <option value="ne">नेपाली (Nepali)</option>
+            <option value="sd">سنڌي (Sindhi)</option>
+            <option value="doi">डोगरी (Dogri)</option>
+            <option value="ks">कॉशुर (Kashmiri)</option>
+            <option value="mni">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
+            <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
+            <option value="brx">बड़ो (Bodo)</option>
+          </select>
+        </div>
+
+        <div class="lang-pill-box" style="background:rgba(255,255,255,0.16);padding:6px 14px;">
+          <span>🔤</span>
+          <select id="langModeDash" onchange="setLanguageMode(this.value)">
+            <option value="only" data-t="modeOnly">Only Selected Language</option>
+            <option value="bilingual" data-t="modeBilingual">Selected Language + English</option>
+          </select>
+        </div>
       </div>
     </header>
 
@@ -736,31 +760,31 @@
         <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:12px;" data-t="profTitle">Your Profile</h3>
 
         <div style="margin-bottom:10px;">
-          <input type="text" id="profName" class="p-input" placeholder="Your Full Name" />
+          <input type="text" id="profName" class="p-input" data-ph="phFullName" placeholder="Your Full Name" />
         </div>
 
         <div class="prof-row-4">
-          <input type="number" id="profAge" class="p-input" value="20" min="5" max="110" placeholder="Age" oninput="updateSportGuideline()" />
-          <select id="profGender" class="p-select">
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-            <option value="other">Other</option>
+          <input type="number" id="profAge" class="p-input" value="20" min="5" max="110" data-ph="phAge" placeholder="Age" oninput="updateSportGuideline()" />
+          <select id="profGender" class="p-select" onchange="setAppLanguage(activeLang)">
+            <option value="female" data-t="genFemale">Female</option>
+            <option value="male" data-t="genMale">Male</option>
+            <option value="other" data-t="genOther">Other</option>
           </select>
-          <input type="number" id="profWeight" class="p-input" value="68" min="20" max="250" placeholder="Weight kg" oninput="updateSportGuideline()" />
-          <input type="number" id="profHeight" class="p-input" value="168" min="90" max="230" placeholder="Height cm" />
+          <input type="number" id="profWeight" class="p-input" value="68" min="20" max="250" data-ph="phWeight" placeholder="Weight kg" oninput="updateSportGuideline()" />
+          <input type="number" id="profHeight" class="p-input" value="168" min="90" max="230" data-ph="phHeight" placeholder="Height cm" />
         </div>
 
         <label class="p-label" data-t="lblDietType">Diet type</label>
-        <select id="profDiet" class="p-select" onchange="renderIngredients()">
-          <option value="veg">Vegetarian</option>
-          <option value="nonveg">Non-Vegetarian</option>
-          <option value="eggetarian">Eggetarian</option>
-          <option value="vegan">Vegan</option>
-          <option value="jain">Jain (No Root Vegetables)</option>
-          <option value="halal">Halal</option>
-          <option value="pescatarian">Pescatarian</option>
-          <option value="satvik">Satvik</option>
-          <option value="all">All Food Categories</option>
+        <select id="profDiet" class="p-select" onchange="renderIngredients(); if(document.getElementById('viewPlan').classList.contains('active')) generateDietChart();">
+          <option value="veg" data-t="dietVeg">Vegetarian</option>
+          <option value="nonveg" data-t="dietNonVeg">Non-Vegetarian</option>
+          <option value="eggetarian" data-t="dietEgg">Eggetarian</option>
+          <option value="vegan" data-t="dietVegan">Vegan</option>
+          <option value="jain" data-t="dietJain">Jain (No Root Vegetables)</option>
+          <option value="halal" data-t="dietHalal">Halal</option>
+          <option value="pescatarian" data-t="dietPesc">Pescatarian</option>
+          <option value="satvik" data-t="dietSatvik">Satvik</option>
+          <option value="all" data-t="dietAll">All Food Categories</option>
         </select>
 
         <!-- ADD PRESCRIPTION & AUTO-SUMMARY SECTION -->
@@ -779,7 +803,7 @@
             </div>
 
             <div style="display:flex;flex-direction:column;gap:6px;">
-              <textarea id="rxTextInput" class="p-textarea" rows="3" placeholder="Or type/paste prescription details (e.g., Telmisartan 40mg, Metformin 500mg, Warfarin 5mg, Atorvastatin 10mg, CKD Stage 3)..."></textarea>
+              <textarea id="rxTextInput" class="p-textarea" rows="3" data-ph="phRxText" placeholder="Or type/paste prescription details (Telmisartan, Metformin, Warfarin, Atorvastatin, Levothyroxine, CKD)..."></textarea>
               <button type="button" class="btn btn-emerald" style="padding:8px 12px;font-size:0.82rem;" onclick="summarizePrescription()" data-t="rxExtractBtn">📋 Extract &amp; Summarize Prescription</button>
             </div>
           </div>
@@ -791,7 +815,7 @@
         <div id="categorizedConditionsMount"></div>
 
         <label class="p-label" style="margin-top:16px;"><span data-t="lblSportPrefix">Athlete? Search &amp; choose from</span> <span id="sportTotalCount">255</span>+ <span data-t="lblSportSuffix">sports</span></label>
-        <input type="text" id="sportSearchBox" class="p-input" style="margin-bottom:8px;" placeholder="Search sport (e.g. Powerlifting, Kabaddi, Swimming, Chess, Equestrian...)" oninput="filterSportsSelect()" />
+        <input type="text" id="sportSearchBox" class="p-input" style="margin-bottom:8px;" data-ph="phSportSearch" placeholder="Search sport..." oninput="filterSportsSelect()" />
         <select id="profSport" class="p-select" onchange="updateSportGuideline()"></select>
 
         <div class="sport-guideline-banner" id="sportGuidelineBox"></div>
@@ -807,7 +831,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div>
             <h3 style="font-size:1.25rem;font-weight:800;" data-t="kitchenTitle">☑️ Check Kitchen Ingredients &amp; Cook</h3>
-            <p style="font-size:0.84rem;color:var(--muted);" data-t="kitchenSub">Tick what you have across Vegetables, Fruits, Pulses, Nuts &amp; Seeds, Grains, Dairy, Eggs, Fish &amp; Meats</p>
+            <p style="font-size:0.84rem;color:var(--muted);" data-t="kitchenSub">Tick what you have across all food groups</p>
           </div>
           <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-ghost" onclick="clearTicks()" data-t="btnClearTicks">Clear Ticks</button>
@@ -818,14 +842,14 @@
         <div class="traffic-legend">
           <span class="legend-pill lp-green" data-t="legGreen">🟢 Allowed (Unrestricted Safe)</span>
           <span class="legend-pill lp-yellow" data-t="legYellow">🟡 Limited Portion Allowed (Portion Control)</span>
-          <span class="legend-pill lp-red" data-t="legRed">🔴 Contraindicated / Blocked</span>
+          <span class="legend-pill lp-red" data-t="legRed">🔴 Contraindicated / Blocked (Cannot Tick)</span>
         </div>
 
         <div id="liveWarnBanner" style="display:none;margin-bottom:12px;padding:11px 15px;border-radius:10px;font-weight:700;font-size:0.86rem;"></div>
 
         <div style="display:grid;grid-template-columns:1.2fr 1fr auto;gap:10px;margin-bottom:1rem;">
-          <input type="text" id="ingSearch" class="p-input" placeholder="🔍 Search any vegetable, fruit, nut, seed, fish, egg, chicken, lamb, meat..." oninput="renderIngredients()" />
-          <input type="text" id="customIng" class="p-input" placeholder="➕ Add custom item you have..." />
+          <input type="text" id="ingSearch" class="p-input" data-ph="phIngSearch" placeholder="🔍 Search food item..." oninput="renderIngredients()" />
+          <input type="text" id="customIng" class="p-input" data-ph="phCustomIng" placeholder="➕ Add custom item..." />
           <button type="button" class="btn btn-ghost" onclick="addCustomIng()" data-t="btnAddIng">Add</button>
         </div>
 
@@ -839,24 +863,24 @@
           <button type="button" class="btn btn-ghost no-print" onclick="window.print()" data-t="btnPrint">🖨️ Print</button>
         </div>
         <div id="recipeAlert" style="margin:1rem 0;"></div>
-        <div id="recipeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;"></div>
+        <div id="recipeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1rem;"></div>
       </div>
     </section>
 
-    <!-- VIEW C: DAILY AAHAR (MORNING, AFTERNOON, EVENING, NIGHT WITH QUANTITY & 5 STEPS) -->
+    <!-- VIEW C: DAILY AAHAR (MORNING, AFTERNOON, EVENING, NIGHT + QUANTITY + 5 SPECIFIC STEPS) -->
     <section id="viewPlan" class="panel-view">
       <div class="wide-workspace-card">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:1rem;">
           <div>
             <h3 style="font-weight:800;" data-t="dailyTitle">📅 Daily Aahar — Morning, Afternoon, Evening &amp; Night Diet Chart</h3>
-            <p style="font-size:0.84rem;color:var(--muted);" data-t="dailySub">Includes exact serving quantities and 5-step easy preparation guides tailored to your profile.</p>
+            <p style="font-size:0.84rem;color:var(--muted);" data-t="dailySub">Includes exact serving quantities and 5 dish-specific preparation steps for every meal.</p>
           </div>
           <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-emerald" onclick="generateDietChart()" data-t="btnRefreshPlan">🔄 Refresh Plan</button>
             <button type="button" class="btn btn-ghost no-print" onclick="window.print()" data-t="btnPrintPdf">🖨️ Print / Save PDF</button>
           </div>
         </div>
-        <div id="dietChartGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:1.15rem;"></div>
+        <div id="dietChartGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1.15rem;"></div>
       </div>
     </section>
   </div>
@@ -882,7 +906,7 @@
     <div class="ai-feed" id="aiFeed"></div>
 
     <div class="ai-bar">
-      <input type="text" id="aiInput" placeholder="Ask about any food or sport..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
+      <input type="text" id="aiInput" data-ph="phAiInput" placeholder="Ask about any food or sport..." onkeypress="if(event.key==='Enter') askNutritionAi()" />
       <button type="button" class="btn btn-emerald" style="padding:10px 14px;" onclick="askNutritionAi()">➤</button>
     </div>
   </div>
@@ -899,38 +923,18 @@
     let sbClient = null;
     let currentUser = null;
     let activeLang = "en";
+    let langMode = "only";
     let activeConditions = new Set();
     let tickedIngredients = new Set();
     let activeFoodCategory = "ALL";
     let rxDrugFlags = new Set();
 
     // =========================================================================
-    // 2. INDIAN LANGUAGE TRANSLATION ENGINE (ALL 22+ LANGUAGES IN SELECTOR)
+    // 2. FULL INDIAN LANGUAGE + BILINGUAL ENGINE
     // =========================================================================
-    const LANG_META = {
-      en: { label: "English", script: "en" },
-      hi: { label: "हिन्दी", script: "hi" },
-      mr: { label: "मराठी", script: "mr" },
-      kn: { label: "ಕನ್ನಡ", script: "kn" },
-      ta: { label: "தமிழ்", script: "ta" },
-      te: { label: "తెలుగు", script: "te" },
-      bn: { label: "বাংলা", script: "bn" },
-      gu: { label: "ગુજરાતી", script: "gu" },
-      pa: { label: "ਪੰਜਾਬੀ", script: "pa" },
-      ml: { label: "മലയാളം", script: "ml" },
-      or: { label: "ଓଡ଼ିଆ", script: "or" },
-      as: { label: "অসমীয়া", script: "as" },
-      ur: { label: "اردو", script: "ur" },
-      sa: { label: "संस्कृतम्", script: "sa" },
-      kok: { label: "कोंकणी", script: "kok" },
-      mai: { label: "मैथिली", script: "mai" },
-      ne: { label: "नेपाली", script: "ne" },
-      sd: { label: "سنڌي", script: "sd" },
-      doi: { label: "डोगरी", script: "doi" },
-      ks: { label: "कॉशुर", script: "ks" },
-      mni: { label: "ꯃꯩꯇꯩꯂꯣꯟ", script: "mni" },
-      sat: { label: "ᱥᱟᱱᱛᱟᱲᱤ", script: "sat" },
-      brx: { label: "बड़ो", script: "brx" }
+    const INDIAN_LANG_BASE = {
+      kok: "hi", mai: "hi", ne: "hi", doi: "hi", ks: "hi", brx: "hi",
+      sd: "ur", mni: "bn", sat: "bn"
     };
 
     const UI_I18N = {
@@ -953,42 +957,67 @@
         lblFullName: "Full Name (Required for Registration)",
         lblEmail: "Email Address",
         lblPass: "Password (Minimum 6 characters)",
+        phFullName: "Enter your full name",
+        phEmail: "Enter your email address",
         btnLogin: "Sign In",
         btnRegister: "Create Account",
-        dashBrand: "Swasth Aahar AI - स्वस्थ आहार",
-        dashSub: "सही आहार, स्वस्थ जीवन — Smart food choices for every health condition & 255+ sports",
+        modeOnly: "Only Selected Language",
+        modeBilingual: "Selected Language + English",
+        dashBrand: "Swasth Aahar AI",
+        dashSub: "Smart food choices for every health condition & 255+ sports",
         tabKitchen: "🔍 Check & Cook",
         tabDaily: "📅 Daily Aahar",
         tabProfile: "👤 Profile",
         tabLogout: "Logout",
         profTitle: "Your Profile",
+        phAge: "Age",
+        phWeight: "Weight kg",
+        phHeight: "Height cm",
+        genFemale: "Female",
+        genMale: "Male",
+        genOther: "Other",
         lblDietType: "Diet type",
+        dietVeg: "Vegetarian",
+        dietNonVeg: "Non-Vegetarian",
+        dietEgg: "Eggetarian",
+        dietVegan: "Vegan",
+        dietJain: "Jain (No Root Vegetables)",
+        dietHalal: "Halal",
+        dietPesc: "Pescatarian",
+        dietSatvik: "Satvik",
+        dietAll: "All Food Categories",
         rxTitle: "📄 Add Prescription & Auto-Extract Clinical Summary",
         rxBadge: "Optional • Auto-fills conditions & food restrictions",
         rxUploadBtn: "Upload Prescription Photo",
         rxUploadSub: "JPG / PNG • Auto-reads medicines",
+        phRxText: "Type or paste prescription medicines & notes...",
         rxExtractBtn: "📋 Extract & Summarize Prescription",
         lblConditions: "Clinical conditions / surgical history (select all that apply)",
         lblSportPrefix: "Athlete? Search & choose from",
         lblSportSuffix: "sports",
+        phSportSearch: "Search sport...",
         btnSaveProfile: "Save profile",
+        profileSaved: "✅ Profile & prescription saved.",
         kitchenTitle: "☑️ Check Kitchen Ingredients & Cook",
-        kitchenSub: "Tick what you have across Vegetables, Fruits, Pulses, Nuts & Seeds, Grains, Dairy, Eggs, Fish & Meats",
+        kitchenSub: "Tick what you have across all food groups",
         btnClearTicks: "Clear Ticks",
         btnCookSafe: "🍳 Cook Safe Recipes",
         legGreen: "🟢 Allowed (Unrestricted Safe)",
         legYellow: "🟡 Limited Portion Allowed (Portion Control)",
         legRed: "🔴 Contraindicated / Blocked (Cannot Tick)",
+        phIngSearch: "🔍 Search food item...",
+        phCustomIng: "➕ Add custom item...",
         btnAddIng: "Add",
         recipeCardTitle: "🍲 Clinically Safe & Portion-Calibrated Recipes",
         btnPrint: "🖨️ Print",
         dailyTitle: "📅 Daily Aahar — Morning, Afternoon, Evening & Night Diet Chart",
-        dailySub: "Includes exact serving quantities and 5-step easy preparation guides tailored to your profile.",
+        dailySub: "Includes exact serving quantities and 5 dish-specific preparation steps for every meal.",
         btnRefreshPlan: "🔄 Refresh Plan",
         btnPrintPdf: "🖨️ Print / Save PDF",
         aiFab: "Ask Nutrition AI",
         aiSub: "Clinical & Sports Nutrition Assistant",
-        aiGreeting: "Hello! Ask me whether any vegetable, fruit, pulse, nut, seed, fish, egg, chicken, lamb, or meat is Allowed, Limited Portion, or Contraindicated for your profile, or ask about any of the 255+ sports!",
+        phAiInput: "Ask about any food or sport...",
+        aiGreeting: "Hello! Ask me whether any food item is Allowed, Limited Portion, or Contraindicated for your profile, or ask about any sport!",
         allowedBadge: "🟢 Allowed",
         limitedBadge: "🟡 Limited Portion",
         contraBadge: "🔴 Contraindicated (Blocked)",
@@ -999,15 +1028,18 @@
         eveningSlot: "🌇 Evening / Recovery & Snack",
         nightSlot: "🌙 Night / Dinner",
         qtyLabel: "Quantity",
-        stepsLabel: "5-Step Preparation",
-        step1: "Rinse and measure the exact ingredient quantity cleanly.",
-        step2: "Prep vegetables/grains/protein by chopping, soaking, or marinating lightly.",
-        step3: "Cook with minimal healthy oil and gentle spices suited to your health profile.",
-        step4: "Simmer or steam until tender and well-cooked for easy digestion.",
-        step5: "Plate in the recommended serving portion and eat mindfully."
+        stepsLabel: "5 Dish-Specific Preparation Steps",
+        proteinTargetPrefix: "Daily Target for",
+        proteinPerDay: "g protein/day",
+        preSessionLabel: "⚡ Pre-Session",
+        postSessionLabel: "💪 Post-Session",
+        preSessionText: "Moderate carbs + lean protein 90–120 min prior.",
+        postSessionText: "25–40 g protein within 1 h + recovery carbs.",
+        renalCapNote: "Renal protein cap applied.",
+        dialysisNote: "Dialysis replenishment target."
       },
       hi: {
-        brandName: "स्वस्थ आहार एआई (Swasth Aahar AI)",
+        brandName: "स्वस्थ आहार एआई",
         brandTagline: "सही आहार, स्वस्थ जीवन • क्लिनिकल और स्पोर्ट्स पोषण",
         topPill: "✨ 22 भारतीय भाषाएं • 255+ खेल • क्लिनिकल और स्पोर्ट्स पोषण",
         heroHeading: '<em>क्लिनिकल सटीकता</em> और खेल विज्ञान के साथ शरीर को पोषण दें',
@@ -1025,42 +1057,67 @@
         lblFullName: "पूरा नाम (पंजीकरण के लिए आवश्यक)",
         lblEmail: "ईमेल पता",
         lblPass: "पासवर्ड (कम से कम 6 अक्षर)",
+        phFullName: "अपना पूरा नाम लिखें",
+        phEmail: "अपना ईमेल पता लिखें",
         btnLogin: "साइन इन करें",
         btnRegister: "खाता बनाएं",
-        dashBrand: "स्वस्थ आहार एआई - Swasth Aahar AI",
+        modeOnly: "केवल चुनी हुई भाषा",
+        modeBilingual: "चुनी हुई भाषा + अंग्रेज़ी",
+        dashBrand: "स्वस्थ आहार एआई",
         dashSub: "सही आहार, स्वस्थ जीवन — हर स्वास्थ्य स्थिति और 255+ खेलों के लिए स्मार्ट भोजन चयन",
         tabKitchen: "🔍 जांचें और पकाएं",
         tabDaily: "📅 दैनिक आहार",
         tabProfile: "👤 प्रोफ़ाइल",
         tabLogout: "लॉगआउट",
         profTitle: "आपकी प्रोफ़ाइल",
+        phAge: "आयु",
+        phWeight: "वज़न (किग्रा)",
+        phHeight: "कद (सेमी)",
+        genFemale: "महिला",
+        genMale: "पुरुष",
+        genOther: "अन्य",
         lblDietType: "आहार प्रकार",
+        dietVeg: "शाकाहारी",
+        dietNonVeg: "मांसाहारी",
+        dietEgg: "अंडा-शाकाहारी",
+        dietVegan: "वीगन",
+        dietJain: "जैन (कंदमूल रहित)",
+        dietHalal: "हलाल",
+        dietPesc: "पेस्केटेरियन (मछली व शाकाहार)",
+        dietSatvik: "सात्विक",
+        dietAll: "सभी खाद्य वर्ग",
         rxTitle: "📄 प्रिस्क्रिप्शन जोड़ें और क्लिनिकल सारांश निकालें",
         rxBadge: "वैकल्पिक • बीमारियां और आहार प्रतिबंध स्वतः लागू होते हैं",
         rxUploadBtn: "प्रिस्क्रिप्शन फ़ोटो अपलोड करें",
         rxUploadSub: "JPG / PNG • दवाइयां स्वतः पढ़ें",
+        phRxText: "प्रिस्क्रिप्शन की दवाइयां या नोट्स लिखें या चिपकाएं...",
         rxExtractBtn: "📋 प्रिस्क्रिप्शन का सारांश निकालें",
         lblConditions: "स्वास्थ्य स्थितियां / सर्जरी का इतिहास (लागू विकल्प चुनें)",
         lblSportPrefix: "खिलाड़ी हैं? खोजें और चुनें",
         lblSportSuffix: "खेलों में से",
+        phSportSearch: "खेल खोजें...",
         btnSaveProfile: "प्रोफ़ाइल सहेजें",
+        profileSaved: "✅ प्रोफ़ाइल और प्रिस्क्रिप्शन सहेजे गए।",
         kitchenTitle: "☑️ रसोई की सामग्री जांचें और पकाएं",
-        kitchenSub: "सब्ज़ियां, फल, दालें, मेवे और बीज, अनाज, डेयरी, अंडे, मछली और मांस में से उपलब्ध सामग्री चुनें",
+        kitchenSub: "उपलब्ध सामग्री चुनें",
         btnClearTicks: "चयन हटाएं",
         btnCookSafe: "🍳 सुरक्षित व्यंजन बनाएं",
         legGreen: "🟢 अनुमत (पूर्णतः सुरक्षित)",
         legYellow: "🟡 सीमित मात्रा अनुमत (मात्रा नियंत्रण)",
         legRed: "🔴 वर्जित / प्रतिबंधित (चयन बंद)",
+        phIngSearch: "🔍 खाद्य पदार्थ खोजें...",
+        phCustomIng: "➕ अपनी सामग्री जोड़ें...",
         btnAddIng: "जोड़ें",
         recipeCardTitle: "🍲 सुरक्षित और मात्रा-नियंत्रित व्यंजन",
         btnPrint: "🖨️ प्रिंट करें",
         dailyTitle: "📅 दैनिक आहार — सुबह, दोपहर, शाम और रात का चार्ट",
-        dailySub: "सही मात्रा और आसान 5-चरणीय बनाने की विधि के साथ।",
+        dailySub: "हर भोजन के लिए सही मात्रा और उसी व्यंजन के 5 खास बनाने के चरण।",
         btnRefreshPlan: "🔄 योजना अपडेट करें",
         btnPrintPdf: "🖨️ प्रिंट / PDF सहेजें",
         aiFab: "पोषण एआई से पूछें",
         aiSub: "क्लिनिकल और स्पोर्ट्स पोषण सहायक",
-        aiGreeting: "नमस्ते! पूछें कि कौन-सी सब्ज़ी, फल, दाल, बीज, मछली, अंडा या मांस आपकी प्रोफ़ाइल के लिए अनुमत, सीमित मात्रा या वर्जित है, या किसी भी खेल के पोषण के बारे में पूछें!",
+        phAiInput: "किसी भी भोजन या खेल के बारे में पूछें...",
+        aiGreeting: "नमस्ते! पूछें कि कौन-सा भोजन आपकी प्रोफ़ाइल के लिए अनुमत, सीमित मात्रा या वर्जित है, या किसी खेल के बारे में पूछें!",
         allowedBadge: "🟢 अनुमत",
         limitedBadge: "🟡 सीमित मात्रा",
         contraBadge: "🔴 वर्जित (अवरुद्ध)",
@@ -1071,12 +1128,15 @@
         eveningSlot: "🌇 शाम / रिकवरी और नाश्ता",
         nightSlot: "🌙 रात / रात्रि भोजन",
         qtyLabel: "मात्रा",
-        stepsLabel: "5-चरणीय बनाने की विधि",
-        step1: "सामग्री की सही मात्रा नापें और साफ़ पानी से धो लें।",
-        step2: "सब्ज़ियों, अनाज या प्रोटीन को काटें, भिगोएं या हल्का तैयार करें।",
-        step3: "स्वास्थ्य के अनुसार कम तेल और हल्के मसालों में पकाएं।",
-        step4: "आसानी से पचने तक धीमी आंच पर पकाएं या भाप दें।",
-        step5: "निर्धारित मात्रा में परोसें और शांति से खाएं।"
+        stepsLabel: "इस व्यंजन के 5 बनाने के चरण",
+        proteinTargetPrefix: "दैनिक लक्ष्य",
+        proteinPerDay: "ग्राम प्रोटीन/दिन",
+        preSessionLabel: "⚡ अभ्यास से पहले",
+        postSessionLabel: "💪 अभ्यास के बाद",
+        preSessionText: "90–120 मिनट पहले संतुलित कार्ब्स व हल्का प्रोटीन।",
+        postSessionText: "1 घंटे के भीतर 25–40 ग्राम प्रोटीन व रिकवरी कार्ब्स।",
+        renalCapNote: "गुर्दा प्रोटीन सीमा लागू।",
+        dialysisNote: "डायलिसिस प्रोटीन लक्ष्य।"
       },
       mr: {
         brandName: "स्वस्थ आहार एआय",
@@ -1085,26 +1145,71 @@
         heroHeading: '<em>क्लिनिकल अचूकता</em> आणि क्रीडा विज्ञानाने शरीराला पोषण द्या',
         heroSub: "आरोग्य स्थितीनुसार अन्न तपासणी, मर्यादित प्रमाण आणि सुरक्षित साहित्यापासून आहार योजना तयार करणारे पोषण माध्यम.",
         authTitle: "सुरक्षित लॉगिन / नोंदणी",
+        authSub: "तुमच्या आरोग्य आणि आहार खात्यात साइन इन करा किंवा नवीन खाते तयार करा",
+        lblFullName: "पूर्ण नाव (नोंदणीसाठी आवश्यक)",
+        lblEmail: "ईमेल पत्ता",
+        lblPass: "पासवर्ड (किमान ६ अक्षरे)",
+        phFullName: "तुमचे पूर्ण नाव लिहा",
+        phEmail: "तुमचा ईमेल पत्ता लिहा",
         btnLogin: "लॉगिन करा",
         btnRegister: "खाते तयार करा",
+        modeOnly: "फक्त निवडलेली भाषा",
+        modeBilingual: "निवडलेली भाषा + इंग्रजी",
+        dashBrand: "स्वस्थ आहार एआय",
+        dashSub: "योग्य आहार, निरोगी जीवन — प्रत्येक आरोग्य स्थिती आणि २५५+ खेळांसाठी स्मार्ट आहार",
         tabKitchen: "🔍 तपासा आणि शिजवा",
         tabDaily: "📅 दैनंदिन आहार",
         tabProfile: "👤 प्रोफाइल",
         tabLogout: "बाहेर पडा",
         profTitle: "तुमचे प्रोफाइल",
+        phAge: "वय",
+        phWeight: "वजन (किलो)",
+        phHeight: "उंची (सेमी)",
+        genFemale: "स्त्री",
+        genMale: "पुरुष",
+        genOther: "इतर",
         lblDietType: "आहाराचा प्रकार",
+        dietVeg: "शाकाहारी",
+        dietNonVeg: "मांसाहारी",
+        dietEgg: "अंड-शाकाहारी",
+        dietVegan: "व्हिगन",
+        dietJain: "जैन (कंदमुळे वर्ज्य)",
+        dietHalal: "हलाल",
+        dietPesc: "पेस्केटेरियन",
+        dietSatvik: "सात्त्विक",
+        dietAll: "सर्व अन्न गट",
+        rxTitle: "📄 प्रिस्क्रिप्शन जोडा आणि वैद्यकीय सारांश काढा",
+        rxBadge: "पर्यायी • आजार व अन्न मर्यादा आपोआप लागू होतात",
+        rxUploadBtn: "प्रिस्क्रिप्शन फोटो अपलोड करा",
+        rxUploadSub: "JPG / PNG • औषधे आपोआप वाचा",
+        phRxText: "प्रिस्क्रिप्शनमधील औषधे किंवा नोंदी लिहा...",
+        rxExtractBtn: "📋 प्रिस्क्रिप्शनचा सारांश काढा",
+        lblConditions: "आरोग्य स्थिती / शस्त्रक्रियेचा इतिहास (लागू पर्याय निवडा)",
+        lblSportPrefix: "खेळाडू आहात? शोधा आणि निवडा",
+        lblSportSuffix: "खेळांमधून",
+        phSportSearch: "खेळ शोधा...",
         btnSaveProfile: "प्रोफाइल जतन करा",
+        profileSaved: "✅ प्रोफाइल आणि प्रिस्क्रिप्शन जतन केले.",
         kitchenTitle: "☑️ स्वयंपाकघरातील साहित्य तपासा आणि शिजवा",
+        kitchenSub: "उपलब्ध साहित्य निवडा",
         btnClearTicks: "निवड पुसा",
         btnCookSafe: "🍳 सुरक्षित पाककृती तयार करा",
         legGreen: "🟢 परवानगी आहे (सुरक्षित)",
         legYellow: "🟡 मर्यादित प्रमाण (प्रमाण नियंत्रण)",
         legRed: "🔴 वर्ज्य / प्रतिबंधित (निवड बंद)",
+        phIngSearch: "🔍 खाद्यपदार्थ शोधा...",
+        phCustomIng: "➕ नवीन साहित्य जोडा...",
+        btnAddIng: "जोडा",
+        recipeCardTitle: "🍲 सुरक्षित आणि प्रमाणबद्ध पाककृती",
+        btnPrint: "🖨️ प्रिंट करा",
         dailyTitle: "📅 दैनंदिन आहार — सकाळ, दुपार, संध्याकाळ आणि रात्र",
-        dailySub: "अचूक प्रमाण आणि सोप्या ५ पायऱ्यांच्या कृतीसह.",
+        dailySub: "प्रत्येक पदार्थाचे अचूक प्रमाण आणि त्याच पदार्थाच्या ५ खास कृती.",
         btnRefreshPlan: "🔄 योजना पुन्हा तयार करा",
+        btnPrintPdf: "🖨️ प्रिंट / PDF जतन करा",
         aiFab: "पोषण एआय विचारा",
-        aiGreeting: "नमस्कार! कोणताही पदार्थ किंवा खेळ तुमच्या प्रोफाइलसाठी योग्य, मर्यादित किंवा वर्ज्य आहे का ते विचारा.",
+        aiSub: "क्लिनिकल आणि स्पोर्ट्स पोषण सहाय्यक",
+        phAiInput: "कोणत्याही अन्नाबद्दल किंवा खेळाबद्दल विचारा...",
+        aiGreeting: "नमस्कार! कोणताही पदार्थ तुमच्या प्रोफाइलसाठी योग्य, मर्यादित किंवा वर्ज्य आहे का ते विचारा.",
         allowedBadge: "🟢 परवानगी आहे",
         limitedBadge: "🟡 मर्यादित प्रमाण",
         contraBadge: "🔴 वर्ज्य (अवरोधित)",
@@ -1115,15 +1220,10 @@
         eveningSlot: "🌇 संध्याकाळ / रिकव्हरी आणि नाश्ता",
         nightSlot: "🌙 रात्र / रात्रीचे जेवण",
         qtyLabel: "प्रमाण",
-        stepsLabel: "५ पायऱ्यांची कृती",
-        step1: "साहित्याचे अचूक प्रमाण मोजून स्वच्छ धुवा.",
-        step2: "भाज्या, धान्य किंवा प्रथिने चिरून/भिजवून तयार करा.",
-        step3: "कमी तेलात आणि सौम्य मसाल्यात परता.",
-        step4: "पचायला हलके होईपर्यंत मऊ शिजवा किंवा वाफवा.",
-        step5: "ठरलेल्या प्रमाणात वाढून शांतपणे खा."
+        stepsLabel: "या पदार्थाच्या ५ कृती"
       },
       kn: {
-        brandName: "ಸ್ವಸ್ಥ ಆಹಾರ ಎಐ (Swasth Aahar AI)",
+        brandName: "ಸ್ವಸ್ಥ ಆಹಾರ ಎಐ",
         brandTagline: "ಸರಿಯಾದ ಆಹಾರ, ಆರೋಗ್ಯಕರ ಜೀವನ • ವೈದ್ಯಕೀಯ ಮತ್ತು ಕ್ರೀಡಾ ಪೋಷಣೆ",
         topPill: "✨ 22 ಭಾರತೀಯ ಭಾಷೆಗಳು • 255+ ಕ್ರೀಡೆಗಳು • ಕ್ರೀಡಾ ಪೋಷಣೆ",
         heroHeading: '<em>ವೈದ್ಯಕೀಯ ನಿಖರತೆ</em> ಮತ್ತು ಕ್ರೀಡಾ ವಿಜ್ಞಾನದಿಂದ ದೇಹವನ್ನು ಪೋಷಿಸಿ',
@@ -1131,6 +1231,8 @@
         authTitle: "ಸುರಕ್ಷಿತ ಲಾಗಿನ್ / ನೋಂದಣಿ",
         btnLogin: "ಲಾಗಿನ್ ಮಾಡಿ",
         btnRegister: "ಖಾತೆ ರಚಿಸಿ",
+        modeOnly: "ಆಯ್ಕೆ ಮಾಡಿದ ಭಾಷೆ ಮಾತ್ರ",
+        modeBilingual: "ಆಯ್ಕೆ ಮಾಡಿದ ಭಾಷೆ + ಇಂಗ್ಲಿಷ್",
         tabKitchen: "🔍 ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಡುಗೆ ಮಾಡಿ",
         tabDaily: "📅 ದೈನಂದಿನ ಆಹಾರ",
         tabProfile: "👤 ಪ್ರೊಫೈಲ್",
@@ -1142,10 +1244,10 @@
         btnClearTicks: "ಆಯ್ಕೆ ತೆರವುಗೊಳಿಸಿ",
         btnCookSafe: "🍳 ಸುರಕ್ಷಿತ ಅಡುಗೆ ತಯಾರಿಸಿ",
         legGreen: "🟢 ಅನುಮತಿಸಲಾಗಿದೆ (ಸುರಕ್ಷಿತ)",
-        legYellow: "🟡 ಸೀಮಿತ ಪ್ರಮಾಣ (ಪ್ರಮಾಣ ನಿಯಂತ್ರಣ)",
-        legRed: "🔴 ನಿಷೇಧಿತ / ತಡೆಯಲಾಗಿದೆ (ಆಯ್ಕೆ ಲಭ್ಯವಿಲ್ಲ)",
+        legYellow: "🟡 ಸೀಮಿತ ಪ್ರಮಾಣ",
+        legRed: "🔴 ನಿಷೇಧಿತ / ತಡೆಯಲಾಗಿದೆ",
         dailyTitle: "📅 ದೈನಂದಿನ ಆಹಾರ — ಬೆಳಿಗ್ಗೆ, ಮಧ್ಯಾಹ್ನ, ಸಂಜೆ ಮತ್ತು ರಾತ್ರಿ",
-        dailySub: "ನಿಖರ ಪ್ರಮಾಣ ಮತ್ತು 5 ಸುಲಭ ತಯಾರಿಕಾ ಹಂತಗಳೊಂದಿಗೆ.",
+        dailySub: "ಪ್ರತಿ ಅಡುಗೆಗೆ ನಿಖರ ಪ್ರಮಾಣ ಮತ್ತು 5 ವಿಶೇಷ ತಯಾರಿಕಾ ಹಂತಗಳು.",
         btnRefreshPlan: "🔄 ಯೋಜನೆ ನವೀಕರಿಸಿ",
         aiFab: "ಪೋಷಣಾ ಎಐ ಕೇಳಿ",
         aiGreeting: "ನಮಸ್ಕಾರ! ಯಾವುದೇ ಆಹಾರ ಅಥವಾ ಕ್ರೀಡೆಯ ಪೋಷಣೆಯ ಬಗ್ಗೆ ಕೇಳಿ.",
@@ -1159,465 +1261,105 @@
         eveningSlot: "🌇 ಸಂಜೆ / ಚೇತರಿಕೆ ಮತ್ತು ತಿಂಡಿ",
         nightSlot: "🌙 ರಾತ್ರಿ / ರಾತ್ರಿಯ ಊಟ",
         qtyLabel: "ಪ್ರಮಾಣ",
-        stepsLabel: "5 ಹಂತಗಳ ತಯಾರಿಕೆ",
-        step1: "ಅಗತ್ಯ ಪ್ರಮಾಣವನ್ನು ಅಳೆದು ಸ್ವಚ್ಛ ನೀರಿನಿಂದ ತೊಳೆಯಿರಿ.",
-        step2: "ತರಕಾರಿ, ಧಾನ್ಯ ಅಥವಾ ಪ್ರೋಟೀನ್ ಅನ್ನು ಹೆಚ್ಚಿ ಅಥವಾ ನೆನೆಸಿ.",
-        step3: "ಕಡಿಮೆ ಎಣ್ಣೆ ಮತ್ತು ಹಗುರ ಮಸಾಲೆಗಳೊಂದಿಗೆ ಹುರಿಯಿರಿ.",
-        step4: "ಸುಲಭವಾಗಿ ಜೀರ್ಣವಾಗುವಂತೆ ಚೆನ್ನಾಗಿ ಬೇಯಿಸಿ ಅಥವಾ ಆವಿಯಲ್ಲಿ ಬೇಯಿಸಿ.",
-        step5: "ನಿಗದಿತ ಪ್ರಮಾಣದಲ್ಲಿ ಬಡಿಸಿ ಸೇವಿಸಿ."
-      },
-      ta: {
-        brandName: "ஸ்வஸ்த் ஆகார் AI",
-        brandTagline: "சரியான உணவு, ஆரோக்கியமான வாழ்வு • மருத்துவ & விளையாட்டு ஊட்டச்சத்து",
-        topPill: "✨ 22 இந்திய மொழிகள் • 255+ விளையாட்டுகள் • ஊட்டச்சத்து வழிகாட்டி",
-        heroHeading: '<em>மருத்துவ துல்லியம்</em> மற்றும் விளையாட்டு அறிவியலுடன் ஆரோக்கியம்',
-        heroSub: "உடல்நிலைக்கேற்ற உணவு பரிசோதனை, அளவு கட்டுப்பாடு மற்றும் பாதுகாப்பான சமையல் திட்டம்.",
-        authTitle: "பாதுகாப்பான உள்நுழைவு / பதிவு",
-        btnLogin: "உள்நுழைக",
-        btnRegister: "கணக்கு உருவாக்குக",
-        tabKitchen: "🔍 சரிபார்த்து சமைக்கவும்",
-        tabDaily: "📅 தினசரி உணவு",
-        tabProfile: "👤 சுயவிவரம்",
-        tabLogout: "வெளியேறு",
-        profTitle: "உங்கள் சுயவிவரம்",
-        lblDietType: "உணவு வகை",
-        btnSaveProfile: "சுயவிவரத்தை சேமிக்கவும்",
-        kitchenTitle: "☑️ சமையலறை பொருட்களை சரிபார்க்கவும்",
-        btnClearTicks: "தேர்வுகளை நீக்கு",
-        btnCookSafe: "🍳 பாதுகாப்பான உணவுகள்",
-        legGreen: "🟢 அனுமதிக்கப்பட்டது (பாதுகாப்பானது)",
-        legYellow: "🟡 வரையறுக்கப்பட்ட அளவு",
-        legRed: "🔴 தவிர்க்க வேண்டியது (தடுக்கப்பட்டது)",
-        dailyTitle: "📅 தினசரி உணவு — காலை, மதியம், மாலை, இரவு",
-        dailySub: "துல்லியமான அளவு மற்றும் 5 எளிய செய்முறை படிகளுடன்.",
-        btnRefreshPlan: "🔄 திட்டத்தை புதுப்பி",
-        aiFab: "ஊட்டச்சத்து AI கேட்கவும்",
-        aiGreeting: "வணக்கம்! எந்த உணவு அல்லது விளையாட்டு ஊட்டச்சத்து பற்றியும் கேளுங்கள்.",
-        allowedBadge: "🟢 அனுமதிக்கப்பட்டது",
-        limitedBadge: "🟡 வரையறுக்கப்பட்ட அளவு",
-        contraBadge: "🔴 தவிர்க்க வேண்டியது",
-        blockedNote: "⛔ தேர்வு தடுக்கப்பட்டது — உங்கள் உடல்நிலைக்கு ஏற்றதல்ல",
-        allFoodCats: "🍽️ அனைத்து உணவு வகைகள்",
-        morningSlot: "🌅 காலை / பயிற்சிக்கு முன்",
-        afternoonSlot: "☀️ மதியம் / உணவு",
-        eveningSlot: "🌇 மாலை / மீட்பு மற்றும் சிற்றுண்டி",
-        nightSlot: "🌙 இரவு / இரவு உணவு",
-        qtyLabel: "அளவு",
-        stepsLabel: "5-படி செய்முறை",
-        step1: "தேவையான அளவை அளந்து சுத்தமாக கழுவவும்.",
-        step2: "காய்கறி, தானியம் அல்லது புரதத்தை நறுக்கி/ஊறவைத்து தயாரிக்கவும்.",
-        step3: "குறைந்த எண்ணெய் மற்றும் மிதமான மசாலாவுடன் வதக்கவும்.",
-        step4: "எளிதில் செரிக்க வேகவைக்கவும் அல்லது ஆவியில் வேகவைக்கவும்.",
-        step5: "பரிந்துரைக்கப்பட்ட அளவில் பரிமாறி உண்ணவும்."
-      },
-      te: {
-        brandName: "స్వస్థ్ ఆహార్ AI",
-        brandTagline: "సరైన ఆహారం, ఆరోగ్యకరమైన జీవితం • క్లినికల్ & స్పోర్ట్స్ న్యూట్రిషన్",
-        topPill: "✨ 22 భారతీయ భాషలు • 255+ క్రీడలు • పోషకాహార మార్గదర్శి",
-        heroHeading: '<em>వైద్య ఖచ్చితత్వం</em> మరియు క్రీడా శాస్త్రంతో ఆరోగ్యకరమైన పోషణ',
-        heroSub: "ఆరోగ్య స్థితి ఆధారంగా ఆహార తనిఖీ, మోతాదు నియంత్రణ మరియు సురక్షిత వంటకాల ప్రణాళిక.",
-        authTitle: "సురక్షిత లాగిన్ / నమోదు",
-        btnLogin: "లాగిన్ చేయండి",
-        btnRegister: "ఖాతా సృష్టించండి",
-        tabKitchen: "🔍 తనిఖీ & వంట",
-        tabDaily: "📅 రోజువారీ ఆహారం",
-        tabProfile: "👤 ప్రొఫైల్",
-        tabLogout: "లాగ్అవుట్",
-        profTitle: "మీ ప్రొఫైల్",
-        lblDietType: "ఆహార రకం",
-        btnSaveProfile: "ప్రొఫైల్ సేవ్ చేయండి",
-        kitchenTitle: "☑️ వంటగది పదార్థాలను తనిఖీ చేయండి",
-        btnClearTicks: "ఎంపికలు తీసివేయండి",
-        btnCookSafe: "🍳 సురక్షిత వంటకాలు",
-        legGreen: "🟢 అనుమతించబడింది (సురక్షితం)",
-        legYellow: "🟡 పరిమిత మోతాదు",
-        legRed: "🔴 నిషిద్ధం (ఎంపిక నిలిపివేయబడింది)",
-        dailyTitle: "📅 రోజువారీ ఆహారం — ఉదయం, మధ్యాహ్నం, సాయంత్రం, రాత్రి",
-        dailySub: "ఖచ్చితమైన పరిమాణం మరియు 5 సులభమైన తయారీ దశలతో.",
-        btnRefreshPlan: "🔄 ప్రణాళిక పునరుద్ధరించండి",
-        aiFab: "న్యూట్రిషన్ AI అడగండి",
-        aiGreeting: "నమస్కారం! ఏ ఆహారం లేదా క్రీడ పోషకాహారం గురించైనా అడగండి.",
-        allowedBadge: "🟢 అనుమతించబడింది",
-        limitedBadge: "🟡 పరిమిత మోతాదు",
-        contraBadge: "🔴 నిషిద్ధం",
-        blockedNote: "⛔ ఎంపిక నిలిపివేయబడింది — మీ ఆరోగ్య స్థితికి తగినది కాదు",
-        allFoodCats: "🍽️ అన్ని ఆహార విభాగాలు",
-        morningSlot: "🌅 ఉదయం / వ్యాయామానికి ముందు",
-        afternoonSlot: "☀️ మధ్యాహ్నం / భోజనం",
-        eveningSlot: "🌇 సాయంత్రం / రికవరీ & స్నాక్",
-        nightSlot: "🌙 రాత్రి / రాత్రి భోజనం",
-        qtyLabel: "పరిమాణం",
-        stepsLabel: "5 దశల తయారీ విధానం",
-        step1: "సరైన పరిమాణాన్ని కొలిచి శుభ్రంగా కడగండి.",
-        step2: "కూరగాయలు, ధాన్యాలు లేదా ప్రోటీన్‌ను తరిగి/నానబెట్టి సిద్ధం చేయండి.",
-        step3: "తక్కువ నూనె మరియు తేలికపాటి మసాలాలతో వేయించండి.",
-        step4: "సులభంగా జీర్ణమయ్యేలా మెత్తగా ఉడికించండి లేదా ఆవిరిలో ఉడికించండి.",
-        step5: "సూచించిన మోతాదులో వడ్డించి ప్రశాంతంగా తినండి."
-      },
-      bn: {
-        brandName: "স্বাস্থ্য আহার এআই (Swasth Aahar AI)",
-        brandTagline: "সঠিক আহার, সুস্থ জীবন • ক্লিনিক্যাল ও স্পোর্টস পুষ্টি",
-        topPill: "✨ ২২টি ভারতীয় ভাষা • ২৫৫+ খেলা • ক্লিনিক্যাল ও স্পোর্টস পুষ্টি",
-        heroHeading: '<em>ক্লিনিক্যাল নির্ভুলতা</em> ও ক্রীড়া বিজ্ঞানে দেহের সঠিক পুষ্টি',
-        heroSub: "স্বাস্থ্য অবস্থা অনুযায়ী খাদ্য যাচাই, পরিমিত অংশ এবং নিরাপদ রান্নার উপকরণে খাবার পরিকল্পনা।",
-        authTitle: "নিরাপদ লগইন / রেজিস্ট্রেশন",
-        btnLogin: "সাইন ইন",
-        btnRegister: "অ্যাকাউন্ট তৈরি করুন",
-        tabKitchen: "🔍 যাচাই ও রান্না",
-        tabDaily: "📅 দৈনিক আহার",
-        tabProfile: "👤 প্রোফাইল",
-        tabLogout: "লগআউট",
-        profTitle: "আপনার প্রোফাইল",
-        lblDietType: "খাদ্যাভ্যাস",
-        btnSaveProfile: "প্রোফাইল সংরক্ষণ করুন",
-        kitchenTitle: "☑️ রান্নাঘরের উপকরণ যাচাই করুন",
-        btnClearTicks: "টিক মুছুন",
-        btnCookSafe: "🍳 নিরাপদ রেসিপি তৈরি করুন",
-        legGreen: "🟢 অনুমোদিত (নিরাপদ)",
-        legYellow: "🟡 সীমিত পরিমাণ",
-        legRed: "🔴 নিষিদ্ধ (টিক দেওয়া যাবে না)",
-        dailyTitle: "📅 দৈনিক আহার — সকাল, দুপুর, সন্ধ্যা ও রাত",
-        dailySub: "সঠিক পরিমাণ ও ৫টি সহজ রান্নার ধাপসহ।",
-        btnRefreshPlan: "🔄 পরিকল্পনা আপডেট করুন",
-        aiFab: "পুষ্টি এআই জিজ্ঞাসা করুন",
-        aiGreeting: "নমস্কার! যেকোনো খাবার বা খেলার পুষ্টি সম্পর্কে জানতে চান?",
-        allowedBadge: "🟢 অনুমোদিত",
-        limitedBadge: "🟡 সীমিত পরিমাণ",
-        contraBadge: "🔴 নিষিদ্ধ",
-        blockedNote: "⛔ নির্বাচন নিষিদ্ধ — আপনার স্বাস্থ্য অবস্থার জন্য উপযুক্ত নয়",
-        allFoodCats: "🍽️ সব খাদ্য বিভাগ",
-        morningSlot: "🌅 সকাল / অনুশীলনের আগে",
-        afternoonSlot: "☀️ দুপুর / দুপুরের খাবার",
-        eveningSlot: "🌇 সন্ধ্যা / রিকভারি ও স্ন্যাক",
-        nightSlot: "🌙 রাত / রাতের খাবার",
-        qtyLabel: "পরিমাণ",
-        stepsLabel: "৫ ধাপে প্রস্তুত প্রণালী",
-        step1: "সঠিক পরিমাণে উপকরণ মেপে পরিষ্কার জলে ধুয়ে নিন।",
-        step2: "সবজি, শস্য বা প্রোটিন কেটে বা ভিজিয়ে প্রস্তুত করুন।",
-        step3: "সামান্য তেল ও হালকা মশলায় ভেজে নিন।",
-        step4: "সহজে হজম হওয়ার মতো নরম করে সেদ্ধ বা ভাপিয়ে নিন।",
-        step5: "নির্দিষ্ট পরিমাণে পরিবেশন করে শান্তভাবে খান।"
-      },
-      gu: {
-        brandName: "સ્વસ્થ આહાર AI",
-        brandTagline: "યોગ્ય આહાર, સ્વસ્થ જીવન • ક્લિનિકલ અને સ્પોર્ટ્સ પોષણ",
-        topPill: "✨ ૨૨ ભારતીય ભાષાઓ • ૨૫૫+ રમતો • પોષણ માર્ગદર્શિકા",
-        heroHeading: '<em>ક્લિનિકલ ચોકસાઈ</em> અને રમત વિજ્ઞાન સાથે સ્વસ્થ પોષણ',
-        heroSub: "આરોગ્ય સ્થિતિ મુજબ ખોરાક ચકાસણી, નિયંત્રિત માત્રા અને સુરક્ષિત રસોઈ સામગ્રીમાંથી ભોજન યોજના.",
-        authTitle: "સુરક્ષિત લોગિન / નોંધણી",
-        btnLogin: "લોગિન કરો",
-        btnRegister: "ખાતું બનાવો",
-        tabKitchen: "🔍 ચકાસો અને રાંધો",
-        tabDaily: "📅 દૈનિક આહાર",
-        tabProfile: "👤 પ્રોફાઇલ",
-        tabLogout: "લોગઆઉટ",
-        profTitle: "તમારી પ્રોફાઇલ",
-        lblDietType: "આહારનો પ્રકાર",
-        btnSaveProfile: "પ્રોફાઇલ સાચવો",
-        kitchenTitle: "☑️ રસોડાની સામગ્રી ચકાસો",
-        btnClearTicks: "પસંદગી ભૂંસો",
-        btnCookSafe: "🍳 સુરક્ષિત વાનગીઓ બનાવો",
-        legGreen: "🟢 માન્ય (સુરક્ષિત)",
-        legYellow: "🟡 મર્યાદિત માત્રા",
-        legRed: "🔴 પ્રતિબંધિત (પસંદગી બંધ)",
-        dailyTitle: "📅 દૈનિક આહાર — સવાર, બપોર, સાંજ અને રાત્રિ",
-        dailySub: "ચોક્કસ માત્રા અને ૫ સરળ બનાવવાની રીત સાથે.",
-        btnRefreshPlan: "🔄 યોજના અપડેટ કરો",
-        aiFab: "પોષણ AI ને પૂછો",
-        aiGreeting: "નમસ્તે! કોઈપણ ખોરાક અથવા રમતના પોષણ વિશે પૂછો.",
-        allowedBadge: "🟢 માન્ય",
-        limitedBadge: "🟡 મર્યાદિત માત્રા",
-        contraBadge: "🔴 પ્રતિબંધિત",
-        blockedNote: "⛔ પસંદગી પ્રતિબંધિત — તમારી સ્થિતિ માટે યોગ્ય નથી",
-        allFoodCats: "🍽️ બધા ખોરાક વિભાગ",
-        morningSlot: "🌅 સવાર / કસરત પહેલાં",
-        afternoonSlot: "☀️ બપોર / ભોજન",
-        eveningSlot: "🌇 સાંજ / રિકવરી અને નાસ્તો",
-        nightSlot: "🌙 રાત્રિ / રાત્રિ ભોજન",
-        qtyLabel: "માત્રા",
-        stepsLabel: "૫ પગલાંમાં બનાવવાની રીત",
-        step1: "ચોક્કસ માત્રા માપીને સ્વચ્છ પાણીથી ધોઈ લો.",
-        step2: "શાકભાજી, અનાજ અથવા પ્રોટીન સમારી/પલાળીને તૈયાર કરો.",
-        step3: "ઓછા તેલ અને હળવા મસાલા સાથે સાંતળો.",
-        step4: "સરળતાથી પચે તે રીતે નરમ રાંધો અથવા વરાળથી પકાવો.",
-        step5: "નિર્ધારિત માત્રામાં પીરસીને શાંતિથી જમો."
-      },
-      pa: {
-        brandName: "ਸਵਸਥ ਆਹਾਰ AI",
-        brandTagline: "ਸਹੀ ਖੁਰਾਕ, ਸਿਹਤਮੰਦ ਜੀਵਨ • ਕਲੀਨਿਕਲ ਅਤੇ ਖੇਡ ਪੋਸ਼ਣ",
-        topPill: "✨ 22 ਭਾਰਤੀ ਭਾਸ਼ਾਵਾਂ • 255+ ਖੇਡਾਂ • ਪੋਸ਼ਣ ਗਾਈਡ",
-        heroHeading: '<em>ਕਲੀਨਿਕਲ ਸਟੀਕਤਾ</em> ਅਤੇ ਖੇਡ ਵਿਗਿਆਨ ਨਾਲ ਸਿਹਤਮੰਦ ਪੋਸ਼ਣ',
-        heroSub: "ਸਿਹਤ ਸਥਿਤੀ ਅਨੁਸਾਰ ਭੋਜਨ ਜਾਂਚ, ਸਹੀ ਮਾਤਰਾ ਅਤੇ ਸੁਰੱਖਿਅਤ ਰਸੋਈ ਸਮੱਗਰੀ ਨਾਲ ਖੁਰਾਕ ਯੋਜਨਾ।",
-        authTitle: "ਸੁਰੱਖਿਅਤ ਲੌਗਇਨ / ਰਜਿਸਟ੍ਰੇਸ਼ਨ",
-        btnLogin: "ਸਾਈਨ ਇਨ",
-        btnRegister: "ਖਾਤਾ ਬਣਾਓ",
-        tabKitchen: "🔍 ਜਾਂਚੋ ਅਤੇ ਪਕਾਓ",
-        tabDaily: "📅 ਰੋਜ਼ਾਨਾ ਆਹਾਰ",
-        tabProfile: "👤 ਪ੍ਰੋਫਾਈਲ",
-        tabLogout: "ਲੌਗਆਊਟ",
-        profTitle: "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ",
-        lblDietType: "ਖੁਰਾਕ ਦੀ ਕਿਸਮ",
-        btnSaveProfile: "ਪ੍ਰੋਫਾਈਲ ਸੁਰੱਖਿਅਤ ਕਰੋ",
-        kitchenTitle: "☑️ ਰਸੋਈ ਦੀ ਸਮੱਗਰੀ ਜਾਂਚੋ",
-        btnClearTicks: "ਚੋਣ ਸਾਫ਼ ਕਰੋ",
-        btnCookSafe: "🍳 ਸੁਰੱਖਿਅਤ ਪਕਵਾਨ ਬਣਾਓ",
-        legGreen: "🟢 ਮਨਜ਼ੂਰ (ਸੁਰੱਖਿਅਤ)",
-        legYellow: "🟡 ਸੀਮਤ ਮਾਤਰਾ",
-        legRed: "🔴 ਵਰਜਿਤ (ਚੋਣ ਬੰਦ)",
-        dailyTitle: "📅 ਰੋਜ਼ਾਨਾ ਆਹਾਰ — ਸਵੇਰ, ਦੁਪਹਿਰ, ਸ਼ਾਮ ਅਤੇ ਰਾਤ",
-        dailySub: "ਸਹੀ ਮਾਤਰਾ ਅਤੇ 5 ਆਸਾਨ ਤਿਆਰੀ ਕਦਮਾਂ ਸਮੇਤ।",
-        btnRefreshPlan: "🔄 ਯੋਜਨਾ ਤਾਜ਼ਾ ਕਰੋ",
-        aiFab: "ਪੋਸ਼ਣ AI ਨੂੰ ਪੁੱਛੋ",
-        aiGreeting: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਕਿਸੇ ਵੀ ਭੋਜਨ ਜਾਂ ਖੇਡ ਦੇ ਪੋਸ਼ਣ ਬਾਰੇ ਪੁੱਛੋ।",
-        allowedBadge: "🟢 ਮਨਜ਼ੂਰ",
-        limitedBadge: "🟡 ਸੀਮਤ ਮਾਤਰਾ",
-        contraBadge: "🔴 ਵਰਜਿਤ",
-        blockedNote: "⛔ ਚੋਣ ਵਰਜਿਤ — ਤੁਹਾਡੀ ਸਿਹਤ ਸਥਿਤੀ ਲਈ ਢੁਕਵੀਂ ਨਹੀਂ",
-        allFoodCats: "🍽️ ਸਾਰੇ ਭੋਜਨ ਵਰਗ",
-        morningSlot: "🌅 ਸਵੇਰ / ਅਭਿਆਸ ਤੋਂ ਪਹਿਲਾਂ",
-        afternoonSlot: "☀️ ਦੁਪਹਿਰ / ਭੋਜਨ",
-        eveningSlot: "🌇 ਸ਼ਾਮ / ਰਿਕਵਰੀ ਅਤੇ ਸਨੈਕ",
-        nightSlot: "🌙 ਰਾਤ / ਰਾਤ ਦਾ ਖਾਣਾ",
-        qtyLabel: "ਮਾਤਰਾ",
-        stepsLabel: "5-ਕਦਮ ਤਿਆਰੀ ਵਿਧੀ",
-        step1: "ਸਹੀ ਮਾਤਰਾ ਮਿਣ ਕੇ ਸਾਫ਼ ਪਾਣੀ ਨਾਲ ਧੋ ਲਓ।",
-        step2: "ਸਬਜ਼ੀਆਂ, ਅਨਾਜ ਜਾਂ ਪ੍ਰੋਟੀਨ ਨੂੰ ਕੱਟ ਕੇ ਜਾਂ ਭਿਉਂ ਕੇ ਤਿਆਰ ਕਰੋ।",
-        step3: "ਘੱਟ ਤੇਲ ਅਤੇ ਹਲਕੇ ਮਸਾਲਿਆਂ ਨਾਲ ਭੁੰਨੋ।",
-        step4: "ਆਸਾਨੀ ਨਾਲ ਹਜ਼ਮ ਹੋਣ ਲਈ ਨਰਮ ਪਕਾਓ ਜਾਂ ਭਾਫ਼ ਦਿਓ।",
-        step5: "ਨਿਰਧਾਰਤ ਮਾਤਰਾ ਵਿੱਚ ਪਰੋਸ ਕੇ ਖਾਓ।"
-      },
-      ml: {
-        brandName: "സ്വസ്ഥ് ആഹാർ AI",
-        brandTagline: "ശരിയായ ആഹാരം, ആരോഗ്യകരമായ ജീവിതം • ക്ലിനിക്കൽ & സ്പോർട്സ് പോഷകാഹാരം",
-        topPill: "✨ 22 ഇന്ത്യൻ ഭാഷകൾ • 255+ കായിക ഇനങ്ങൾ • പോഷകാഹാര ഗൈഡ്",
-        heroHeading: '<em>വൈദ്യശാസ്ത്ര കൃത്യതയും</em> കായിക ശാസ്ത്രവും ചേർന്ന പോഷണം',
-        heroSub: "ആരോഗ്യാവസ്ഥയ്ക്കനുസരിച്ചുള്ള ഭക്ഷണ പരിശോധന, അളവ് നിയന്ത്രണം, സുരക്ഷിത പാചക പദ്ധതി.",
-        authTitle: "സുരക്ഷിത ലോഗിൻ / രജിസ്ട്രേഷൻ",
-        btnLogin: "ലോഗിൻ",
-        btnRegister: "അക്കൗണ്ട് ഉണ്ടാക്കുക",
-        tabKitchen: "🔍 പരിശോധിച്ച് പാചകം ചെയ്യുക",
-        tabDaily: "📅 ദൈനംദിന ആഹാരം",
-        tabProfile: "👤 പ്രൊഫൈൽ",
-        tabLogout: "ലോഗൗട്ട്",
-        profTitle: "നിങ്ങളുടെ പ്രൊഫൈൽ",
-        lblDietType: "ഭക്ഷണ രീതി",
-        btnSaveProfile: "പ്രൊഫൈൽ സേവ് ചെയ്യുക",
-        kitchenTitle: "☑️ അടുക്കളയിലെ ചേരുവകൾ പരിശോധിക്കുക",
-        btnClearTicks: "തിരഞ്ഞെടുപ്പ് മാറ്റുക",
-        btnCookSafe: "🍳 സുരക്ഷിത വിഭവങ്ങൾ",
-        legGreen: "🟢 അനുവദനീയം (സുരക്ഷിതം)",
-        legYellow: "🟡 പരിമിത അളവ്",
-        legRed: "🔴 നിരോധിച്ചത് (തിരഞ്ഞെടുക്കാൻ കഴിയില്ല)",
-        dailyTitle: "📅 ദൈനംദിന ആഹാരം — രാവിലെ, ഉച്ചയ്ക്ക്, വൈകുന്നേരം, രാത്രി",
-        dailySub: "കൃത്യമായ അളവും 5 ലളിതമായ പാചക ഘട്ടങ്ങളും.",
-        btnRefreshPlan: "🔄 പ്ലാൻ പുതുക്കുക",
-        aiFab: "ന്യൂട്രീഷൻ AI ചോദിക്കുക",
-        aiGreeting: "നമസ്കാരം! ഏത് ഭക്ഷണത്തെയും കായിക പോഷകാഹാരത്തെയും കുറിച്ച് ചോദിക്കാം.",
-        allowedBadge: "🟢 അനുവദനീയം",
-        limitedBadge: "🟡 പരിമിത അളവ്",
-        contraBadge: "🔴 നിരോധിച്ചത്",
-        blockedNote: "⛔ തിരഞ്ഞെടുക്കൽ തടഞ്ഞിരിക്കുന്നു — നിങ്ങളുടെ ആരോഗ്യാവസ്ഥയ്ക്ക് അനുയോജ്യമല്ല",
-        allFoodCats: "🍽️ എല്ലാ ഭക്ഷണ വിഭാഗങ്ങളും",
-        morningSlot: "🌅 രാവിലെ / പരിശീലനത്തിന് മുമ്പ്",
-        afternoonSlot: "☀️ ഉച്ചയ്ക്ക് / ഉച്ചഭക്ഷണം",
-        eveningSlot: "🌇 വൈകുന്നേരം / റിക്കവറി & ലഘുഭക്ഷണം",
-        nightSlot: "🌙 രാത്രി / അത്താഴം",
-        qtyLabel: "അളവ്",
-        stepsLabel: "5-ഘട്ട പാചക രീതി",
-        step1: "കൃത്യമായ അളവ് എടുത്ത് ശുദ്ധജലത്തിൽ കഴുകുക.",
-        step2: "പച്ചക്കറികൾ, ധാന്യങ്ങൾ അല്ലെങ്കിൽ പ്രോട്ടീൻ അരിഞ്ഞ്/കുതിർത്ത് തയ്യാറാക്കുക.",
-        step3: "കുറഞ്ഞ എണ്ണയിലും മൃദുവായ മസാലയിലും വഴറ്റുക.",
-        step4: "എളുപ്പം ദഹിക്കാൻ പാകത്തിൽ വേവിക്കുക അല്ലെങ്കിൽ ആവിയിൽ വേവിക്കുക.",
-        step5: "നിർദ്ദേശിച്ച അളവിൽ വിളമ്പി കഴിക്കുക."
-      },
-      or: {
-        brandName: "ସ୍ୱସ୍ଥ ଆହାର AI",
-        brandTagline: "ସଠିକ୍ ଆହାର, ସୁସ୍ଥ ଜୀବନ • କ୍ଲିନିକାଲ୍ ଏବଂ ସ୍ପୋର୍ଟସ୍ ପୋଷଣ",
-        topPill: "✨ ୨୨ ଭାରତୀୟ ଭାଷା • ୨୫୫+ କ୍ରୀଡ଼ା • ପୋଷଣ ମାର୍ଗଦର୍ଶିକା",
-        heroHeading: '<em>କ୍ଲିନିକାଲ୍ ସଠିକତା</em> ଏବଂ କ୍ରୀଡ଼ା ବିଜ୍ଞାନ ସହିତ ସୁସ୍ଥ ପୋଷଣ',
-        heroSub: "ସ୍ୱାସ୍ଥ୍ୟ ସ୍ଥିତି ଅନୁଯାୟୀ ଖାଦ୍ୟ ପରୀକ୍ଷା, ସୀମିତ ପରିମାଣ ଏବଂ ସୁରକ୍ଷିତ ରନ୍ଧା ଯୋଜନା।",
-        authTitle: "ସୁରକ୍ଷିତ ଲଗଇନ୍ / ପଞ୍ଜୀକରଣ",
-        btnLogin: "ଲଗଇନ୍",
-        btnRegister: "ଆକାଉଣ୍ଟ ତିଆରି କରନ୍ତୁ",
-        tabKitchen: "🔍 ଯାଞ୍ଚ ଓ ରାନ୍ଧନ୍ତୁ",
-        tabDaily: "📅 ଦୈନିକ ଆହାର",
-        tabProfile: "👤 ପ୍ରୋଫାଇଲ୍",
-        tabLogout: "ଲଗଆଉଟ୍",
-        profTitle: "ଆପଣଙ୍କ ପ୍ରୋଫାଇଲ୍",
-        lblDietType: "ଆହାର ପ୍ରକାର",
-        btnSaveProfile: "ପ୍ରୋଫାଇଲ୍ ସେଭ୍ କରନ୍ତୁ",
-        kitchenTitle: "☑️ ରୋଷେଇ ସାମଗ୍ରୀ ଯାଞ୍ଚ କରନ୍ତୁ",
-        btnClearTicks: "ଚୟନ ହଟାନ୍ତୁ",
-        btnCookSafe: "🍳 ସୁରକ୍ଷିତ ବ୍ୟଞ୍ଜନ",
-        legGreen: "🟢 ଅନୁମୋଦିତ (ସୁରକ୍ଷିତ)",
-        legYellow: "🟡 ସୀମିତ ପରିମାଣ",
-        legRed: "🔴 ନିଷିଦ୍ଧ (ଚୟନ ବନ୍ଦ)",
-        dailyTitle: "📅 ଦୈନିକ ଆହାର — ସକାଳ, ଦ୍ୱିପ୍ରହର, ସନ୍ଧ୍ୟା ଓ ରାତି",
-        dailySub: "ସଠିକ୍ ପରିମାଣ ଏବଂ ୫ଟି ସହଜ ପ୍ରସ୍ତୁତି ସୋପାନ ସହିତ।",
-        btnRefreshPlan: "🔄 ଯୋଜନା ଅପଡେଟ୍ କରନ୍ତୁ",
-        aiFab: "ପୋଷଣ AI କୁ ପଚାରନ୍ତୁ",
-        aiGreeting: "ନମସ୍କାର! ଯେକୌଣସି ଖାଦ୍ୟ କିମ୍ବା କ୍ରୀଡ଼ା ପୋଷଣ ବିଷୟରେ ପଚାରନ୍ତୁ।",
-        allowedBadge: "🟢 ଅନୁମୋଦିତ",
-        limitedBadge: "🟡 ସୀମିତ ପରିମାଣ",
-        contraBadge: "🔴 ନିଷିଦ୍ଧ",
-        blockedNote: "⛔ ଚୟନ ନିଷିଦ୍ଧ — ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ସ୍ଥିତି ପାଇଁ ଉପଯୁକ୍ତ ନୁହେଁ",
-        allFoodCats: "🍽️ ସମସ୍ତ ଖାଦ୍ୟ ବର୍ଗ",
-        morningSlot: "🌅 ସକାଳ / ଅଭ୍ୟାସ ପୂର୍ବରୁ",
-        afternoonSlot: "☀️ ଦ୍ୱିପ୍ରହର / ମଧ୍ୟାହ୍ନ ଭୋଜନ",
-        eveningSlot: "🌇 ସନ୍ଧ୍ୟା / ରିକଭରୀ ଓ ଜଳଖିଆ",
-        nightSlot: "🌙 ରାତି / ରାତ୍ରୀ ଭୋଜନ",
-        qtyLabel: "ପରିମାଣ",
-        stepsLabel: "୫-ସୋପାନ ପ୍ରସ୍ତୁତି ପ୍ରଣାଳୀ",
-        step1: "ସଠିକ୍ ପରିମାଣ ମାପି ସଫା ପାଣିରେ ଧୋଇ ନିଅନ୍ତୁ।",
-        step2: "ପରିବା, ଶସ୍ୟ କିମ୍ବା ପ୍ରୋଟିନ୍ କାଟି/ଭିଜାଇ ପ୍ରସ୍ତୁତ କରନ୍ତୁ।",
-        step3: "ଅଳ୍ପ ତେଲ ଓ ହାଲୁକା ମସଲାରେ ଭାଜନ୍ତୁ।",
-        step4: " ସହଜରେ ହଜମ ହେବା ପରି ନରମ ସିଝାନ୍ତୁ କିମ୍ବା ବାମ୍ଫ ଦିଅନ୍ତୁ।",
-        step5: "ନିର୍ଦ୍ଧାରିତ ପରିମାଣରେ ପରଷି ଖାଆନ୍ତୁ।"
-      },
-      as: {
-        brandName: "স্বাস্থ্য আহাৰ AI",
-        brandTagline: "সঠিক আহাৰ, সুস্থ জীৱন • ক্লিনিকেল আৰু স্পৰ্টছ পুষ্টি",
-        topPill: "✨ ২২টা ভাৰতীয় ভাষা • ২৫৫+ খেল • পুষ্টি নিৰ্দেশিকা",
-        heroHeading: '<em>ক্লিনিকেল নিখুঁততা</em> আৰু ক্ৰীড়া বিজ্ঞানৰ সৈতে সুষম পুষ্টি',
-        heroSub: "স্বাস্থ্য অৱস্থা অনুসৰি খাদ্য পৰীক্ষা, পৰিমিত অংশ আৰু নিৰাপদ ৰন্ধন পৰিকল্পনা।",
-        authTitle: "সুৰক্ষিত লগইন / পঞ্জীয়ন",
-        btnLogin: "লগইন",
-        btnRegister: "একাউণ্ট বনাওক",
-        tabKitchen: "🔍 পৰীক্ষা আৰু ৰন্ধা",
-        tabDaily: "📅 দৈনিক আহাৰ",
-        tabProfile: "👤 প্ৰফাইল",
-        tabLogout: "লগআউট",
-        profTitle: "আপোনাৰ প্ৰফাইল",
-        lblDietType: "আহাৰৰ ধৰণ",
-        btnSaveProfile: "প্ৰফাইল সংৰক্ষণ কৰক",
-        kitchenTitle: "☑️ পাকঘৰৰ সামগ্ৰী পৰীক্ষা কৰক",
-        btnClearTicks: "নিৰ্বাচন আঁতৰাওক",
-        btnCookSafe: "🍳 নিৰাপদ ৰেচিপি",
-        legGreen: "🟢 অনুমোদিত (নিৰাপদ)",
-        legYellow: "🟡 সীমিত পৰিমাণ",
-        legRed: "🔴 নিষিদ্ধ (নিৰ্বাচন বন্ধ)",
-        dailyTitle: "📅 দৈনিক আহাৰ — ৰাতিপুৱা, দুপৰীয়া, সন্ধিয়া আৰু ৰাতি",
-        dailySub: "সঠিক পৰিমাণ আৰু ৫টা সহজ প্ৰস্তুতি ধাপৰ সৈতে।",
-        btnRefreshPlan: "🔄 পৰিকল্পনা নবীকৰণ কৰক",
-        aiFab: "পুষ্টি AI-ক সোধক",
-        aiGreeting: "নমস্কাৰ! যিকোনো খাদ্য বা খেলৰ পুষ্টিৰ বিষয়ে সোধক।",
-        allowedBadge: "🟢 অনুমোদিত",
-        limitedBadge: "🟡 সীমিত পৰিমাণ",
-        contraBadge: "🔴 নিষিদ্ধ",
-        blockedNote: "⛔ নিৰ্বাচন নিষিদ্ধ — আপোনাৰ স্বাস্থ্য অৱস্থাৰ বাবে উপযুক্ত নহয়",
-        allFoodCats: "🍽️ সকলো খাদ্য শাখা",
-        morningSlot: "🌅 ৰাতিপুৱা / অনুশীলনৰ আগতে",
-        afternoonSlot: "☀️ দুপৰীয়া / আহাৰ",
-        eveningSlot: "🌇 সন্ধিয়া / ৰিকভাৰী আৰু জলপান",
-        nightSlot: "🌙 ৰাতি / নিশাৰ আহাৰ",
-        qtyLabel: "পৰিমাণ",
-        stepsLabel: "৫-ধাপ প্ৰস্তুতি পদ্ধতি",
-        step1: "সঠিক পৰিমাণ জুখি পৰিষ্কাৰ পানীৰে ধুই লওক।",
-        step2: "শাক-পাচলি, শস্য বা প্ৰটিন কাটি/তিয়াই সাজু কৰক।",
-        step3: "কম তেল আৰু লঘু মছলাৰে ভাজি লওক।",
-        step4: "সহজে হজম হোৱাকৈ কোমলকৈ সিজাওক বা ভাপ দিয়ক।",
-        step5: "নিৰ্ধাৰিত পৰিমাণত পৰিৱেশন কৰি খাওক।"
-      },
-      ur: {
-        brandName: "سوستھ آہار AI",
-        brandTagline: "صحیح غذا، صحت مند زندگی • کلینیکل اور اسپورٹس نیوٹریشن",
-        topPill: "✨ 22 بھارتی زبانیں • 255+ کھیل • غذائی رہنمائی",
-        heroHeading: '<em>طبی درستگی</em> اور اسپورٹس سائنس کے ساتھ بہترین غذا',
-        heroSub: "طبی حالت کے مطابق کھانے کی جانچ، مناسب مقدار اور محفوظ اجزاء سے ڈائٹ پلان۔",
-        authTitle: "محفوظ لاگ ان / رجسٹریشن",
-        btnLogin: "سائن ان",
-        btnRegister: "اکاؤنٹ بنائیں",
-        tabKitchen: "🔍 جانچیں اور پکائیں",
-        tabDaily: "📅 روزانہ آہار",
-        tabProfile: "👤 پروفائل",
-        tabLogout: "لاگ آؤٹ",
-        profTitle: "آپ کا پروفائل",
-        lblDietType: "غذا کی قسم",
-        btnSaveProfile: "پروفائل محفوظ کریں",
-        kitchenTitle: "☑️ باورچی خانے کے اجزاء جانچیں",
-        btnClearTicks: "انتخاب ہٹائیں",
-        btnCookSafe: "🍳 محفوظ ترکیبیں",
-        legGreen: "🟢 اجازت ہے (محفوظ)",
-        legYellow: "🟡 محدود مقدار",
-        legRed: "🔴 ممنوع (انتخاب بند)",
-        dailyTitle: "📅 روزانہ آہار — صبح، دوپہر، شام اور رات",
-        dailySub: "درست مقدار اور 5 آسان تیاری کے مراحل کے ساتھ۔",
-        btnRefreshPlan: "🔄 پلان تازہ کریں",
-        aiFab: "نیوٹریشن AI سے پوچھیں",
-        aiGreeting: "آداب! کسی بھی غذا یا کھیل کی غذائیت کے بارے میں پوچھیں۔",
-        allowedBadge: "🟢 اجازت ہے",
-        limitedBadge: "🟡 محدود مقدار",
-        contraBadge: "🔴 ممنوع",
-        blockedNote: "⛔ انتخاب ممنوع ہے — آپ کی طبی حالت کے لیے موزوں نہیں",
-        allFoodCats: "🍽️ تمام غذائی اقسام",
-        morningSlot: "🌅 صبح / ورزش سے پہلے",
-        afternoonSlot: "☀️ دوپہر / کھانا",
-        eveningSlot: "🌇 شام / ریکوری اور اسنیک",
-        nightSlot: "🌙 رات / رات کا کھانا",
-        qtyLabel: "مقدار",
-        stepsLabel: "5 مراحل میں تیاری",
-        step1: "مناسب مقدار ناپ کر صاف پانی سے دھو لیں۔",
-        step2: "سبزی، اناج یا پروٹین کاٹ کر یا بھگو کر تیار کریں۔",
-        step3: "کم تیل اور ہلکے مصالحوں کے ساتھ پکائیں۔",
-        step4: "آسانی سے ہضم ہونے تک نرم پکائیں یا بھاپ دیں۔",
-        step5: "مقررہ مقدار میں پیش کریں اور کھائیں۔"
-      },
-      sa: {
-        brandName: "स्वस्थ आहार एआई",
-        brandTagline: "सही आहारः, स्वस्थ जीवनम् • चिकित्सा एवं क्रीडा पोषणम्",
-        topPill: "✨ २२ भारतीय भाषाः • २५५+ क्रीडाः • पोषणमार्गदर्शिका",
-        heroHeading: '<em>चिकित्सा-निष्ठतया</em> क्रीडाविज्ञानेन च शरीरपोषणम्',
-        heroSub: "स्वास्थ्यस्थित्यनुसारं भोज्यपरीक्षणम्, परिमितमात्रा, सुरक्षितपाकयोजना च।",
-        authTitle: "सुरक्षितप्रवेशः / पञ्जीकरणम्",
-        btnLogin: "प्रवेशः",
-        btnRegister: "खातं रचयतु",
-        tabKitchen: "🔍 परीक्ष्य पचतु",
-        tabDaily: "📅 दैनिक आहारः",
-        tabProfile: "👤 विवरणिका",
-        tabLogout: "निर्गमः",
-        profTitle: "भवतः विवरणिका",
-        lblDietType: "आहारप्रकारः",
-        btnSaveProfile: "विवरणिकां रक्षतु",
-        kitchenTitle: "☑️ पाकशालासामग्रीं परीक्ष्यताम्",
-        btnClearTicks: "चयनं निरस्यतु",
-        btnCookSafe: "🍳 सुरक्षितव्यञ्जनानि",
-        legGreen: "🟢 अनुमतम् (सुरक्षितम्)",
-        legYellow: "🟡 सीमितमात्रा",
-        legRed: "🔴 वर्जितम् (चयनं रुद्धम्)",
-        dailyTitle: "📅 दैनिक आहारः — प्रातः, मध्याह्नः, सायम्, रात्रौ",
-        dailySub: "उचितमात्रया पञ्चसोपानपाकविधिना च सह।",
-        btnRefreshPlan: "🔄 योजनां नवीकुरुत",
-        aiFab: "पोषण-एआई पृच्छतु",
-        aiGreeting: "नमस्कारः! कस्यापि भोज्यस्य क्रीडापोषणस्य वा विषये पृच्छतु।",
-        allowedBadge: "🟢 अनुमतम्",
-        limitedBadge: "🟡 सीमितमात्रा",
-        contraBadge: "🔴 वर्जितम्",
-        blockedNote: "⛔ चयनं वर्जितम् — स्वास्थ्यस्थित्यै न युक्तम्",
-        allFoodCats: "🍽️ सर्वे आहारवर्गाः",
-        morningSlot: "🌅 प्रातः / व्यायामात् पूर्वम्",
-        afternoonSlot: "☀️ मध्याह्नः / भोजनम्",
-        eveningSlot: "🌇 सायम् / विश्रान्तिः अल्पाहारश्च",
-        nightSlot: "🌙 रात्रौ / रात्रिभोजनम्",
-        qtyLabel: "मात्रा",
-        stepsLabel: "पञ्चसोपानपाकविधिः",
-        step1: "समीचीनां मात्रां मापयित्वा स्वच्छजलेन प्रक्षालयतु।",
-        step2: "शाकानि धान्यानि वा कर्तयित्वा/आर्द्रयित्वा सज्जीकुरुत।",
-        step3: "अल्पतैलेन मृदुमसालैश्च संस्करोतु।",
-        step4: "सुखपाचनार्थं मृदु पचतु वाष्पेण वा साधयतु।",
-        step5: "उचितमात्रायां परिवेष्य शान्त्या भुङ्क्ष्व।"
+        stepsLabel: "ಈ ಅಡುಗೆಯ 5 ತಯಾರಿಕಾ ಹಂತಗಳು"
       }
     };
 
-    // Fallback generator for any remaining Indian language code so 100% of options work cleanly
-    const INDIAN_LANG_BASE = {
-      kok: "hi", mai: "hi", ne: "hi", doi: "hi", ks: "hi", brx: "hi",
-      sd: "ur", mni: "bn", sat: "bn"
-    };
-
-    function getPack(lang) {
+    function getPack(lang = activeLang) {
       if (UI_I18N[lang]) return { ...UI_I18N.en, ...UI_I18N[lang] };
       const base = INDIAN_LANG_BASE[lang] || "en";
       return { ...UI_I18N.en, ...(UI_I18N[base] || {}) };
+    }
+
+    function fmtText(selectedStr, englishStr) {
+      const sel = (selectedStr || englishStr || "").trim();
+      const eng = (englishStr || sel).trim();
+      if (activeLang === "en" || langMode === "only") return sel;
+      if (sel === eng) return sel;
+      return `${sel} (${eng})`;
+    }
+
+    const COND_I18N = {
+      hi: {
+        "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "क्रोनिक किडनी रोग (CKD 3-5, बिना डायलिसिस)",
+        "End Stage Renal Disease on Dialysis (HD / PD)": "अंतिम चरण गुर्दा रोग — डायलिसिस पर",
+        "Kidney Transplant Recipient": "किडनी ट्रांसप्लांट प्राप्तकर्ता",
+        "Nephrolithiasis (calcium oxalate stones)": "गुर्दे की पथरी (कैल्शियम ऑक्सलेट)",
+        "Diabetes Mellitus Type 1": "मधुमेह टाइप 1",
+        "Diabetes Mellitus Type 2": "मधुमेह टाइप 2",
+        "Prediabetes / Insulin resistance / PCOS": "प्री-डायबिटीज़ / इंसुलिन प्रतिरोध / PCOS",
+        "Gestational Diabetes Mellitus": "गर्भावस्था मधुमेह",
+        "Hypothyroidism": "हाइपोथायरॉइडिज़्म",
+        "Obesity (BMI >= 30) / Weight management": "मोटापा / वज़न नियंत्रण",
+        "Hyperuricaemia / Gout": "यूरिक एसिड अधिकता / गाउट",
+        "Dyslipidaemia / Hypercholesterolaemia": "कोलेस्ट्रॉल व लिपिड असंतुलन",
+        "Hypertriglyceridaemia": "ट्राइग्लिसराइड अधिकता",
+        "Hypertension": "उच्च रक्तचाप",
+        "Coronary Artery Disease / Post-MI": "हृदय धमनी रोग",
+        "Heart Failure (HFrEF / HFpEF)": "हार्ट फ़ेलियर",
+        "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "वारफ़रिन थेरेपी",
+        "Post-CABG / PCI (stent) / Cardiac surgery": "हृदय सर्जरी के बाद",
+        "Pacemaker / ICD implant": "पेसमेकर / ICD इम्प्लांट",
+        "Post-Bariatric Surgery": "बेरियाट्रिक सर्जरी के बाद",
+        "Fatty Liver (NAFLD / MASLD)": "फ़ैटी लिवर",
+        "Chronic Liver Disease / Cirrhosis": "क्रोनिक लिवर रोग / सिरोसिस",
+        "Pancreatitis / Post-cholecystectomy": "पैंक्रियाटाइटिस / पित्ताशय सर्जरी",
+        "GERD / Acid reflux": "एसिड रिफ़्लक्स / GERD",
+        "Coeliac disease": "सीलिएक रोग",
+        "Lactose intolerance": "लैक्टोज़ असहिष्णुता",
+        "Tree nut / Peanut allergy": "मेवे / मूंगफली एलर्जी",
+        "Shellfish allergy": "शेलफ़िश / झींगा एलर्जी",
+        "Egg allergy": "अंडे की एलर्जी",
+        "Soy allergy": "सोया एलर्जी",
+        "Iron-deficiency anaemia": "आयरन की कमी से एनीमिया"
+      },
+      mr: {
+        "Hypertension": "उच्च रक्तदाब",
+        "Diabetes Mellitus Type 2": "मधुमेह टाइप २",
+        "Diabetes Mellitus Type 1": "मधुमेह टाइप १",
+        "Hypothyroidism": "हायपोथायरॉइडिझम",
+        "Hyperuricaemia / Gout": "युरिक ॲसिड वाढ / गाउट",
+        "Dyslipidaemia / Hypercholesterolaemia": "कोलेस्टेरॉल असमतोल",
+        "Fatty Liver (NAFLD / MASLD)": "फॅटी लिव्हर",
+        "GERD / Acid reflux": "आम्लपित्त / GERD",
+        "Coeliac disease": "सिलियाक रोग",
+        "Lactose intolerance": "लॅक्टोज असहिष्णुता",
+        "Tree nut / Peanut allergy": "सुका मेवा / शेंगदाणा ॲलर्जी",
+        "Shellfish allergy": "शेलफिश ॲलर्जी",
+        "Egg allergy": "अंड्याची ॲलर्जी",
+        "Soy allergy": "सोया ॲलर्जी",
+        "Iron-deficiency anaemia": "ॲनिमिया"
+      },
+      kn: {
+        "Hypertension": "ಅಧಿಕ ರಕ್ತದೊತ್ತಡ",
+        "Diabetes Mellitus Type 2": "ಮಧುಮೇಹ ಟೈಪ್ 2",
+        "Diabetes Mellitus Type 1": "ಮಧುಮೇಹ ಟೈಪ್ 1",
+        "Hypothyroidism": "ಹೈಪೋಥೈರಾಯ್ಡಿಸಮ್",
+        "Hyperuricaemia / Gout": "ಯೂರಿಕ್ ಆಮ್ಲ / ಗೌಟ್",
+        "Dyslipidaemia / Hypercholesterolaemia": "ಕೊಲೆಸ್ಟ್ರಾಲ್ ಅಸಮತೋಲನ",
+        "Fatty Liver (NAFLD / MASLD)": "ಫ್ಯಾಟಿ ಲಿವರ್",
+        "GERD / Acid reflux": "ಆಸಿಡ್ ರಿಫ್ಲಕ್ಸ್ / GERD",
+        "Coeliac disease": "ಸಿಲಿಯಾಕ್ ಕಾಯಿಲೆ",
+        "Lactose intolerance": "ಲ್ಯಾಕ್ಟೋಸ್ ಅಸಹಿಷ್ಣುತೆ",
+        "Tree nut / Peanut allergy": "ಬೀಜ / ಶೇಂಗಾ ಅಲರ್ಜಿ",
+        "Shellfish allergy": "ಶೆಲ್‌ಫಿಶ್ ಅಲರ್ಜಿ",
+        "Egg allergy": "ಮೊಟ್ಟೆ ಅಲರ್ಜಿ",
+        "Soy allergy": "ಸೋಯಾ ಅಲರ್ಜಿ",
+        "Iron-deficiency anaemia": "ರಕ್ತಹೀನತೆ"
+      }
+    };
+
+    function getCondLabel(condEng) {
+      const base = INDIAN_LANG_BASE[activeLang] || activeLang;
+      const map = COND_I18N[base] || {};
+      return fmtText(map[condEng] || condEng, condEng);
+    }
+
+    function setLanguageMode(mode) {
+      langMode = mode === "bilingual" ? "bilingual" : "only";
+      document.getElementById("langModeTop").value = langMode;
+      document.getElementById("langModeDash").value = langMode;
+      setAppLanguage(activeLang);
     }
 
     function setAppLanguage(langCode) {
@@ -1628,21 +1370,28 @@
       const pack = getPack(activeLang);
       document.querySelectorAll("[data-t]").forEach(el => {
         const key = el.getAttribute("data-t");
-        if (pack[key] !== undefined) {
-          el.innerHTML = pack[key];
-        }
+        if (pack[key] !== undefined) el.innerHTML = pack[key];
+      });
+
+      document.querySelectorAll("[data-ph]").forEach(el => {
+        const key = el.getAttribute("data-ph");
+        if (pack[key] !== undefined) el.placeholder = pack[key];
       });
 
       const feed = document.getElementById("aiFeed");
-      if (feed && feed.children.length === 0) {
+      if (feed) {
         feed.innerHTML = `<div class="bubble bot">${pack.aiGreeting}</div>`;
       }
 
+      renderCategorizedConditions();
       renderFoodCategoryTabs();
       renderIngredients();
       updateSportGuideline();
       if (document.getElementById("viewPlan").classList.contains("active")) {
         generateDietChart();
+      }
+      if (document.getElementById("recipeCard").style.display === "block") {
+        cookSafeDishes();
       }
     }
 
@@ -1841,13 +1590,13 @@
       { id: "zucchini", cat: "Vegetables", name: "Zucchini", prot: 1.2, flags: {}, note: "Low carb, low potassium athletic vegetable." },
       { id: "carrot", cat: "Vegetables", name: "Carrot (Gajar)", prot: 0.9, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 medium", note: "Moderate natural sugars." },
       { id: "radish", cat: "Vegetables", name: "Radish (Mooli)", prot: 0.7, flags: {}, note: "Low potassium & supports liver detoxification." },
-      { id: "beetroot", cat: "Vegetables", name: "Beetroot (Chukandar)", prot: 1.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated" }, note: "High potassium & oxalates — blocked in CKD/stones; boosts nitric oxide for healthy athletes." },
+      { id: "beetroot", cat: "Vegetables", name: "Beetroot (Chukandar)", prot: 1.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated" }, note: "High potassium & oxalates — blocked in CKD/stones." },
       { id: "cauliflower", cat: "Vegetables", name: "Cauliflower (Gobhi)", prot: 1.9, flags: { "Hypothyroidism": "limited" }, portion: "Max 1/2 cup well-cooked", note: "Low potassium; always cook in hypothyroidism." },
       { id: "cabbage", cat: "Vegetables", name: "Cabbage (Patta Gobhi)", prot: 1.3, flags: { "Hypothyroidism": "limited", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "limited" }, portion: "Max 1/2 cup cooked", note: "Low potassium; keep Vitamin-K intake steady on Warfarin." },
-      { id: "potato", cat: "Vegetables", name: "Potato (Aloo)", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 50g boiled & cooled (Diabetes only)", note: "High potassium (421mg/100g) — contraindicated in CKD/Dialysis." },
+      { id: "potato", cat: "Vegetables", name: "Potato (Aloo)", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 50g boiled & cooled (Diabetes only)", note: "High potassium — contraindicated in CKD/Dialysis." },
       { id: "sweet_potato", cat: "Vegetables", name: "Sweet Potato (Shakarkandi)", prot: 1.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 60g boiled pre-workout (Diabetes)", note: "High potassium — contraindicated in renal disease." },
       { id: "spinach", cat: "Vegetables", name: "Spinach (Palak)", prot: 2.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup cooked once/week (Gout)", note: "Very high potassium, oxalates & Vitamin K." },
-      { id: "methi", cat: "Vegetables", name: "Fenugreek Leaves (Methi)", prot: 4.4, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated" }, note: "High potassium & Vitamin K; excellent for diabetes when renal function is normal." },
+      { id: "methi", cat: "Vegetables", name: "Fenugreek Leaves (Methi)", prot: 4.4, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Atrial Fibrillation / Anticoagulant (warfarin) therapy": "contraindicated" }, note: "High potassium & Vitamin K." },
       { id: "tomato", cat: "Vegetables", name: "Tomato (Tamatar)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 small deseeded (GERD)", note: "High potassium load in renal disease; acidic in GERD." },
       { id: "onion", cat: "Vegetables", name: "Onion (Pyaz)", prot: 1.1, flags: { "GERD / Acid reflux": "limited" }, portion: "Max 1 tbsp well-cooked", note: "Can trigger reflux if eaten raw." },
 
@@ -1855,94 +1604,181 @@
       { id: "pear", cat: "Fruits", name: "Pear (Nashpati)", prot: 0.4, flags: {}, note: "Low potassium & gentle soluble fiber." },
       { id: "berries", cat: "Fruits", name: "Strawberries / Blueberries / Berries", prot: 0.7, flags: {}, note: "Low potassium, low GI & rich in antioxidants." },
       { id: "jamun", cat: "Fruits", name: "Java Plum (Jamun)", prot: 0.7, flags: {}, note: "Ideal low-GI fruit for blood sugar & athletes." },
-      { id: "watermelon", cat: "Fruits", name: "Watermelon (Tarbooz)", prot: 0.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1 small bowl (100g)", note: "Hydrating citrulline source; control fluid/portion in CKD & Diabetes." },
-      { id: "muskmelon", cat: "Fruits", name: "Muskmelon (Kharbooja)", prot: 0.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "High potassium melon — contraindicated in CKD/Dialysis." },
+      { id: "watermelon", cat: "Fruits", name: "Watermelon (Tarbooz)", prot: 0.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1 small bowl (100g)", note: "Hydrating citrulline source." },
+      { id: "muskmelon", cat: "Fruits", name: "Muskmelon (Kharbooja)", prot: 0.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "High potassium melon." },
       { id: "papaya", cat: "Fruits", name: "Papaya", prot: 0.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small bowl (100g)", note: "Digestive enzymes; moderate potassium." },
       { id: "guava", cat: "Fruits", name: "Guava (Amrood)", prot: 2.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 small guava without seeds", note: "High Vitamin C & low glycemic index." },
-      { id: "pomegranate", cat: "Fruits", name: "Pomegranate (Anar)", prot: 1.7, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/3 cup arils", note: "Boosts hemoglobin & recovery; moderate potassium." },
-      { id: "pineapple", cat: "Fruits", name: "Pineapple (Ananas)", prot: 0.5, flags: { "GERD / Acid reflux": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 2 thin slices", note: "Low potassium; bromelain aids protein digestion." },
+      { id: "pomegranate", cat: "Fruits", name: "Pomegranate (Anar)", prot: 1.7, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/3 cup arils", note: "Boosts hemoglobin & recovery." },
+      { id: "pineapple", cat: "Fruits", name: "Pineapple (Ananas)", prot: 0.5, flags: { "GERD / Acid reflux": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 2 thin slices", note: "Low potassium; bromelain aids digestion." },
       { id: "peach_plum", cat: "Fruits", name: "Peach / Plum (Aadoo / Aloo Bukhara)", prot: 0.9, flags: {}, note: "Low-potassium stone fruits." },
       { id: "grapes", cat: "Fruits", name: "Grapes (Angoor)", prot: 0.7, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 10–12 grapes", note: "Moderate potassium & natural sugars." },
       { id: "kiwi", cat: "Fruits", name: "Kiwi", prot: 1.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High potassium fruit." },
-      { id: "mango", cat: "Fruits", name: "Mango (Aam)", prot: 0.8, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 small slices", note: "Higher glycemic load; enjoy in small portion." },
-      { id: "chikoo", cat: "Fruits", name: "Sapota (Chikoo)", prot: 0.4, flags: { "Diabetes Mellitus Type 2": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, note: "High glycemic sugar load — avoid in Diabetes." },
+      { id: "mango", cat: "Fruits", name: "Mango (Aam)", prot: 0.8, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 small slices", note: "Higher glycemic load." },
+      { id: "chikoo", cat: "Fruits", name: "Sapota (Chikoo)", prot: 0.4, flags: { "Diabetes Mellitus Type 2": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, note: "High glycemic sugar load." },
       { id: "sitaphal", cat: "Fruits", name: "Custard Apple (Sitaphal)", prot: 1.7, flags: { "Diabetes Mellitus Type 2": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 1/2 small fruit", note: "High potassium & natural sugars." },
-      { id: "avocado", cat: "Fruits", name: "Avocado", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "Very high potassium (485mg/100g) — contraindicated in CKD/Dialysis." },
-      { id: "banana", cat: "Fruits", name: "Banana (Kela)", prot: 1.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 small banana pre-workout (Diabetes)", note: "High potassium (358mg/100g) — blocked in CKD/Dialysis." },
+      { id: "avocado", cat: "Fruits", name: "Avocado", prot: 2.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "Very high potassium." },
+      { id: "banana", cat: "Fruits", name: "Banana (Kela)", prot: 1.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 small banana pre-workout (Diabetes)", note: "High potassium." },
       { id: "orange", cat: "Fruits", name: "Orange / Sweet Lime (Mosambi)", prot: 0.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "GERD / Acid reflux": "limited" }, portion: "Max 1/2 fruit after meal (GERD)", note: "High potassium citrus fruit." },
       { id: "dates_figs", cat: "Fruits", name: "Dates (Khajoor) & Dried Figs (Anjeer)", prot: 2.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1–2 pieces pre-training (Diabetes)", note: "Concentrated potassium & sugars." },
 
-      { id: "moong_dal", cat: "Pulses & Lentils", name: "Yellow Moong Dal", prot: 24.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori thin dal (20g raw)", note: "Lightest pulse; portion-controlled in pre-dialysis CKD." },
+      { id: "moong_dal", cat: "Pulses & Lentils", name: "Yellow Moong Dal", prot: 24.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori thin dal (20g raw)", note: "Lightest pulse." },
       { id: "green_moong", cat: "Pulses & Lentils", name: "Whole Green Moong / Sprouts", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup steamed sprouts", note: "High bioavailable plant protein." },
       { id: "masoor_dal", cat: "Pulses & Lentils", name: "Red Lentils (Masoor Dal)", prot: 24.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori cooked", note: "Good plant protein & iron." },
-      { id: "toor_dal", cat: "Pulses & Lentils", name: "Pigeon Pea (Toor / Arhar Dal)", prot: 22.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori", note: "Staple protein; control portion in CKD." },
-      { id: "chana_dal", cat: "Pulses & Lentils", name: "Bengal Gram (Chana Dal)", prot: 20.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Low GI; moderate purine & phosphorus." },
-      { id: "kabuli_chana", cat: "Pulses & Lentils", name: "Chickpeas (Kabuli Chana) & Kala Chana", prot: 19.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Excellent athletic fiber & protein." },
-      { id: "rajma", cat: "Pulses & Lentils", name: "Kidney Beans (Rajma)", prot: 22.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup well-soaked (Gout)", note: "Very high potassium & phosphorus in renal disease." },
+      { id: "toor_dal", cat: "Pulses & Lentils", name: "Pigeon Pea (Toor / Arhar Dal)", prot: 22.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 katori", note: "Staple protein." },
+      { id: "chana_dal", cat: "Pulses & Lentils", name: "Bengal Gram (Chana Dal)", prot: 20.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Low GI." },
+      { id: "kabuli_chana", cat: "Pulses & Lentils", name: "Chickpeas (Kabuli Chana) & Kala Chana", prot: 19.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup boiled", note: "Athletic fiber & protein." },
+      { id: "rajma", cat: "Pulses & Lentils", name: "Kidney Beans (Rajma)", prot: 22.9, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/2 cup well-soaked (Gout)", note: "High potassium & phosphorus in renal disease." },
       { id: "urad_dal", cat: "Pulses & Lentils", name: "Black Gram (Urad Dal)", prot: 25.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Hyperuricaemia / Gout": "limited" }, portion: "Max 1/3 cup", note: "High phosphorus & potassium." },
       { id: "lobia", cat: "Pulses & Lentils", name: "Black-Eyed Peas (Lobia)", prot: 24.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1/2 cup boiled", note: "Rich in folate & iron." },
       { id: "soya_chunks", cat: "Pulses & Lentils", name: "Soya Chunks / Tofu / Edamame", prot: 52.0, flags: { "Soy allergy": "contraindicated", "Hypothyroidism": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 30g dry soya / 60g tofu", note: "Contraindicated in Soy Allergy." },
 
-      { id: "flax_seeds", cat: "Nuts & Seeds", name: "Flax Seeds (Alsi)", prot: 18.3, flags: {}, note: "Rich in plant Omega-3 ALA; supports heart & cholesterol." },
-      { id: "chia_seeds", cat: "Nuts & Seeds", name: "Chia Seeds", prot: 16.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tsp soaked", note: "High fiber & Omega-3; moderate phosphorus." },
-      { id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High zinc & magnesium for strength athletes; high phosphorus in CKD." },
-      { id: "sunflower_seeds", cat: "Nuts & Seeds", name: "Sunflower Seeds", prot: 20.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp unsalted", note: "Rich in Vitamin E & selenium." },
-      { id: "sesame_seeds", cat: "Nuts & Seeds", name: "Sesame Seeds (Til)", prot: 17.7, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 tsp", note: "High calcium & oxalates." },
+      { id: "flax_seeds", cat: "Nuts & Seeds", name: "Flax Seeds (Alsi)", prot: 18.3, flags: {}, note: "Rich in plant Omega-3 ALA." },
+      { id: "chia_seeds", cat: "Nuts & Seeds", name: "Chia Seeds", prot: 16.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tsp soaked", note: "High fiber & Omega-3." },
+      { id: "pumpkin_seeds", cat: "Nuts & Seeds", name: "Pumpkin Seeds (Kaddu Beej)", prot: 30.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High zinc & magnesium." },
+      { id: "sunflower_seeds", cat: "Nuts & Seeds", name: "Sunflower Seeds", prot: 20.8, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp unsalted", note: "Rich in Vitamin E." },
+      { id: "sesame_seeds", cat: "Nuts & Seeds", name: "Sesame Seeds (Til)", prot: 17.7, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 tsp", note: "High calcium." },
       { id: "watermelon_seeds", cat: "Nuts & Seeds", name: "Watermelon Seeds (Magaz)", prot: 28.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 tbsp", note: "Protein-dense seed." },
-      { id: "almonds", cat: "Nuts & Seeds", name: "Almonds (Badam)", prot: 21.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 4 soaked peeled almonds (Kidney stones)", note: "Contraindicated in Tree Nut Allergy & high-phosphorus CKD." },
-      { id: "walnuts", cat: "Nuts & Seeds", name: "Walnuts (Akhrot)", prot: 15.2, flags: { "Tree nut / Peanut allergy": "contraindicated" }, note: "Brain & heart Omega-3 nut; blocked in Nut Allergy." },
-      { id: "cashews", cat: "Nuts & Seeds", name: "Cashews (Kaju)", prot: 18.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 4–5 whole cashews", note: "Contraindicated in Nut Allergy & CKD." },
-      { id: "pistachios", cat: "Nuts & Seeds", name: "Pistachios (Pista)", prot: 20.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High potassium & phosphorus; blocked in Nut Allergy." },
-      { id: "peanuts", cat: "Nuts & Seeds", name: "Peanuts / Groundnuts (Moongphali)", prot: 25.8, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Contraindicated in Peanut Allergy & CKD." },
-      { id: "hazelnuts_brazil", cat: "Nuts & Seeds", name: "Hazelnuts, Brazil Nuts & Pine Nuts", prot: 14.5, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 nuts", note: "Brazil nuts supply selenium for thyroid; blocked in Nut Allergy." },
+      { id: "almonds", cat: "Nuts & Seeds", name: "Almonds (Badam)", prot: 21.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 4 soaked peeled almonds (Kidney stones)", note: "Contraindicated in Tree Nut Allergy." },
+      { id: "walnuts", cat: "Nuts & Seeds", name: "Walnuts (Akhrot)", prot: 15.2, flags: { "Tree nut / Peanut allergy": "contraindicated" }, note: "Omega-3 nut." },
+      { id: "cashews", cat: "Nuts & Seeds", name: "Cashews (Kaju)", prot: 18.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 4–5 whole cashews", note: "Contraindicated in Nut Allergy." },
+      { id: "pistachios", cat: "Nuts & Seeds", name: "Pistachios (Pista)", prot: 20.2, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Blocked in Nut Allergy." },
+      { id: "peanuts", cat: "Nuts & Seeds", name: "Peanuts / Groundnuts (Moongphali)", prot: 25.8, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Contraindicated in Peanut Allergy." },
+      { id: "hazelnuts_brazil", cat: "Nuts & Seeds", name: "Hazelnuts, Brazil Nuts & Pine Nuts", prot: 14.5, flags: { "Tree nut / Peanut allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 2–3 nuts", note: "Selenium source." },
 
-      { id: "jowar", cat: "Grains & Millets", name: "Jowar (Sorghum)", prot: 10.4, flags: {}, note: "Gluten-free millet ideal for steady athletic energy." },
-      { id: "ragi", cat: "Grains & Millets", name: "Ragi (Finger Millet)", prot: 7.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 small roti (35g flour) / day", note: "High calcium & potassium; portion-controlled in CKD/stones." },
-      { id: "bajra", cat: "Grains & Millets", name: "Bajra (Pearl Millet)", prot: 11.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 roti", note: "Iron & zinc rich gluten-free millet." },
-      { id: "foxtail_millet", cat: "Grains & Millets", name: "Foxtail / Little / Barnyard Millet", prot: 12.3, flags: {}, note: "Low-GI ancient millets safe across diabetes & celiac." },
-      { id: "oats", cat: "Grains & Millets", name: "Rolled Oats", prot: 13.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1/3 cup dry (30g)", note: "Beta-glucan fiber lowers LDL cholesterol." },
-      { id: "poha", cat: "Grains & Millets", name: "Poha (Flattened Rice)", prot: 6.6, flags: {}, note: "Light, easily digestible pre-training carbohydrate." },
-      { id: "white_rice", cat: "Grains & Millets", name: "Steamed White Rice", prot: 6.8, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 katori cooked with dal/veggies", note: "Low potassium & phosphorus (renal-friendly); portion-control in diabetes." },
-      { id: "brown_rice", cat: "Grains & Millets", name: "Brown Rice / Red Rice", prot: 7.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "High potassium & phosphorus — contraindicated in CKD." },
-      { id: "wheat", cat: "Grains & Millets", name: "Whole Wheat Atta", prot: 12.1, flags: { "Coeliac disease": "contraindicated" }, note: "Contains gluten — strictly contraindicated in Coeliac disease." },
-      { id: "makhana", cat: "Grains & Millets", name: "Fox Nuts (Makhana)", prot: 9.7, flags: {}, note: "Low sodium, low potassium crunchy snack." },
+      { id: "jowar", cat: "Grains & Millets", name: "Jowar (Sorghum)", prot: 10.4, flags: {}, note: "Gluten-free millet." },
+      { id: "ragi", cat: "Grains & Millets", name: "Ragi (Finger Millet)", prot: 7.3, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Nephrolithiasis (calcium oxalate stones)": "limited" }, portion: "Max 1 small roti (35g flour) / day", note: "High calcium & potassium." },
+      { id: "bajra", cat: "Grains & Millets", name: "Bajra (Pearl Millet)", prot: 11.6, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 roti", note: "Iron & zinc rich millet." },
+      { id: "foxtail_millet", cat: "Grains & Millets", name: "Foxtail / Little / Barnyard Millet", prot: 12.3, flags: {}, note: "Low-GI ancient millets." },
+      { id: "oats", cat: "Grains & Millets", name: "Rolled Oats", prot: 13.2, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Diabetes Mellitus Type 2": "limited" }, portion: "Max 1/3 cup dry (30g)", note: "Beta-glucan fiber." },
+      { id: "poha", cat: "Grains & Millets", name: "Poha (Flattened Rice)", prot: 6.6, flags: {}, note: "Light carbohydrate." },
+      { id: "white_rice", cat: "Grains & Millets", name: "Steamed White Rice", prot: 6.8, flags: { "Diabetes Mellitus Type 2": "limited", "Diabetes Mellitus Type 1": "limited" }, portion: "Max 1/2 katori cooked with dal/veggies", note: "Low potassium & phosphorus." },
+      { id: "brown_rice", cat: "Grains & Millets", name: "Brown Rice / Red Rice", prot: 7.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "End Stage Renal Disease on Dialysis (HD / PD)": "contraindicated" }, note: "High potassium & phosphorus in CKD." },
+      { id: "wheat", cat: "Grains & Millets", name: "Whole Wheat Atta", prot: 12.1, flags: { "Coeliac disease": "contraindicated" }, note: "Contains gluten." },
+      { id: "makhana", cat: "Grains & Millets", name: "Fox Nuts (Makhana)", prot: 9.7, flags: {}, note: "Low sodium snack." },
 
-      { id: "paneer", cat: "Dairy", name: "Paneer (Low-Fat Cottage Cheese)", prot: 18.3, flags: { "Lactose intolerance": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Fatty Liver (NAFLD / MASLD)": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 50g low-fat paneer", note: "Use low-fat paneer in controlled portion." },
+      { id: "paneer", cat: "Dairy", name: "Paneer (Low-Fat Cottage Cheese)", prot: 18.3, flags: { "Lactose intolerance": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Fatty Liver (NAFLD / MASLD)": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 50g low-fat paneer", note: "Use low-fat paneer." },
       { id: "curd", cat: "Dairy", name: "Curd / Dahi (Probiotic)", prot: 3.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g (1 small cup) / day", note: "Limit to 100g/day in CKD." },
-      { id: "greek_yogurt", cat: "Dairy", name: "Greek Yogurt / Hung Curd", prot: 10.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g", note: "Concentrated protein & probiotics." },
+      { id: "greek_yogurt", cat: "Dairy", name: "Greek Yogurt / Hung Curd", prot: 10.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Lactose intolerance": "limited" }, portion: "Max 100g", note: "Concentrated protein." },
       { id: "milk_toned", cat: "Dairy", name: "Double-Toned / Skim Milk", prot: 3.2, flags: { "Lactose intolerance": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 100ml / day in CKD", note: "Contraindicated in Lactose Intolerance." },
-      { id: "buttermilk", cat: "Dairy", name: "Chaas / Spiced Buttermilk", prot: 1.5, flags: { "Lactose intolerance": "limited", "Hypertension": "limited" }, portion: "1 glass (without added salt in Hypertension)", note: "Refreshing electrolyte drink." },
+      { id: "buttermilk", cat: "Dairy", name: "Chaas / Spiced Buttermilk", prot: 1.5, flags: { "Lactose intolerance": "limited", "Hypertension": "limited" }, portion: "1 glass (without added salt in Hypertension)", note: "Hydrating drink." },
 
-      { id: "egg_white", cat: "Eggs", name: "Chicken Egg Whites", prot: 10.9, flags: { "Egg allergy": "contraindicated" }, note: "Pure high-biological-value protein with negligible phosphorus — ideal even in CKD." },
-      { id: "whole_egg", cat: "Eggs", name: "Whole Chicken Egg (with Yolk)", prot: 12.6, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Contraindicated in Egg Allergy; yolk portion-controlled in CKD/Dyslipidaemia." },
-      { id: "desi_egg", cat: "Eggs", name: "Country / Brown Egg (Desi Anda)", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Rich in carotenoids; same yolk limits apply." },
-      { id: "omega3_egg", cat: "Eggs", name: "Omega-3 Enriched Egg", prot: 12.8, flags: { "Egg allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1–2 eggs / day", note: "Higher DHA/EPA content." },
-      { id: "quail_egg", cat: "Eggs", name: "Quail Eggs (Bater Anda)", prot: 13.1, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 3–4 quail eggs (= 1 chicken egg)", note: "Dense B12 & iron; contraindicated in Egg Allergy." },
-      { id: "duck_egg", cat: "Eggs", name: "Duck Egg", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Very high cholesterol (~619mg/egg) & phosphorus — contraindicated in cardiac/renal care." },
-      { id: "turkey_goose_egg", cat: "Eggs", name: "Turkey / Goose Egg", prot: 13.9, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "Large calorie & cholesterol load; blocked in Egg Allergy & Dyslipidaemia." },
+      { id: "egg_white", cat: "Eggs", name: "Chicken Egg Whites", prot: 10.9, flags: { "Egg allergy": "contraindicated" }, note: "Pure protein." },
+      { id: "whole_egg", cat: "Eggs", name: "Whole Chicken Egg (with Yolk)", prot: 12.6, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Contraindicated in Egg Allergy." },
+      { id: "desi_egg", cat: "Eggs", name: "Country / Brown Egg (Desi Anda)", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1 whole egg / day", note: "Rich in carotenoids." },
+      { id: "omega3_egg", cat: "Eggs", name: "Omega-3 Enriched Egg", prot: 12.8, flags: { "Egg allergy": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 1–2 eggs / day", note: "Higher DHA/EPA." },
+      { id: "quail_egg", cat: "Eggs", name: "Quail Eggs (Bater Anda)", prot: 13.1, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 3–4 quail eggs (= 1 chicken egg)", note: "Dense B12 & iron." },
+      { id: "duck_egg", cat: "Eggs", name: "Duck Egg", prot: 13.0, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High cholesterol & phosphorus." },
+      { id: "turkey_goose_egg", cat: "Eggs", name: "Turkey / Goose Egg", prot: 13.9, flags: { "Egg allergy": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, note: "High cholesterol load." },
 
-      { id: "rohu_katla", cat: "Fish & Seafood", name: "Rohu & Katla (Freshwater Carp)", prot: 22.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g steamed/grilled", note: "Lean Indian freshwater fish." },
-      { id: "pomfret", cat: "Fish & Seafood", name: "Pomfret (White / Black Paplet)", prot: 19.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g grilled/steamed", note: "Low mercury, digestible marine fish." },
-      { id: "surmai", cat: "Fish & Seafood", name: "Kingfish / Seer Fish (Surmai)", prot: 21.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Firm high-protein steak fish." },
-      { id: "salmon_rawas", cat: "Fish & Seafood", name: "Salmon / Indian Salmon (Rawas)", prot: 22.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Top source of anti-inflammatory Omega-3 EPA/DHA." },
-      { id: "mackerel_sardine", cat: "Fish & Seafood", name: "Mackerel (Bangda) & Sardines (Mathi)", prot: 20.5, flags: { "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 60g (CKD)", note: "High purines — contraindicated in Gout; rich in Omega-3." },
-      { id: "tuna", cat: "Fish & Seafood", name: "Tuna (Chura)", prot: 25.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Very lean protein." },
-      { id: "tilapia_basa", cat: "Fish & Seafood", name: "Tilapia / Basa Fillet", prot: 20.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 75g", note: "Mild white fish; portion-controlled in pre-dialysis CKD." },
+      { id: "rohu_katla", cat: "Fish & Seafood", name: "Rohu & Katla (Freshwater Carp)", prot: 22.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g steamed/grilled", note: "Lean freshwater fish." },
+      { id: "pomfret", cat: "Fish & Seafood", name: "Pomfret (White / Black Paplet)", prot: 19.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g grilled/steamed", note: "Low mercury fish." },
+      { id: "surmai", cat: "Fish & Seafood", name: "Kingfish / Seer Fish (Surmai)", prot: 21.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "High-protein steak fish." },
+      { id: "salmon_rawas", cat: "Fish & Seafood", name: "Salmon / Indian Salmon (Rawas)", prot: 22.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Omega-3 EPA/DHA source." },
+      { id: "mackerel_sardine", cat: "Fish & Seafood", name: "Mackerel (Bangda) & Sardines (Mathi)", prot: 20.5, flags: { "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 60g (CKD)", note: "High purines in Gout." },
+      { id: "tuna", cat: "Fish & Seafood", name: "Tuna (Chura)", prot: 25.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Lean protein." },
+      { id: "tilapia_basa", cat: "Fish & Seafood", name: "Tilapia / Basa Fillet", prot: 20.1, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited" }, portion: "Max 75g", note: "Mild white fish." },
       { id: "prawns", cat: "Fish & Seafood", name: "Prawns / Shrimp (Jhinga)", prot: 24.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g steamed (Dyslipidaemia)", note: "Contraindicated in Shellfish Allergy & Gout." },
-      { id: "crab_lobster", cat: "Fish & Seafood", name: "Crab (Kekda) & Lobster", prot: 19.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Hypertension": "limited" }, portion: "Max 60g (Hypertension)", note: "Contraindicated in Shellfish Allergy & Gout; naturally higher sodium." },
+      { id: "crab_lobster", cat: "Fish & Seafood", name: "Crab (Kekda) & Lobster", prot: 19.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Hypertension": "limited" }, portion: "Max 60g (Hypertension)", note: "Contraindicated in Shellfish Allergy & Gout." },
       { id: "squid_mussels", cat: "Fish & Seafood", name: "Squid (Calamari), Clams & Mussels", prot: 18.0, flags: { "Shellfish allergy": "contraindicated", "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited" }, portion: "Max 60g", note: "Contraindicated in Shellfish Allergy & Gout." },
 
-      { id: "chicken_breast", cat: "Meats & Poultry", name: "Chicken Breast (Skinless)", prot: 31.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g boiled/grilled", note: "Leanest athletic protein; portion-controlled in CKD & Gout." },
-      { id: "chicken_thigh", cat: "Meats & Poultry", name: "Chicken Thigh / Drumstick (Skinless)", prot: 26.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g skinless", note: "Higher iron & zinc than breast; remove skin to cut saturated fat." },
-      { id: "country_chicken", cat: "Meats & Poultry", name: "Country Chicken (Nati Kozhi / Desi Chicken)", prot: 27.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Leaner muscle fibers; portion-controlled in CKD & Gout." },
-      { id: "turkey_breast", cat: "Meats & Poultry", name: "Turkey Breast (Skinless)", prot: 29.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Ultra-lean poultry protein." },
-      { id: "quail_meat", cat: "Meats & Poultry", name: "Quail Meat (Bater)", prot: 25.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Rich in heme iron & B-vitamins." },
-      { id: "duck_meat", cat: "Meats & Poultry", name: "Duck Meat", prot: 23.5, flags: { "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Coronary Artery Disease / Post-MI": "contraindicated", "Fatty Liver (NAFLD / MASLD)": "contraindicated", "Hyperuricaemia / Gout": "contraindicated" }, note: "High saturated fat & purines — contraindicated in cardiac, fatty liver & gout." },
-      { id: "lamb_lean", cat: "Meats & Poultry", name: "Lamb (Lean Loin / Leg Cut)", prot: 25.6, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g trimmed lean lamb once/week (Dyslipidaemia)", note: "High heme iron & creatine for strength athletes; contraindicated in CAD, Gout & CKD." },
-      { id: "mutton_goat", cat: "Meats & Poultry", name: "Goat Meat / Mutton (Chevon)", prot: 25.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g lean curry cut (Dyslipidaemia)", note: "Lower fat than lamb, but high purines & phosphorus — blocked in Gout, CAD & CKD." },
-      { id: "pork_lean", cat: "Meats & Poultry", name: "Pork (Lean Tenderloin)", prot: 26.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g lean cut", note: "Automatically blocked if Halal diet is selected; restricted in CAD/Gout/CKD." },
-      { id: "organ_meat", cat: "Meats & Poultry", name: "Liver / Organ Meats (Chicken / Lamb Liver)", prot: 26.5, flags: { "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Fatty Liver (NAFLD / MASLD)": "contraindicated" }, note: "Extreme purine, cholesterol & phosphorus load — strictly contraindicated in Gout, Cardiac & Renal care." }
+      { id: "chicken_breast", cat: "Meats & Poultry", name: "Chicken Breast (Skinless)", prot: 31.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g boiled/grilled", note: "Lean poultry protein." },
+      { id: "chicken_thigh", cat: "Meats & Poultry", name: "Chicken Thigh / Drumstick (Skinless)", prot: 26.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g skinless", note: "Iron & zinc source." },
+      { id: "country_chicken", cat: "Meats & Poultry", name: "Country Chicken (Nati Kozhi / Desi Chicken)", prot: 27.5, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Lean muscle fibers." },
+      { id: "turkey_breast", cat: "Meats & Poultry", name: "Turkey Breast (Skinless)", prot: 29.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Lean poultry." },
+      { id: "quail_meat", cat: "Meats & Poultry", name: "Quail Meat (Bater)", prot: 25.0, flags: { "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "limited", "Hyperuricaemia / Gout": "limited" }, portion: "Max 75g", note: "Heme iron & B-vitamins." },
+      { id: "duck_meat", cat: "Meats & Poultry", name: "Duck Meat", prot: 23.5, flags: { "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Coronary Artery Disease / Post-MI": "contraindicated", "Fatty Liver (NAFLD / MASLD)": "contraindicated", "Hyperuricaemia / Gout": "contraindicated" }, note: "High saturated fat & purines." },
+      { id: "lamb_lean", cat: "Meats & Poultry", name: "Lamb (Lean Loin / Leg Cut)", prot: 25.6, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g trimmed lean lamb once/week (Dyslipidaemia)", note: "High heme iron & creatine." },
+      { id: "mutton_goat", cat: "Meats & Poultry", name: "Goat Meat / Mutton (Chevon)", prot: 25.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g lean curry cut (Dyslipidaemia)", note: "Blocked in Gout, CAD & CKD." },
+      { id: "pork_lean", cat: "Meats & Poultry", name: "Pork (Lean Tenderloin)", prot: 26.0, flags: { "Coronary Artery Disease / Post-MI": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "limited", "Hyperuricaemia / Gout": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated" }, portion: "Max 60g lean cut", note: "Blocked in Halal, CAD, Gout & CKD." },
+      { id: "organ_meat", cat: "Meats & Poultry", name: "Liver / Organ Meats (Chicken / Lamb Liver)", prot: 26.5, flags: { "Hyperuricaemia / Gout": "contraindicated", "Dyslipidaemia / Hypercholesterolaemia": "contraindicated", "Chronic Kidney Disease (CKD 3-5, non-dialysis)": "contraindicated", "Fatty Liver (NAFLD / MASLD)": "contraindicated" }, note: "Extreme purine & cholesterol load." }
     ];
+
+    const FOOD_I18N = {
+      hi: {
+        lauki: "लौकी", bhindi: "भिंडी", cucumber: "खीरा", turai: "तोरई", parwal: "परवल",
+        tinda: "टिंडा", ash_gourd: "पेठा", snake_gourd: "चिचिंडा", karela: "करेला",
+        capsicum: "शिमला मिर्च", french_beans: "फ़्रेंच बीन्स", brinjal: "बैंगन", pumpkin: "कद्दू",
+        drumstick: "सहजन", green_peas: "हरी मटर", mushroom: "मशरूम", broccoli: "ब्रोकली",
+        zucchini: "ज़ुकिनी", carrot: "गाजर", radish: "मूली", beetroot: "चुकंदर",
+        cauliflower: "फूलगोभी", cabbage: "पत्तागोभी", potato: "आलू", sweet_potato: "शकरकंद",
+        spinach: "पालक", methi: "मेथी", tomato: "टमाटर", onion: "प्याज़",
+        apple: "सेब", pear: "नाशपाती", berries: "बेरीज़", jamun: "जामुन", watermelon: "तरबूज़",
+        muskmelon: "खरबूज़ा", papaya: "पपीता", guava: "अमरूद", pomegranate: "अनार",
+        pineapple: "अनानास", peach_plum: "आड़ू / आलूबुखारा", grapes: "अंगूर", kiwi: "कीवी",
+        mango: "आम", chikoo: "चीकू", sitaphal: "सीताफल", avocado: "एवोकाडो",
+        banana: "केला", orange: "संतरा / मौसमी", dates_figs: "खजूर और अंजीर",
+        moong_dal: "मूंग दाल", green_moong: "साबुत मूंग / अंकुरित", masoor_dal: "मसूर दाल",
+        toor_dal: "तूर दाल", chana_dal: "चना दाल", kabuli_chana: "काबुली व काला चना",
+        rajma: "राजमा", urad_dal: "उड़द दाल", lobia: "लोबिया", soya_chunks: "सोया चंक्स / टोफू",
+        flax_seeds: "अलसी के बीज", chia_seeds: "चिया बीज", pumpkin_seeds: "कद्दू के बीज",
+        sunflower_seeds: "सूरजमुखी के बीज", sesame_seeds: "तिल", watermelon_seeds: "खरबूज़े के बीज",
+        almonds: "बादाम", walnuts: "अखरोट", cashews: "काजू", pistachios: "पिस्ता",
+        peanuts: "मूंगफली", hazelnuts_brazil: "हेज़लनट व ब्राज़ील नट",
+        jowar: "ज्वार", ragi: "रागी", bajra: "बाजरा", foxtail_millet: "मिलेट",
+        oats: "ओट्स", poha: "पोहा", white_rice: "सफ़ेद चावल", brown_rice: "ब्राउन राइस",
+        wheat: "गेहूं का आटा", makhana: "मखाना",
+        paneer: "पनीर", curd: "दही", greek_yogurt: "ग्रीक योगर्ट",
+        milk_toned: "टोंड दूध", buttermilk: "छाछ",
+        egg_white: "अंडे की सफ़ेदी", whole_egg: "पूरा अंडा", desi_egg: "देसी अंडा",
+        omega3_egg: "ओमेगा-3 अंडा", quail_egg: "बटेर के अंडे", duck_egg: "बतख का अंडा",
+        turkey_goose_egg: "टर्की / हंस का अंडा",
+        rohu_katla: "रोहू और कतला मछली", pomfret: "पापलेट मछली", surmai: "सुरमई मछली",
+        salmon_rawas: "साल्मन / रावस मछली", mackerel_sardine: "बांगड़ा व सार्डिन",
+        tuna: "टूना मछली", tilapia_basa: "तिलापिया / बासा", prawns: "झींगा",
+        crab_lobster: "केकड़ा व लॉबस्टर", squid_mussels: "स्क्विड व मसल्स",
+        chicken_breast: "चिकन ब्रेस्ट", chicken_thigh: "चिकन थाई",
+        country_chicken: "देशी चिकन", turkey_breast: "टर्की ब्रेस्ट", quail_meat: "बटेर का मांस",
+        duck_meat: "बतख का मांस", lamb_lean: "लैम्ब", mutton_goat: "मटन",
+        pork_lean: "पोर्क", organ_meat: "कलेजी"
+      },
+      mr: {
+        lauki: "दुधी भोपळा", bhindi: "भेंडी", cucumber: "काकडी", potato: "बटाटा",
+        spinach: "पालक", tomato: "टोमॅटो", onion: "कांदा", banana: "केळी", apple: "सफरचंद",
+        moong_dal: "मूग डाळ", jowar: "ज्वारी", ragi: "नाचणी", bajra: "बाजरी",
+        paneer: "पनीर", curd: "दही", egg_white: "अंड्याचा पांढरा भाग", whole_egg: "अंडे",
+        chicken_breast: "चिकन ब्रेस्ट", mutton_goat: "मटण", prawns: "कोळंबी"
+      },
+      kn: {
+        lauki: "ಸೋರೆಕಾಯಿ", bhindi: "ಬೆಂಡೆಕಾಯಿ", cucumber: "ಸೌತೆಕಾಯಿ", potato: "ಆಲೂಗಡ್ಡೆ",
+        spinach: "ಪಾಲಕ್ ಸೊಪ್ಪು", tomato: "ಟೊಮೇಟೊ", onion: "ಈರುಳ್ಳಿ", banana: "ಬಾಳೆಹಣ್ಣು", apple: "ಸೇಬು",
+        moong_dal: "ಹೆಸರು ಬೇಳೆ", jowar: "ಜೋಳ", ragi: "ರಾಗಿ", bajra: "ಸಜ್ಜೆ",
+        paneer: "ಪನೀರ್", curd: "ಮೊಸರು", egg_white: "ಮೊಟ್ಟೆಯ ಬಿಳಿಭಾಗ", whole_egg: "ಮೊಟ್ಟೆ",
+        chicken_breast: "ಚಿಕನ್ ಬ್ರೆಸ್ಟ್", mutton_goat: "ಮಟನ್", prawns: "ಸಿಗಡಿ"
+      }
+    };
+
+    const CAT_I18N = {
+      hi: {
+        "Vegetables": "सब्ज़ियां", "Fruits": "फल", "Pulses & Lentils": "दालें और फलियां",
+        "Nuts & Seeds": "मेवे और बीज", "Grains & Millets": "अनाज और मिलेट्स",
+        "Dairy": "डेयरी उत्पाद", "Eggs": "अंडे", "Fish & Seafood": "मछली और सीफ़ूड",
+        "Meats & Poultry": "मांस और पोल्ट्री"
+      },
+      mr: {
+        "Vegetables": "भाज्या", "Fruits": "फळे", "Pulses & Lentils": "डाळी व कडधान्ये",
+        "Nuts & Seeds": "सुका मेवा व बिया", "Grains & Millets": "धान्ये व भरड धान्ये",
+        "Dairy": "दुग्धजन्य पदार्थ", "Eggs": "अंडी", "Fish & Seafood": "मासे व सीफूड",
+        "Meats & Poultry": "मांस व चिकन"
+      },
+      kn: {
+        "Vegetables": "ತರಕಾರಿಗಳು", "Fruits": "ಹಣ್ಣುಗಳು", "Pulses & Lentils": "ಬೇಳೆಕಾಳುಗಳು",
+        "Nuts & Seeds": "ಬೀಜಗಳು ಮತ್ತು ಒಣಹಣ್ಣುಗಳು", "Grains & Millets": "ಧಾನ್ಯಗಳು ಮತ್ತು ಸಿರಿಧಾನ್ಯಗಳು",
+        "Dairy": "ಹಾಲಿನ ಉತ್ಪನ್ನಗಳು", "Eggs": "ಮೊಟ್ಟೆಗಳು", "Fish & Seafood": "ಮೀನು ಮತ್ತು ಸಮುದ್ರಾಹಾರ",
+        "Meats & Poultry": "ಮಾಂಸ ಮತ್ತು ಕೋಳಿ"
+      }
+    };
+
+    function getFoodName(item) {
+      const base = INDIAN_LANG_BASE[activeLang] || activeLang;
+      const loc = (FOOD_I18N[base] || {})[item.id] || item.name;
+      return fmtText(loc, item.name);
+    }
+
+    function getCatName(catEng) {
+      const base = INDIAN_LANG_BASE[activeLang] || activeLang;
+      const loc = (CAT_I18N[base] || {})[catEng] || catEng;
+      return fmtText(loc, catEng);
+    }
 
     // =========================================================================
     // 6. INITIALIZATION & LOGO MOUNTING
@@ -1961,9 +1797,7 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       mountBrandLogos();
-      renderCategorizedConditions();
       populateSportsSelect("");
-      updateSportGuideline();
       setAppLanguage("en");
       initSupabase();
     });
@@ -1976,7 +1810,7 @@
       if (!file) return;
       const out = document.getElementById("rxSummaryOutput");
       out.style.display = "block";
-      out.innerHTML = "⏳ <strong>Scanning prescription image...</strong> Extracting medications and clinical notes.";
+      out.innerHTML = "⏳...";
 
       try {
         const res = await Tesseract.recognize(file, "eng");
@@ -1984,60 +1818,48 @@
         document.getElementById("rxTextInput").value = text;
         summarizePrescription();
       } catch (err) {
-        out.innerHTML = "⚠️ Could not read image clearly. Please type or paste the prescription text in the box on the right and click <strong>Extract &amp; Summarize</strong>.";
+        out.innerHTML = "⚠️";
       }
     }
 
     function summarizePrescription() {
       const raw = (document.getElementById("rxTextInput").value || "").trim();
       const out = document.getElementById("rxSummaryOutput");
-      if (!raw) {
-        out.style.display = "block";
-        out.innerHTML = "⚠️ Please upload a prescription photo or enter prescription text first.";
-        return;
-      }
+      if (!raw) return;
 
       const lower = raw.toLowerCase();
       rxDrugFlags.clear();
       const detectedMeds = [];
       const detectedConds = [];
-      const foodRules = [];
 
       if (lower.includes("telmisartan") || lower.includes("losartan") || lower.includes("ramipril") || lower.includes("enalapril") || lower.includes("spironolactone")) {
         rxDrugFlags.add("high_potassium_rx");
-        detectedMeds.push("ACE Inhibitor / ARB / K-Sparing Antihypertensive");
+        detectedMeds.push("Telmisartan / ARB");
         detectedConds.push("Hypertension");
-        foodRules.push("🔴 High-potassium foods (Banana, Potato, Spinach, Avocado, Tomato) flagged as Contraindicated.");
       }
       if (lower.includes("warfarin") || lower.includes("acenocoumarol") || lower.includes("acitrom")) {
         rxDrugFlags.add("vitamin_k_rx");
-        detectedMeds.push("Oral Anticoagulant (Warfarin/Acitrom)");
+        detectedMeds.push("Warfarin");
         detectedConds.push("Atrial Fibrillation / Anticoagulant (warfarin) therapy");
-        foodRules.push("🔴 High Vitamin-K greens (Spinach, Methi) blocked; Broccoli/Cabbage portion-capped.");
       }
       if (lower.includes("metformin") || lower.includes("glimepiride") || lower.includes("sitagliptin") || lower.includes("insulin") || lower.includes("diabetes")) {
-        detectedMeds.push("Antidiabetic Therapy");
+        detectedMeds.push("Metformin / Antidiabetic");
         detectedConds.push("Diabetes Mellitus Type 2");
-        foodRules.push("🟡 High-GI carbs (White Rice, Potato, Mango, Banana) placed under strict glycemic portion control.");
       }
       if (lower.includes("atorvastatin") || lower.includes("rosuvastatin") || lower.includes("cholesterol") || lower.includes("dyslipid")) {
-        detectedMeds.push("Statin Lipid-Lowering Therapy");
+        detectedMeds.push("Statin");
         detectedConds.push("Dyslipidaemia / Hypercholesterolaemia");
-        foodRules.push("🔴 Saturated fat & high-cholesterol items (Duck, Organ Meats, Full-Fat Dairy) restricted.");
       }
       if (lower.includes("levothyroxine") || lower.includes("thyronorm") || lower.includes("eltroxin") || lower.includes("hypothyroid")) {
-        detectedMeds.push("Levothyroxine (Thyroid Hormone)");
+        detectedMeds.push("Levothyroxine");
         detectedConds.push("Hypothyroidism");
-        foodRules.push("⏰ Take thyroid medication on an empty stomach 45 min before breakfast; keep 4-hour gap from Soya/Calcium/Iron.");
       }
       if (lower.includes("allopurinol") || lower.includes("febuxostat") || lower.includes("gout") || lower.includes("uric")) {
-        detectedMeds.push("Urate-Lowering Therapy");
+        detectedMeds.push("Urate Therapy");
         detectedConds.push("Hyperuricaemia / Gout");
-        foodRules.push("🔴 High-purine foods (Red Meat, Lamb, Mutton, Organ Meats, Shellfish, Sardines) blocked.");
       }
       if (lower.includes("ckd") || lower.includes("kidney") || lower.includes("creatinine") || lower.includes("dialysis") || lower.includes("renal")) {
         detectedConds.push("Chronic Kidney Disease (CKD 3-5, non-dialysis)");
-        foodRules.push("🔴 Strict renal potassium, phosphorus & protein caps activated.");
       }
 
       detectedConds.forEach(c => activeConditions.add(c));
@@ -2046,12 +1868,8 @@
       renderIngredients();
 
       out.style.display = "block";
-      out.innerHTML = `
-        <div style="font-weight:800;color:#14532d;margin-bottom:4px;">📋 Prescription Clinical Summary</div>
-        <div><strong>Detected Medications / Regimen:</strong> ${detectedMeds.length ? detectedMeds.join(", ") : "General prescription notes recorded"}</div>
-        <div style="margin-top:3px;"><strong>Auto-Linked Conditions:</strong> ${detectedConds.length ? detectedConds.join(", ") : "None auto-matched (you can tick conditions below)"}</div>
-        <div style="margin-top:4px;"><strong>Active Diet &amp; Safety Rules:</strong><br/>${foodRules.length ? foodRules.join("<br/>") : "• Standard balanced clinical & sports screening active."}</div>
-      `;
+      const condText = detectedConds.map(c => getCondLabel(c)).join(", ") || "-";
+      out.innerHTML = `<strong>${detectedMeds.join(", ") || "-"}</strong> • <span>${condText}</span>`;
     }
 
     function renderCategorizedConditions() {
@@ -2064,7 +1882,7 @@
           html += `
             <label class="cond-checkbox-row">
               <input type="checkbox" ${checked} onchange="toggleCondition('${cond.replace(/'/g, "\\'")}')" />
-              <span>${cond}</span>
+              <span>${getCondLabel(cond)}</span>
             </label>
           `;
         });
@@ -2077,6 +1895,7 @@
       else activeConditions.add(cond);
       updateSportGuideline();
       renderIngredients();
+      if (document.getElementById("viewPlan").classList.contains("active")) generateDietChart();
     }
 
     function populateSportsSelect(filterQuery) {
@@ -2108,48 +1927,38 @@
     }
 
     function updateSportGuideline() {
+      const pack = getPack(activeLang);
       const sport = document.getElementById("profSport").value || "Powerlifting (Squat/Bench/Deadlift)";
       const w = Number(document.getElementById("profWeight").value) || 68;
       const isCKD = activeConditions.has("Chronic Kidney Disease (CKD 3-5, non-dialysis)");
       const isDialysis = activeConditions.has("End Stage Renal Disease on Dialysis (HD / PD)");
 
-      let categoryTag = "General & Team Sport • Activity 1.6x • Protein 1.5 g/kg";
-      let protRange = "1.4–1.7 g/kg";
       let mult = 1.5;
+      let note = "";
 
       if (sport.includes("Powerlifting") || sport.includes("Weightlifting") || sport.includes("Strongman") || sport.includes("Bodybuilding") || sport.includes("Throw") || sport.includes("Kushti") || sport.includes("Wrestling")) {
-        categoryTag = "Strength, Power & Throws • Activity 1.8x • Protein 1.9 g/kg";
-        protRange = "1.6–2.2 g/kg";
         mult = 1.9;
       } else if (sport.includes("Marathon") || sport.includes("Cycling") || sport.includes("Triathlon") || sport.includes("Swimming") || sport.includes("Skiing") || sport.includes("Rowing")) {
-        categoryTag = "Endurance & Stamina • Activity 1.9x • Carbs 6–8 g/kg • Protein 1.6 g/kg";
-        protRange = "1.5–1.8 g/kg";
         mult = 1.6;
       } else if (sport.includes("Chess") || sport.includes("Carrom") || sport.includes("Esports") || sport.includes("Bridge") || sport.includes("Sudoku") || sport.includes("Go ")) {
-        categoryTag = "Mind & Precision Sport • Activity 1.35x • Cognitive Glycemic Stability";
-        protRange = "1.1–1.3 g/kg";
         mult = 1.2;
-      } else if (sport.includes("Equestrian") || sport.includes("Motorsport") || sport.includes("Riding") || sport.includes("Formula") || sport.includes("MotoGP")) {
-        categoryTag = "Riding, Core Stability & Reflex • Activity 1.55x • Hydration & Electrolyte Focus";
-        protRange = "1.4–1.6 g/kg";
-        mult = 1.5;
       }
 
       if (isCKD && !isDialysis) {
         mult = 0.8;
-        protRange = "0.6–0.8 g/kg (Renal CKD Protein Cap Applied)";
+        note = ` • ${pack.renalCapNote}`;
       } else if (isDialysis) {
         mult = 1.2;
-        protRange = "1.2–1.3 g/kg (Dialysis Replenishment Target)";
+        note = ` • ${pack.dialysisNote}`;
       }
 
       const dailyProt = Math.round(w * mult);
       document.getElementById("sportGuidelineBox").innerHTML = `
-        <div><strong>🏅 ${sport}</strong> <span style="color:#166534;">(${categoryTag})</span></div>
-        <div style="margin-top:3px;">Daily Target for ${w} kg: <strong>${dailyProt} g protein/day</strong> (${protRange}) spread over 4–5 meals.</div>
+        <div><strong>🏅 ${sport}</strong></div>
+        <div style="margin-top:3px;">${pack.proteinTargetPrefix} ${w} kg: <strong>${dailyProt} ${pack.proteinPerDay}</strong>${note}</div>
         <div class="sport-session-split">
-          <div>⚡ <strong>Pre-Session:</strong> Moderate carbs + lean protein 90–120 min prior (roti + paneer/chicken/egg whites, oats + curd).</div>
-          <div>💪 <strong>Post-Session:</strong> 25–40 g protein within 1 h (soya/tofu, paneer, eggs, chicken, fish, dal + grain) + carbs.</div>
+          <div>${pack.preSessionLabel}: ${pack.preSessionText}</div>
+          <div>${pack.postSessionLabel}: ${pack.postSessionText}</div>
         </div>
       `;
     }
@@ -2163,7 +1972,7 @@
       const allCats = ["ALL", ...FOOD_CATEGORIES];
       bar.innerHTML = allCats.map(c => `
         <button type="button" class="cat-filter-btn ${activeFoodCategory === c ? "active" : ""}" onclick="setFoodCat('${c}')">
-          ${c === "ALL" ? pack.allFoodCats : c}
+          ${c === "ALL" ? pack.allFoodCats : getCatName(c)}
         </button>
       `).join("");
     }
@@ -2178,47 +1987,45 @@
       const diet = document.getElementById("profDiet").value;
 
       if (diet === "jain" && ["potato", "sweet_potato", "onion", "carrot", "radish", "beetroot"].includes(item.id)) {
-        return { level: "contraindicated", portion: "", reason: "Contraindicated in Jain diet (root vegetable)." };
+        return { level: "contraindicated", portion: "", reason: "Jain" };
       }
       if (diet === "satvik" && (["onion", "mushroom"].includes(item.id) || item.cat === "Eggs" || item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
-        return { level: "contraindicated", portion: "", reason: "Contraindicated in Satvik diet." };
+        return { level: "contraindicated", portion: "", reason: "Satvik" };
       }
       if (diet === "veg" && (item.cat === "Eggs" || item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
-        return { level: "contraindicated", portion: "", reason: "Excluded in Vegetarian diet." };
+        return { level: "contraindicated", portion: "", reason: "Veg" };
       }
       if (diet === "eggetarian" && (item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
-        return { level: "contraindicated", portion: "", reason: "Fish & Meat excluded in Eggetarian diet." };
+        return { level: "contraindicated", portion: "", reason: "Eggetarian" };
       }
       if (diet === "pescatarian" && item.cat === "Meats & Poultry") {
-        return { level: "contraindicated", portion: "", reason: "Poultry & Red Meat excluded in Pescatarian diet." };
+        return { level: "contraindicated", portion: "", reason: "Pescatarian" };
       }
       if (diet === "halal" && item.id === "pork_lean") {
-        return { level: "contraindicated", portion: "", reason: "Excluded in Halal diet." };
+        return { level: "contraindicated", portion: "", reason: "Halal" };
       }
       if (diet === "vegan" && (item.cat === "Dairy" || item.cat === "Eggs" || item.cat === "Fish & Seafood" || item.cat === "Meats & Poultry")) {
-        return { level: "contraindicated", portion: "", reason: "Animal products excluded in Vegan diet." };
+        return { level: "contraindicated", portion: "", reason: "Vegan" };
       }
 
       if (rxDrugFlags.has("high_potassium_rx") && ["potato", "sweet_potato", "banana", "spinach", "tomato", "avocado"].includes(item.id)) {
-        return { level: "contraindicated", portion: "", reason: "Prescription Alert: High potassium conflicts with ACE/ARB medication." };
+        return { level: "contraindicated", portion: "", reason: "Rx K+" };
       }
       if (rxDrugFlags.has("vitamin_k_rx") && ["spinach", "methi"].includes(item.id)) {
-        return { level: "contraindicated", portion: "", reason: "Prescription Alert: High Vitamin K conflicts with Warfarin." };
+        return { level: "contraindicated", portion: "", reason: "Rx Vit-K" };
       }
 
-      let level = "allowed", notes = [], portion = "";
+      let level = "allowed", portion = "";
       activeConditions.forEach(c => {
         const f = item.flags?.[c];
         if (f === "contraindicated") {
           level = "contraindicated";
-          notes.push(`${c}: ${item.note}`);
         } else if (f === "limited" && level !== "contraindicated") {
           level = "limited";
-          portion = item.portion || "Controlled small portion only";
-          notes.push(`${c}: ${item.note}`);
+          portion = item.portion || "Small portion";
         }
       });
-      return { level, portion, reason: notes.join(" | ") || item.note || "Allowed unrestricted for your profile" };
+      return { level, portion, reason: level };
     }
 
     function renderIngredients() {
@@ -2229,13 +2036,17 @@
 
       let html = "";
       catsToShow.forEach(cat => {
-        const items = INGREDIENTS.filter(i => i.cat === cat && (!q || i.name.toLowerCase().includes(q) || cat.toLowerCase().includes(q)));
+        const items = INGREDIENTS.filter(i => {
+          if (i.cat !== cat) return false;
+          if (!q) return true;
+          return i.name.toLowerCase().includes(q) || getFoodName(i).toLowerCase().includes(q) || cat.toLowerCase().includes(q);
+        });
         if (!items.length) return;
 
         html += `
           <div class="food-section-block">
             <div class="food-section-title">
-              <span>${cat}</span>
+              <span>${getCatName(cat)}</span>
               <span style="font-size:0.76rem;font-weight:700;color:#166534;">${items.length}</span>
             </div>
             <div class="ing-grid">
@@ -2255,10 +2066,10 @@
                   <label class="ing-tile ${r.level} ${ticked ? "ticked" : ""}" ${isBlocked ? 'aria-disabled="true"' : ""}>
                     <input type="checkbox" ${ticked ? "checked" : ""} ${isBlocked ? "disabled" : ""} onchange="onTick('${item.id}')" />
                     <div style="flex:1;">
-                      <div style="font-weight:700;font-size:0.87rem;">${item.name}</div>
+                      <div style="font-weight:700;font-size:0.87rem;">${getFoodName(item)}</div>
                       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:5px;">
                         ${badgeHtml}
-                        <small style="color:var(--muted);font-weight:700;">${item.prot}g P</small>
+                        <small style="color:var(--muted);font-weight:700;">${item.prot}g</small>
                       </div>
                       ${r.level === "limited" && r.portion ? `<span class="portion-tag">⚖️ ${r.portion}</span>` : ""}
                       ${isBlocked ? `<span class="blocked-tag">${pack.blockedNote}</span>` : ""}
@@ -2271,22 +2082,22 @@
         `;
       });
 
-      mount.innerHTML = html || `<p style="color:var(--muted);padding:1rem;">No matching food items found.</p>`;
+      mount.innerHTML = html || `<p style="color:var(--muted);padding:1rem;">-</p>`;
     }
 
     function onTick(id) {
+      const pack = getPack(activeLang);
       const item = INGREDIENTS.find(i => i.id === id);
       if (!item) return;
       const r = checkRisk(item);
       const banner = document.getElementById("liveWarnBanner");
 
-      // Prevent ticking red/contraindicated items
       if (r.level === "contraindicated") {
         tickedIngredients.delete(id);
         banner.style.display = "block";
         banner.style.background = "#fee2e2";
         banner.style.color = "#991b1b";
-        banner.textContent = `🔴 ${item.name}: ${r.reason}`;
+        banner.textContent = `${pack.contraBadge}: ${getFoodName(item)}`;
         renderIngredients();
         return;
       }
@@ -2299,10 +2110,10 @@
         banner.style.display = "block";
         if (r.level === "limited") {
           banner.style.background = "#fef3c7"; banner.style.color = "#92400e";
-          banner.textContent = `🟡 (${item.name}): ${r.portion} — ${r.reason}`;
+          banner.textContent = `${pack.limitedBadge}: ${getFoodName(item)} (${r.portion})`;
         } else {
           banner.style.background = "#dcfce7"; banner.style.color = "#166534";
-          banner.textContent = `🟢 (${item.name}): ${r.reason}`;
+          banner.textContent = `${pack.allowedBadge}: ${getFoodName(item)}`;
         }
       }
       renderIngredients();
@@ -2313,7 +2124,7 @@
       if (!val) return;
       const cat = activeFoodCategory === "ALL" ? "Vegetables" : activeFoodCategory;
       const id = "cust_" + Date.now();
-      const newItem = { id, cat, name: val, prot: 3.0, flags: {}, note: "Custom user item." };
+      const newItem = { id, cat, name: val, prot: 3.0, flags: {}, note: "" };
       INGREDIENTS.unshift(newItem);
       if (checkRisk(newItem).level !== "contraindicated") {
         tickedIngredients.add(id);
@@ -2329,47 +2140,254 @@
       renderIngredients();
     }
 
+    // =========================================================================
+    // 8. DISH-SPECIFIC 5-STEP PREPARATION & QUANTITY BUILDER
+    // =========================================================================
+    function buildFiveStepsForDish(dishType, primaryName, secondaryName) {
+      const base = INDIAN_LANG_BASE[activeLang] || activeLang;
+
+      if (base === "hi") {
+        if (dishType === "upma") {
+          return [
+            `${primaryName} को छलनी में डालकर ठंडे पानी से धोएं और अतिरिक्त पानी निथार लें।`,
+            `कड़ाही में 1 चम्मच तेल गर्म करके राई, करी पत्ता और हरी मिर्च चटकाएं।`,
+            `${secondaryName || "सब्ज़ी"} डालकर 2 मिनट तक मध्यम आंच पर भूनें।`,
+            `धुला हुआ ${primaryName} और थोड़ा पानी डालकर 3 मिनट तक हल्के हाथ से चलाते हुए पकाएं।`,
+            `आंच बंद कर नींबू का रस व हरा धनिया मिलाकर निर्धारित मात्रा में परोसें।`
+          ];
+        }
+        if (dishType === "oats") {
+          return [
+            `सॉसपैन में ओट्स और नापा हुआ तरल डालकर मध्यम आंच पर रखें।`,
+            `लगातार चलाते हुए 3–4 मिनट तक उबालें जब तक ओट्स नरम और गाढ़े न हो जाएं।`,
+            `आंच धीमी करके ${secondaryName || "फल"} के छोटे टुकड़े मिलाएं।`,
+            `1 मिनट तक हल्का गर्म करें ताकि स्वाद अच्छी तरह मिल जाए।`,
+            `कटोरी में निकालकर बीज या मेवों की तय मात्रा के साथ तुरंत परोसें।`
+          ];
+        }
+        if (dishType === "roti_meal") {
+          return [
+            `आटे में थोड़ा पानी डालकर नरम लोई गूंथ लें और 10 मिनट ढककर रखें।`,
+            `तवे पर रोटी बेलकर दोनों ओर से हल्का सेंकें (बिना अतिरिक्त घी या बहुत कम तेल में)।`,
+            `साथ की ${secondaryName || "सब्ज़ी/दाल"} को कम तेल और हल्के मसालों में पकाएं।`,
+            `प्रोटीन या दाल को पूरी तरह पकने तक उबालें या ग्रिल करें।`,
+            `गरम रोटी, प्रोटीन/दाल और सब्ज़ी को तय मात्रा में प्लेट में सजाकर परोसें।`
+          ];
+        }
+        if (dishType === "snack") {
+          return [
+            `कड़ाही को धीमी आंच पर गर्म करें (बिना तेल या आधे चम्मच तेल के)।`,
+            `${primaryName} डालकर 4–5 मिनट तक कुरकुरा होने तक भूनें।`,
+            `${secondaryName || "प्रोटीन"} को उबालकर या हल्का भूनकर अलग तैयार करें।`,
+            `दोनों पर चुटकी भर भुना जीरा या काली मिर्च छिड़ककर हल्का मिलाएं।`,
+            `ठंडा होने पर तय कटोरी या मात्रा में निकालकर परोसें।`
+          ];
+        }
+        return [
+          `${primaryName} और ${secondaryName || "सब्ज़ी"} को धोकर छोटे टुकड़ों में काट लें।`,
+          `कुकर या पैन में हल्का तेल गर्म करके जीरा या अजवायन डालें।`,
+          `धुले हुए अनाज/दाल और कटी सब्ज़ी को डालकर 1 मिनट चलाएं।`,
+          `आवश्यक पानी डालकर नरम और खिचड़ी जैसा होने तक पकाएं।`,
+          `गर्म खिचड़ी को कटोरी में निकालकर तय मात्रा में परोसें।`
+        ];
+      }
+
+      if (base === "mr") {
+        if (dishType === "upma") {
+          return [
+            `${primaryName} चाळणीत घेऊन स्वच्छ पाण्याने धुवा आणि पाणी निथळून घ्या.`,
+            `कढईत १ चमचा तेल गरम करून मोहरी, कढीपत्ता व मिरचीची फोडणी द्या.`,
+            `${secondaryName || "भाजी"} घालून २ मिनिटे मध्यम आचेवर परतून घ्या.`,
+            `धुतलेला ${primaryName} व थोडे पाणी घालून ३ मिनिटे हलक्या हाताने शिजवा.`,
+            `गॅस बंद करून कोथिंबीर व लिंबाचा रस घालून ठरलेल्या प्रमाणात वाढा.`
+          ];
+        }
+        if (dishType === "roti_meal") {
+          return [
+            `पिठात पाणी घालून मऊ कणिक मळून घ्या आणि १० मिनिटे झाकून ठेवा.`,
+            `तव्यावर पोळी/भाकरी लाटून दोन्ही बाजूंनी नीट भाजून घ्या.`,
+            `${secondaryName || "भाजी/वरण"} कमी तेलात व हलक्या मसाल्यात तयार करा.`,
+            `प्रथिन किंवा डाळ शिजेपर्यंत उकडून किंवा ग्रिल करून घ्या.`,
+            `तयार पोळी, भाजी व डाळ/प्रथिन ठरलेल्या प्रमाणात ताटात वाढा.`
+          ];
+        }
+        if (dishType === "snack") {
+          return [
+            `कढई मंद आचेवर गरम करून ${primaryName} कुरकुरीत होईपर्यंत भाजा.`,
+            `${secondaryName || "प्रथिन"} उकडून किंवा हलके परतून तयार ठेवा.`,
+            `दोन्ही घटकांवर किंचित जिरेपूड किंवा काळी मिरी टाका.`,
+            `सगळे साहित्य एकत्र हलकेसे मिसळून घ्या.`,
+            `नक्की केलेल्या प्रमाणात वाटीत काढून सर्व्ह करा.`
+          ];
+        }
+        return [
+          `${primaryName} आणि ${secondaryName || "भाजी"} स्वच्छ धुऊन बारीक करा.`,
+          `पातेल्यात किंवा कुकरमध्ये थोडे तेल गरम करून फोडणी द्या.`,
+          `साहित्य घालून १ मिनिट परतून घ्या.`,
+          `पुरेसे पाणी घालून मऊसर शिजेपर्यंत शिजवा.`,
+          `गरमागरम खिचडी ठरलेल्या प्रमाणात वाटीत वाढा.`
+        ];
+      }
+
+      if (base === "kn") {
+        if (dishType === "upma") {
+          return [
+            `${primaryName} ಅನ್ನು ನೀರಿನಲ್ಲಿ ತೊಳೆದು ನೀರು ಬಸಿದುಕೊಳ್ಳಿ.`,
+            `ಬಾಣಲೆಯಲ್ಲಿ 1 ಚಮಚ ಎಣ್ಣೆ ಬಿಸಿ ಮಾಡಿ ಸಾಸಿವೆ, ಕರಿಬೇವು ಮತ್ತು ಮೆಣಸಿನಕಾಯಿ ಒಗ್ಗರಣೆ ನೀಡಿ.`,
+            `${secondaryName || "ತರಕಾರಿ"} ಸೇರಿಸಿ 2 ನಿಮಿಷ ಹುರಿಯಿರಿ.`,
+            `ತೊಳೆದ ${primaryName} ಮತ್ತು ಸ್ವಲ್ಪ ನೀರು ಹಾಕಿ 3 ನಿಮಿಷ ಬೇಯಿಸಿ.`,
+            `ಕೊತ್ತಂಬರಿ ಸೊಪ್ಪು ಮತ್ತು ನಿಂಬೆರಸ ಸೇರಿಸಿ ನಿಗದಿತ ಪ್ರಮಾಣದಲ್ಲಿ ಬಡಿಸಿ.`
+          ];
+        }
+        if (dishType === "roti_meal") {
+          return [
+            `ಹಿಟ್ಟಿಗೆ ನೀರು ಸೇರಿಸಿ ಮೃದುವಾಗಿ ನಾದಿ 10 ನಿಮಿಷ ಇಡಿ.`,
+            `ಹಂಚಿನ ಮೇಲೆ ರೊಟ್ಟಿ ತಟ್ಟಿ ಎರಡೂ ಬದಿ ಬೇಯಿಸಿ.`,
+            `${secondaryName || "ಸಾರು/ಪಲ್ಯ"} ಅನ್ನು ಕಡಿಮೆ ಎಣ್ಣೆಯಲ್ಲಿ ತಯಾರಿಸಿ.`,
+            `ಪ್ರೋಟೀನ್ ಅಥವಾ ಬೇಳೆಯನ್ನು ಚೆನ್ನಾಗಿ ಬೇಯಿಸಿ ಅಥವಾ ಗ್ರಿಲ್ ಮಾಡಿ.`,
+            `ನಿಗದಿತ ಪ್ರಮಾಣದಲ್ಲಿ ರೊಟ್ಟಿ, ಪಲ್ಯ ಮತ್ತು ಬೇಳೆ/ಪ್ರೋಟೀನ್ ಬಡಿಸಿ.`
+          ];
+        }
+        if (dishType === "snack") {
+          return [
+            `ಬಾಣಲೆಯಲ್ಲಿ ${primaryName} ಅನ್ನು ಗರಿಗರಿಯಾಗುವವರೆಗೆ ಹುರಿಯಿರಿ.`,
+            `${secondaryName || "ಪ್ರೋಟೀನ್"} ಅನ್ನು ಬೇಯಿಸಿ ಅಥವಾ ಲಘುವಾಗಿ ಹುರಿಯಿರಿ.`,
+            `ಸ್ವಲ್ಪ ಜೀರಿಗೆ ಪುಡಿ ಅಥವಾ ಮೆಣಸಿನ ಪುಡಿ ಉದುರಿಸಿ.`,
+            `ಎಲ್ಲವನ್ನೂ ನಿಧಾನವಾಗಿ ಬೆರೆಸಿ.`,
+            `ನಿಗದಿತ ಪ್ರಮಾಣದಲ್ಲಿ ಬಟ್ಟಲಿಗೆ ಹಾಕಿ ಸೇವಿಸಿ.`
+          ];
+        }
+        return [
+          `${primaryName} ಮತ್ತು ${secondaryName || "ತರಕಾರಿ"} ತೊಳೆದು ಹೆಚ್ಚಿಕೊಳ್ಳಿ.`,
+          `ಕುಕ್ಕರ್ ಅಥವಾ ಪಾತ್ರೆಯಲ್ಲಿ ಸ್ವಲ್ಪ ಎಣ್ಣೆ ಹಾಕಿ ಒಗ್ಗರಣೆ ನೀಡಿ.`,
+          `ಪದಾರ್ಥಗಳನ್ನು ಹಾಕಿ 1 ನಿಮಿಷ ತಿರುಗಿಸಿ.`,
+          `ಅಗತ್ಯ ನೀರು ಸೇರಿಸಿ ಮೃದುವಾಗುವವರೆಗೆ ಬೇಯಿಸಿ.`,
+          `ಬಿಸಿ ಖಿಚಡಿಯನ್ನು ನಿಗದಿತ ಪ್ರಮಾಣದಲ್ಲಿ ಬಡಿಸಿ.`
+        ];
+      }
+
+      // Default English 5 dish-specific steps
+      if (dishType === "upma") {
+        return [
+          `Rinse ${primaryName} in cold water and drain completely in a colander.`,
+          `Heat 1 tsp oil in a pan and temper mustard seeds, curry leaves, and green chili.`,
+          `Add ${secondaryName || "vegetables"} and sauté for 2 minutes on medium heat.`,
+          `Fold in the rinsed ${primaryName} with a splash of water and cook for 3 minutes.`,
+          `Finish with coriander and lemon juice, then portion into your serving bowl.`
+        ];
+      }
+      if (dishType === "oats") {
+        return [
+          `Measure ${primaryName} and cooking liquid into a saucepan over medium heat.`,
+          `Stir gently for 3–4 minutes until creamy and tender without sticking.`,
+          `Lower the heat and fold in ${secondaryName || "sliced fruit"}.`,
+          `Warm for 1 minute so flavors combine evenly.`,
+          `Spoon into a bowl, top with your measured seeds/nuts, and serve.`
+        ];
+      }
+      if (dishType === "roti_meal") {
+        return [
+          `Knead flour with water into a soft dough and rest for 10 minutes.`,
+          `Roll and cook the flatbread on a hot tawa until lightly blistered on both sides.`,
+          `Cook ${secondaryName || "veggies/dal"} using minimal oil and mild spices.`,
+          `Steam, simmer, or grill the protein/dal until fully cooked and tender.`,
+          `Plate the flatbread, protein/dal, and vegetable in their exact serving quantities.`
+        ];
+      }
+      if (dishType === "snack") {
+        return [
+          `Dry-roast or lightly pan-toast ${primaryName} on low heat until crisp.`,
+          `Prepare ${secondaryName || "protein"} by boiling, steaming, or lightly pan-searing.`,
+          `Season lightly with roasted cumin or black pepper without excess salt.`,
+          `Toss the snack components together gently so they stay crisp.`,
+          `Measure into your snack bowl and enjoy.`
+        ];
+      }
+      return [
+        `Wash and prep ${primaryName} along with ${secondaryName || "chopped vegetables"}.`,
+        `Warm a little oil in a pot or pressure cooker and add cumin or mild spices.`,
+        `Stir in ${primaryName} and ${secondaryName || "vegetables"} for 1 minute to coat.`,
+        `Add water and cook until soft, digestible, and well-blended.`,
+        `Ladle into a bowl in the recommended serving quantity and serve warm.`
+      ];
+    }
+
     function cookSafeDishes() {
       if (!tickedIngredients.size) return;
-      const allowed = [], limited = [], blocked = [];
+      const pack = getPack(activeLang);
+      const allowed = [], limited = [];
       tickedIngredients.forEach(id => {
         const it = INGREDIENTS.find(i => i.id === id);
         if (!it) return;
         const r = checkRisk(it);
-        if (r.level === "contraindicated") blocked.push({ it, reason: r.reason });
-        else if (r.level === "limited") limited.push({ it, portion: r.portion });
-        else allowed.push(it);
+        if (r.level === "limited") limited.push({ it, portion: r.portion });
+        else if (r.level === "allowed") allowed.push(it);
       });
 
-      const alertBox = document.getElementById("recipeAlert");
-      let msgs = [];
-      if (blocked.length) msgs.push(`🔴 Blocked: ${blocked.map(b => `${b.it.name} (${b.reason})`).join("; ")}`);
-      if (limited.length) msgs.push(`🟡 Limited: ${limited.map(l => `${l.it.name} [${l.portion}]`).join("; ")}`);
-      if (!blocked.length && !limited.length) msgs.push(`🟢 ${allowed.length} safe ingredients selected.`);
-
-      alertBox.innerHTML = `<div style="padding:12px;border-radius:10px;background:${blocked.length ? "#fee2e2" : (limited.length ? "#fef3c7" : "#dcfce7")};color:${blocked.length ? "#991b1b" : (limited.length ? "#92400e" : "#166534")};font-size:0.86rem;font-weight:700;">${msgs.join(" | ")}</div>`;
-
-      const usable = [
-        ...allowed.map(s => s.name.split(" (")[0]),
-        ...limited.map(l => `${l.it.name.split(" (")[0]} (${l.portion})`)
+      const usableItems = [
+        ...allowed.map(s => ({ name: getFoodName(s), detail: getFoodName(s) })),
+        ...limited.map(l => ({ name: getFoodName(l.it), detail: `${getFoodName(l.it)} (${l.portion})` }))
       ];
 
-      document.getElementById("recipeGrid").innerHTML = usable.length ? `
+      if (!usableItems.length) return;
+
+      const p1 = usableItems[0].name;
+      const p2 = usableItems[1]?.name || usableItems[0].name;
+      const p3 = usableItems[2]?.name || p2;
+
+      const dish1Name = fmtText(`${p1} और ${p2} का हल्का बाउल`, `${p1} & ${p2} Bowl`);
+      const dish1Qty = fmtText(
+        `1 कटोरी (~180 ग्राम तैयार • ${usableItems.length} चुनी हुई सामग्री)`,
+        `1 bowl (~180g cooked • ${usableItems.length} selected ingredients)`
+      );
+      const dish1Steps = buildFiveStepsForDish("khichdi", p1, p2);
+
+      const dish2Name = fmtText(`${p3} व ${p1} तवा-पका मील`, `${p3} & ${p1} Skillet Meal`);
+      const dish2Qty = fmtText(
+        `1 सर्विंग (~160 ग्राम • नियंत्रित मात्रा)`,
+        `1 serving (~160g • portion-controlled)`
+      );
+      const dish2Steps = buildFiveStepsForDish("roti_meal", p3, p1);
+
+      document.getElementById("recipeAlert").innerHTML = `
+        <div style="padding:12px;border-radius:10px;background:#dcfce7;color:#166534;font-size:0.86rem;font-weight:700;">
+          ${pack.allowedBadge}: ${usableItems.map(u => u.detail).join(" • ")}
+        </div>
+      `;
+
+      document.getElementById("recipeGrid").innerHTML = `
         <div class="meal-photo-card">
-          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Safe Meal" />
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="${dish1Name}" />
           <div class="meal-photo-body">
-            <span class="badge b-allowed">${getPack(activeLang).allowedBadge}</span>
-            <h4 style="margin:8px 0;color:#14532d;">🍲 ${document.getElementById("profSport").value}</h4>
-            <p style="font-size:0.86rem;color:#334155;"><strong>${usable.join(", ")}</strong></p>
+            <span class="badge b-allowed">${pack.allowedBadge}</span>
+            <h4 style="margin:8px 0 2px;color:#14532d;">🍲 ${dish1Name}</h4>
+            <div class="qty-pill">⚖️ ${pack.qtyLabel}: ${dish1Qty}</div>
+            <div style="font-size:0.8rem;font-weight:800;color:#14532d;margin-top:2px;">${pack.stepsLabel}:</div>
+            <ol class="prep-steps-list">
+              ${dish1Steps.map(st => `<li>${st}</li>`).join("")}
+            </ol>
           </div>
         </div>
-      ` : "";
+
+        <div class="meal-photo-card">
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" alt="${dish2Name}" />
+          <div class="meal-photo-body">
+            <span class="badge b-allowed">${pack.allowedBadge}</span>
+            <h4 style="margin:8px 0 2px;color:#14532d;">🥗 ${dish2Name}</h4>
+            <div class="qty-pill">⚖️ ${pack.qtyLabel}: ${dish2Qty}</div>
+            <div style="font-size:0.8rem;font-weight:800;color:#14532d;margin-top:2px;">${pack.stepsLabel}:</div>
+            <ol class="prep-steps-list">
+              ${dish2Steps.map(st => `<li>${st}</li>`).join("")}
+            </ol>
+          </div>
+        </div>
+      `;
 
       document.getElementById("recipeCard").style.display = "block";
     }
 
     // =========================================================================
-    // 8. DAILY AAHAR (MORNING, AFTERNOON, EVENING, NIGHT + QUANTITY + 5 STEPS)
+    // 9. DAILY AAHAR (4 SLOTS + QUANTITY + 5 DISH-SPECIFIC STEPS EACH)
     // =========================================================================
     function generateDietChart() {
       const pack = getPack(activeLang);
@@ -2380,31 +2398,77 @@
       const isPesc = diet === "pescatarian";
       const isEgg = isNonVeg || diet === "eggetarian";
 
-      const steps = [pack.step1, pack.step2, pack.step3, pack.step4, pack.step5];
+      const mGrain = isCKD ? fmtText("पोहा", "Poha") : fmtText("रोल्ड ओट्स", "Rolled Oats");
+      const mSub = isCKD ? fmtText("लौकी", "Lauki") : fmtText("सेब व बेरीज़", "Apple & Berries");
+      const morningDish = isCKD
+        ? fmtText("लौकी व पोहा उपमा", "Lauki & Poha Upma")
+        : fmtText("ओट्स व फल कटोरा", "Rolled Oats & Fruit Bowl");
+      const morningQty = isCKD
+        ? fmtText("1 कटोरी (~150 ग्राम पका) + 1 छोटा सेब (100 ग्राम)", "1 bowl (~150g cooked) + 1 small apple (100g)")
+        : fmtText("40 ग्राम ओट्स + 150 मिली दूध/पानी + 100 ग्राम फल + 1 छोटा चम्मच बीज", "40g rolled oats + 150ml milk/water + 100g fruit + 1 tsp seeds");
+      const morningSteps = isCKD
+        ? buildFiveStepsForDish("upma", mGrain, mSub)
+        : buildFiveStepsForDish("oats", mGrain, mSub);
+
+      const aProt = isNonVeg
+        ? fmtText("चिकन ब्रेस्ट", "Chicken Breast")
+        : (isPesc ? fmtText("भाप में पकी मछली", "Steamed Fish") : fmtText("मूंग दाल", "Moong Dal"));
+      const aVeg = fmtText("भिंडी व लौकी", "Bhindi & Lauki");
+      const afternoonDish = isNonVeg
+        ? fmtText("ज्वार रोटी + ग्रिल्ड चिकन ब्रेस्ट + भिंडी", "Jowar Roti + Grilled Chicken Breast + Bhindi")
+        : (isPesc
+          ? fmtText("ज्वार रोटी + भाप में पकी मछली + लौकी सब्ज़ी", "Jowar Roti + Steamed Fish + Lauki Sabzi")
+          : fmtText("ज्वार रोटी + मूंग दाल + लौकी/भिंडी सब्ज़ी", "Jowar Roti + Moong Dal + Lauki/Bhindi Sabzi"));
+      const afternoonQty = (isNonVeg || isPesc)
+        ? fmtText("2 रोटी (70 ग्राम आटा) + 75 ग्राम प्रोटीन + 120 ग्राम सब्ज़ी", "2 rotis (70g flour) + 75g protein + 120g sabzi")
+        : fmtText("2 रोटी (70 ग्राम आटा) + 120 मिली दाल + 120 ग्राम सब्ज़ी", "2 rotis (70g flour) + 120ml dal + 120g sabzi");
+      const afternoonSteps = buildFiveStepsForDish("roti_meal", aProt, aVeg);
+
+      const eSnack = fmtText("मखाना", "Makhana");
+      const eProt = isEgg
+        ? fmtText("उबले अंडे की सफ़ेदी", "Boiled Egg Whites")
+        : fmtText("पनीर / टोफू", "Paneer / Tofu");
+      const eveningDish = isEgg
+        ? fmtText("उबले अंडे की सफ़ेदी + भुना मखाना", "Boiled Egg Whites + Roasted Makhana")
+        : fmtText("कम वसा पनीर / टोफू + भुना मखाना", "Low-Fat Paneer / Tofu + Roasted Makhana");
+      const eveningQty = isEgg
+        ? fmtText("3–4 अंडे की सफ़ेदी + 20 ग्राम भुना मखाना", "3–4 egg whites + 20g roasted makhana")
+        : fmtText("50 ग्राम पनीर/टोफू + 20 ग्राम भुना मखाना", "50g paneer/tofu + 20g roasted makhana");
+      const eveningSteps = buildFiveStepsForDish("snack", eSnack, eProt);
+
+      const nGrain = fmtText("मूंग दाल", "Moong Dal");
+      const nVeg = fmtText("लौकी", "Bottle Gourd");
+      const nightDish = fmtText("मूंग दाल और लौकी खिचड़ी", "Moong Dal & Bottle Gourd Khichdi");
+      const nightQty = fmtText("1 कटोरी (~150 ग्राम पकी) + 50 ग्राम दही (अनुमत होने पर)", "1 bowl (~150g cooked) + 50g curd (if allowed)");
+      const nightSteps = buildFiveStepsForDish("khichdi", nGrain, nVeg);
 
       const slots = [
         {
           slotLabel: pack.morningSlot,
-          dish: isCKD ? "Lauki & Poha Upma" : "Rolled Oats & Fruit Bowl",
-          qty: isCKD ? "1 bowl (140g cooked) + 1 small apple (100g)" : "40g rolled oats + 150ml milk/water + 100g fruit + 1 tsp seeds",
+          dish: morningDish,
+          qty: morningQty,
+          steps: morningSteps,
           img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80"
         },
         {
           slotLabel: pack.afternoonSlot,
-          dish: isNonVeg ? "Jowar Roti + Grilled Chicken Breast + Bhindi" : (isPesc ? "Jowar Roti + Steamed Fish + Lauki Sabzi" : "Jowar Roti + Moong Dal + Lauki/Bhindi Sabzi"),
-          qty: isNonVeg ? "2 rotis (70g flour) + 75g chicken + 120g sabzi" : (isPesc ? "2 rotis (70g flour) + 75g fish + 120g sabzi" : "2 rotis (70g flour) + 120ml dal + 120g sabzi"),
+          dish: afternoonDish,
+          qty: afternoonQty,
+          steps: afternoonSteps,
           img: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=600&q=80"
         },
         {
           slotLabel: pack.eveningSlot,
-          dish: isEgg ? "Boiled Egg Whites + Roasted Makhana" : "Low-Fat Paneer / Tofu + Roasted Makhana",
-          qty: isEgg ? "3–4 egg whites + 20g roasted makhana" : "50g paneer/tofu + 20g roasted makhana",
+          dish: eveningDish,
+          qty: eveningQty,
+          steps: eveningSteps,
           img: "https://images.unsplash.com/photo-1517673400267-0251440c45dc?auto=format&fit=crop&w=600&q=80"
         },
         {
           slotLabel: pack.nightSlot,
-          dish: "Moong Dal & Bottle Gourd Khichdi",
-          qty: "1 bowl (150g cooked) + 50g curd (if allowed)",
+          dish: nightDish,
+          qty: nightQty,
+          steps: nightSteps,
           img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80"
         }
       ];
@@ -2418,7 +2482,7 @@
             <div class="qty-pill">⚖️ ${pack.qtyLabel}: ${s.qty}</div>
             <div style="font-size:0.8rem;font-weight:800;color:#14532d;margin-top:4px;">${pack.stepsLabel}:</div>
             <ol class="prep-steps-list">
-              ${steps.map(st => `<li>${st}</li>`).join("")}
+              ${s.steps.map(st => `<li>${st}</li>`).join("")}
             </ol>
           </div>
         </div>
@@ -2426,7 +2490,7 @@
     }
 
     // =========================================================================
-    // 9. SUPABASE AUTH WITH RELIABLE FALLBACK
+    // 10. SUPABASE AUTH WITH RELIABLE FALLBACK
     // =========================================================================
     function initSupabase() {
       const pill = document.getElementById("syncPill");
@@ -2434,7 +2498,7 @@
         if (window.supabase && SB.url && SB.key) {
           sbClient = window.supabase.createClient(SB.url, SB.key);
           pill.style.background = "#dcfce7"; pill.style.color = "#166534";
-          pill.textContent = "☁️ Cloud sync ON: your profile follows you to any phone or laptop.";
+          pill.textContent = "☁️ Supabase";
           sbClient.auth.getSession().then(({ data }) => {
             if (data?.session) { currentUser = data.session.user; launchDashboard(); }
           }).catch(() => {});
@@ -2442,7 +2506,7 @@
         }
       } catch (e) {}
       pill.style.background = "#fef3c7"; pill.style.color = "#92400e";
-      pill.textContent = "⚡ Local Vault Ready: instant offline & device sync.";
+      pill.textContent = "⚡ Local";
     }
 
     async function sha256(p) {
@@ -2458,12 +2522,9 @@
 
       if (!email || pass.length < 6) {
         fb.style.color = "#dc2626";
-        fb.textContent = "Please enter a valid email and password (minimum 6 characters).";
+        fb.textContent = "!";
         return;
       }
-
-      fb.style.color = "#15803d";
-      fb.textContent = "Creating your profile...";
 
       const h = await sha256(pass);
       localStorage.setItem("sa_u_" + email, JSON.stringify({ email, h, name }));
@@ -2500,12 +2561,9 @@
 
       if (!email || !pass) {
         fb.style.color = "#dc2626";
-        fb.textContent = "Please enter your email and password.";
+        fb.textContent = "!";
         return;
       }
-
-      fb.style.color = "#15803d";
-      fb.textContent = "Signing in...";
 
       if (sbClient) {
         try {
@@ -2523,7 +2581,7 @@
       const savedUser = JSON.parse(localStorage.getItem("sa_u_" + email) || "null");
       if (savedUser && savedUser.h !== h) {
         fb.style.color = "#dc2626";
-        fb.textContent = "Incorrect password for this account. Try again or click Create Account.";
+        fb.textContent = "!";
         return;
       }
 
@@ -2550,8 +2608,7 @@
       document.getElementById("landingScreen").style.display = "none";
       document.getElementById("appDashboard").style.display = "block";
       await loadProfile();
-      updateSportGuideline();
-      renderIngredients();
+      setAppLanguage(activeLang);
     }
 
     async function saveProfile(silent = false) {
@@ -2576,7 +2633,7 @@
       updateSportGuideline();
       if (!silent) {
         const toast = document.getElementById("saveToast");
-        toast.textContent = "✅ Profile & Prescription saved successfully!";
+        toast.textContent = getPack(activeLang).profileSaved;
         setTimeout(() => toast.textContent = "", 3000);
       }
     }
@@ -2641,14 +2698,19 @@
       feed.innerHTML += `<div class="bubble user">${q.replace(/[<>]/g, "")}</div>`;
 
       const lower = q.toLowerCase();
-      const found = INGREDIENTS.find(i => lower.includes(i.name.toLowerCase().split(" (")[0]) || lower.includes(i.id));
+      const found = INGREDIENTS.find(i =>
+        lower.includes(i.name.toLowerCase().split(" (")[0]) ||
+        lower.includes(getFoodName(i).toLowerCase()) ||
+        lower.includes(i.id)
+      );
       let reply = pack.aiGreeting;
 
       if (found) {
         const r = checkRisk(found);
-        if (r.level === "contraindicated") reply = `${pack.contraBadge} (${found.name}): ${r.reason}`;
-        else if (r.level === "limited") reply = `${pack.limitedBadge} (${found.name}): ${r.portion} — ${r.reason}`;
-        else reply = `${pack.allowedBadge} (${found.name}): ${r.reason}`;
+        const fName = getFoodName(found);
+        if (r.level === "contraindicated") reply = `${pack.contraBadge}: ${fName}`;
+        else if (r.level === "limited") reply = `${pack.limitedBadge}: ${fName} (${r.portion})`;
+        else reply = `${pack.allowedBadge}: ${fName}`;
       }
 
       feed.innerHTML += `<div class="bubble bot">${reply}</div>`;
